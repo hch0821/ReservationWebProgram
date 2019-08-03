@@ -58,7 +58,7 @@ public class ReservController {
 	public RedirectView getProductImageByProductId(@PathVariable(name = "productId") Integer productId,
 			@RequestParam(name = "type", required = true) String type) {
 		List<ProductImage> productImages = mainService.getProductImage(productId, type);
-		return new RedirectView("http://localhost:8080/reserv/res/img/" + productImages.get(0).getFileName());
+		return new RedirectView("/reserv/res/img/" + productImages.get(0).getFileName());
 	}
 
 	// http://localhost:8080/reserv/api/productImages/{productId}/{productImageId}
@@ -66,7 +66,7 @@ public class ReservController {
 	public RedirectView getProductImageByProductId(@PathVariable(name = "productId") Integer productId,
 			@PathVariable(name = "productImageId") Integer productImageId) {
 		List<ProductImage> productImages = mainService.getProductImage(productId, ProductImage.Type.TYPE_TH);
-		return new RedirectView("http://localhost:8080/reserv/res/img/" + productImages.get(0).getFileName());
+		return new RedirectView("/reserv/res/img/" + productImages.get(0).getFileName());
 
 	}
 }

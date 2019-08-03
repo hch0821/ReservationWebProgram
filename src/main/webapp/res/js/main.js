@@ -23,7 +23,7 @@ function getPromotions() {
 
 		animatePromotions(visualImg)
 	})
-	oReq.open("GET", "http://localhost:8080/reserv/api/promotions")
+	oReq.open("GET", "/reserv/api/promotions")
 	oReq.send()
 }
 
@@ -81,7 +81,7 @@ function getCategories() {
 		getProducts(true, 0, 0)
 	})
 
-	oReq.open("GET", "http://localhost:8080/reserv/api/categories")
+	oReq.open("GET", "/reserv/api/categories")
 	oReq.send()
 }
 
@@ -109,7 +109,7 @@ function getProducts(isTabClicked, categoryId, start) {
 			getProductInfo(isTabClicked, categoryId, jsonObj)
 		})
 		
-		oReq.open("GET", "http://localhost:8080/reserv/api/products?categoryId="
+		oReq.open("GET", "/reserv/api/products?categoryId="
 				+ categoryId + "&start=" + start)
 		oReq.send()
 	curStart = start;
