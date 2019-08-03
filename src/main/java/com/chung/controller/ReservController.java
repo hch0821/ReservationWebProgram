@@ -16,70 +16,57 @@ import com.chung.dto.Category;
 import com.chung.dto.Product;
 import com.chung.dto.ProductImage;
 import com.chung.dto.Promotion;
-import com.chung.service.ReservService;
+import com.chung.service.IService;
 
 @RestController
 @RequestMapping(path = "/api")
 public class ReservController {
 	@Autowired
-	ReservService reservService;
-	
-	//http://localhost:8080/reserv/api/products?categoryId=3&start=1
+	IService.Main mainService;
+
+	// http://localhost:8080/reserv/api/products?categoryId=3&start=1
 	@GetMapping("/products")
-	public Map<String, Object> productResponse
-	(@RequestParam(name="categoryId", required=true)int categoryId,
-	@RequestParam(name="start", required=false, defaultValue="0")int start)
-	{
-		List<Product> products = reservService.getProducts(categoryId, start);
+	public Map<String, Object> productResponse(@RequestParam(name = "categoryId", required = true) int categoryId,
+			@RequestParam(name = "start", required = false, defaultValue = "0") int start) {
+		List<Product> products = mainService.getProducts(categoryId, start);
 		Map<String, Object> map = new HashMap<>();
 		map.put("items", products);
-		map.put("totalCount", reservService.getProductCount(categoryId));
+		map.put("totalCount", mainService.getCategories().get(categoryId).getCount());
 		return map;
 	}
-	
-	//http://localhost:8080/reserv/api/categories
+
+	// http://localhost:8080/reserv/api/categories
 	@GetMapping("/categories")
-	public Map<String, Object> categoryResponse()
-	{
-		List<Category> categories = reservService.getCategories();
-		
-		Category allCate = new Category();
-		allCate.setCount(reservService.getProductCount(0));
-		allCate.setId(0);
-		allCate.setName("전체 리스트");
-		
-		categories.add(0, allCate);
+	public Map<String, Object> categoryResponse() {
+		List<Category> categories = mainService.getCategories();
 		Map<String, Object> map = new HashMap<>();
 		map.put("items", categories);
 		return map;
 	}
-	
-	//http://localhost:8080/reserv/api/promotions
+
+	// http://localhost:8080/reserv/api/promotions
 	@GetMapping("/promotions")
-	public Map<String, Object> promotionResponse()
-	{
-		List<Promotion> promotions = reservService.getPromotions();
+	public Map<String, Object> promotionResponse() {
+		List<Promotion> promotions = mainService.getPromotions();
 		Map<String, Object> map = new HashMap<>();
 		map.put("items", promotions);
 		return map;
 	}
-	
-	//http://localhost:8080/reserv/api/productImages/{productId}?type=th"
+
+	// http://localhost:8080/reserv/api/productImages/{productId}?type=th"
 	@GetMapping("/productImages/{productId}")
-	public RedirectView getProductImageByProductId(@PathVariable(name="productId") Integer productId, 
-			@RequestParam(name="type", required=true) String type) 
-	{
-		List<ProductImage> productImages = reservService.getProductImage(productId, type);
-		return new RedirectView("http://localhost:8080/reserv/res/img/"+ productImages.get(0).getFileName());
+	public RedirectView getProductImageByProductId(@PathVariable(name = "productId") Integer productId,
+			@RequestParam(name = "type", required = true) String type) {
+		List<ProductImage> productImages = mainService.getProductImage(productId, type);
+		return new RedirectView("http://localhost:8080/reserv/res/img/" + productImages.get(0).getFileName());
 	}
-	
-	//http://localhost:8080/reserv/api/productImages/{productId}/{productImageId}
+
+	// http://localhost:8080/reserv/api/productImages/{productId}/{productImageId}
 	@GetMapping("/productImages/{productId}/{productImageId}")
-	public RedirectView getProductImageByProductId(@PathVariable(name="productId") Integer productId, 
-			@PathVariable(name="productImageId") Integer productImageId) 
-	{
-		List<ProductImage> productImages = reservService.getProductImage(productId, "th");
-		return new RedirectView("http://localhost:8080/reserv/res/img/"+ productImages.get(0).getFileName());
-		
+	public RedirectView getProductImageByProductId(@PathVariable(name = "productId") Integer productId,
+			@PathVariable(name = "productImageId") Integer productImageId) {
+		List<ProductImage> productImages = mainService.getProductImage(productId, ProductImage.Type.TYPE_TH);
+		return new RedirectView("http://localhost:8080/reserv/res/img/" + productImages.get(0).getFileName());
+
 	}
 }

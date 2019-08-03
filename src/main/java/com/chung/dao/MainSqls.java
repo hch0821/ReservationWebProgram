@@ -1,16 +1,15 @@
 package com.chung.dao;
 
-public class ReservSqls {
+public class MainSqls {
 	/*=====메인 페이지====*/
-	public static final String SELECT_ALL_PRODUCT_COUNT = 
-			"select count(*) "+
-			"from  display_info, product "+
-			"where product.id = display_info.product_id "; /*카테고리에 해당하는 상품의 개수*/
-			
 	
+	/*카테고리에 해당하는 상품의 개수*/
 	public static final String SELECT_PRODUCT_COUNT = 
-			SELECT_ALL_PRODUCT_COUNT+ "and category_id=:categoryId";
-	
+	"select count(*) "+
+	"from  display_info, product "+
+	"where product.id = display_info.product_id "+
+	"group by category_id";
+
 	public static final String SELECT_CATEGORY = 
 	"select id, name from category"; 
 

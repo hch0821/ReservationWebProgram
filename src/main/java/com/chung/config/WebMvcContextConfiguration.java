@@ -13,29 +13,25 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "com.chung.controller" })
-public class WebMvcContextConfiguration extends WebMvcConfigurerAdapter{
+public class WebMvcContextConfiguration extends WebMvcConfigurerAdapter {
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
- }
- 
-    // default servlet handler를 사용하게 합니다.
-    @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
-    }
-   
-    @Override
-    public void addViewControllers(final ViewControllerRegistry registry) {
-    		System.out.println("addViewControllers가 호출됩니다. ");
-        registry.addViewController("/").setViewName("/res/htmls/mainpage.html");
-    }
-    
-    @Bean
-    public InternalResourceViewResolver getInternalResourceViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-//        resolver.setPrefix("/WEB-INF/views/");
-//        resolver.setSuffix("");
-        return resolver;
-    }
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	}
+
+	@Override
+	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+		configurer.enable();
+	}
+
+	@Override
+	public void addViewControllers(final ViewControllerRegistry registry) {
+		registry.addViewController("/").setViewName("/res/htmls/mainpage.html");
+	}
+
+	@Bean
+	public InternalResourceViewResolver getInternalResourceViewResolver() {
+		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+		return resolver;
+	}
 }

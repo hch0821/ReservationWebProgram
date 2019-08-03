@@ -1,16 +1,15 @@
 package com.chung.dto;
 
-
-
-
 public class ProductImage {
-	private final static String TYPE_MA = "ma";
-	private final static String TYPE_TH = "th";
-	private final static String TYPE_ET = "et";
-	public static enum TYPE {TYPE_MA, TYPE_TH, TYPE_ET};
+	public class Type {
+		public final static String TYPE_MA = "ma";
+		public final static String TYPE_TH = "th";
+		public final static String TYPE_ET = "et";
+	}
+
 	private String contentType;
 //	파일 확장자
-	
+
 	private String createDate;
 //	생성일
 
@@ -125,6 +124,5 @@ public class ProductImage {
 				+ ", productId=" + productId + ", productImageId=" + productImageId + ", saveFileName=" + saveFileName
 				+ ", type=" + type + "]";
 	}
-	
-	
+
 }

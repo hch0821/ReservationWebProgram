@@ -15,10 +15,10 @@ import org.springframework.transaction.annotation.TransactionManagementConfigure
 public class DBConfig implements TransactionManagementConfigurer {
 
 	private String driverClassName = "com.mysql.jdbc.Driver";
-	private String url = "jdbc:mysql://localhost:3306/reservdb?useUnicode=true&characterEncoding=utf8";
+	private String url = "jdbc:mysql://localhost:3306/reservdb?useUnicode=true&characterEncoding=utf8&useSSL=false";
 	private String username = "connectuser";
 	private String password = "connect123!@#";
-	
+
 	@Bean
 	public DataSource dataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -28,14 +28,12 @@ public class DBConfig implements TransactionManagementConfigurer {
 		dataSource.setPassword(password);
 		return dataSource;
 	}
-	
-	
+
 	@Override
 	public PlatformTransactionManager annotationDrivenTransactionManager() {
-		// TODO Auto-generated method stub
 		return transactionManager();
 	}
-	
+
 	@Bean
 	public PlatformTransactionManager transactionManager() {
 		return new DataSourceTransactionManager(dataSource());
