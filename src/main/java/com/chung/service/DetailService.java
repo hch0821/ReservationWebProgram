@@ -22,6 +22,9 @@ public class DetailService implements IService.Detail{
 	@Override
 	public Double getAverageScore(List<Comment> comments) {
 		double avgScore = 0.0;
+		if(comments.size() == 0) 
+			return avgScore;
+		
 		for(Comment c : comments) {
 			c.setCommentImages(detailDao.selectCommentImages(c.getCommentId()));
 			avgScore += c.getScore();
