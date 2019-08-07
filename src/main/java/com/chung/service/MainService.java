@@ -1,5 +1,6 @@
 package com.chung.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,8 @@ public class MainService implements IService.Main {
 		if (categoryId.intValue() == 0) {
 			list = mainDao.selectAllProduct(start);
 		} else {
-			list = mainDao.selectProduct(categoryId, start);
+			list = mainDao.selectProducts(categoryId, start);
 		}
-
 		for (Product prod : list) {
 			prod.setProductImageUrl("http://localhost:8080/productImages/" + prod.getProductId() + "?type="
 					+ ProductImage.Type.TYPE_TH);
@@ -67,7 +67,7 @@ public class MainService implements IService.Main {
 	}
 
 	@Override
-	public List<ProductImage> getProductImage(Integer productId, String type) {
+	public ProductImage getProductImage(Integer productId, String type) {
 		return mainDao.selectProductImage(productId, type);
 	}
 }

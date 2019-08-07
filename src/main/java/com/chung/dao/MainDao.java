@@ -42,7 +42,7 @@ public class MainDao {
 		return jdbc.query(SELECT_ALL_PRODUCT, params, productMapper);
 	}
 
-	public List<Product> selectProduct(Integer categoryId, Integer start) {
+	public List<Product> selectProducts(Integer categoryId, Integer start) {
 		Map<String, Integer> params = new HashMap<String, Integer>();
 		params.put("categoryId", categoryId);
 		params.put("start", start);
@@ -68,10 +68,10 @@ public class MainDao {
 		return jdbc.query(SELECT_PROMOTION, promotionMapper);
 	}
 
-	public List<ProductImage> selectProductImage(Integer productId, String type) {
+	public ProductImage selectProductImage(Integer productId, String type) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("productId", productId);
 		params.put("type", type);
-		return jdbc.query(SELECT_PRODUCT_IMAGE, params, productImageMapper);
+		return jdbc.queryForObject(SELECT_PRODUCT_IMAGE, params, productImageMapper);
 	}
 }
