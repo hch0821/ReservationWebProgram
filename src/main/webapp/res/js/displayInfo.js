@@ -303,14 +303,12 @@ var Location = {
 		document.querySelector(".store_addr.addr_detail").innerText = displayInfo.placeName;
 		document.querySelector(".box_store_info.no_topline > .store_location > .store_map.img_thumb").src = "/reserv/res/" + displayInfoImage.saveFileName;
 		document.querySelector(".box_store_info.no_topline > .store_location").href = "https://m.map.naver.com/search2/search.nhn?sm=hty&style=v4&query="+displayInfo.placeStreet;
-		document.querySelector(".bottom_common_path.column2 .btn_path").href= "https://m.map.naver.com/search2/search.nhn?sm=hty&style=v4&query="+displayInfo.placeStreet;
 		var telAnchor = document.querySelector(".lst_store_info .store_tel");
 		var tel = displayInfo.telephone;
 		if(tel == "")
 		{
 			tel = "등록된 연락처가 없습니다."
 		}
-		telAnchor.href = "https://m.search.naver.com/search.naver?query="+tel;
 		telAnchor.innerText = tel;
 	},
 

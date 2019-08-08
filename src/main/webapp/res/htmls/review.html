@@ -60,7 +60,7 @@
                 <div>
                     <div class="{{#thumb_area_image_exist commentImages}}{{classname}}{{/thumb_area_image_exist}}">
                             <div class="thumb_area" style="{{#thumb_area_style commentImages}}{{style}}{{/thumb_area_style}}">
-                                <a href="/reserv/res/{{#thumb_area_image commentImages}}{{saveFileName}}{{/thumb_area_image}}" target="_blank" class="thumb" title="이미지 크게 보기"> <img width="90" height="90" class="img_vertical_top" src="/reserv/res/{{#thumb_area_image commentImages}}{{saveFileName}}{{/thumb_area_image}}" alt="리뷰이미지"> </a> <span class="img_count" style="display">{{#thumb_area_image_count commentImages}}{{img_count}}{{/thumb_area_image_count}}</span>
+                                <div class="thumb"> <img width="90" height="90" class="img_vertical_top" src="/reserv/res/{{#thumb_area_image commentImages}}{{saveFileName}}{{/thumb_area_image}}" alt="리뷰이미지"> </div> <span class="img_count" style="display">{{#thumb_area_image_count commentImages}}{{img_count}}{{/thumb_area_image_count}}</span>
                             </div>
                         <h4 class="resoc_name"></h4>
                         <p class="review">{{comment}}</p>
