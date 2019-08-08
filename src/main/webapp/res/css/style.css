@@ -540,16 +540,18 @@ hr {
 }
 
 .spr_book2.ico_arr6_lt {
+    opacity: 1;
     width: 11px;
 	height: 20px;
     background-position:-151px -50px;
 }
 .spr_book2.ico_arr6_rt {
+    opacity: 1;
 	width: 11px;
 	height: 20px;
     background-position:-164px -50px;
 }
-.spr_book2.ico_arr6_lt.off {
+.spr_book2.ico_arr6_lt.off, .spr_book2.ico_arr6_rt.off {
 	opacity: 0.6;
 }
 .spr_bi {

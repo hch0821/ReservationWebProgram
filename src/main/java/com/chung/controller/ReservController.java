@@ -101,7 +101,7 @@ public class ReservController {
 		List<ProductPrice> productPrices;
 		
 		comments = detailService.getComments(displayInfoId);
-		averageScore = detailService.getAverageScore(comments);
+		averageScore = Double.parseDouble(String.format("%.1f", detailService.getAverageScore(comments)));
 		displayInfo = detailService.getDisplayInfo(displayInfoId);
 		displayInfoImage = detailService.getDisplayInfoImage(displayInfoId);
 		productImages = detailService.getProductImages(displayInfo.getProductId());

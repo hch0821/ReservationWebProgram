@@ -35,7 +35,7 @@ function animatePromotions(visualImg) {
 	var cnt = 0;
 	var translated = 0;
 
-	visualImg.appendChild(children[0].cloneNode());
+	visualImg.innerHTML += children[0].outerHTML;
 	children = visualImg.children;
 	promotionLength = visualImg.childElementCount;
 
@@ -59,7 +59,7 @@ function animatePromotions(visualImg) {
 		}
 		setTimeout(function() {
 			animate();
-		}, 3000)
+		}, 2000)
 	}
 	animate();
 }
@@ -133,6 +133,7 @@ function getProductInfo(isTabClicked, categoryId, jsonObj) {
 			children[i].firstElementChild.className = "anchor";
 		}
 		children[categoryId].firstElementChild.className = "anchor active";
+		
 	}
 	
 	html = document.querySelector("#itemList").innerHTML;
@@ -144,7 +145,8 @@ function getProductInfo(isTabClicked, categoryId, jsonObj) {
 		resultHTML = html.replace("{productId}", v.productId).replace(
 				/{productDescription}/g, v.productDescription).replace(
 				"{productContent}", v.productContent).replace("{placeName}",
-				v.placeName).replace("{productId}", v.productId);
+				v.placeName).replace("{productId}", v.productId)
+				.replace("{displayInfoId}", v.displayInfoId);
 		if (flag) {
 			eventBoxes[0].innerHTML += resultHTML;
 		} else {
