@@ -26,7 +26,6 @@ public class DetailService implements IService.Detail{
 			return avgScore;
 		
 		for(Comment c : comments) {
-			c.setCommentImages(detailDao.selectCommentImages(c.getCommentId()));
 			avgScore += c.getScore();
 		}
 		avgScore /= comments.size();
@@ -35,7 +34,11 @@ public class DetailService implements IService.Detail{
 
 	@Override
 	public List<Comment> getComments(Integer displayInfoId) {
-		return detailDao.selectComments(displayInfoId);
+		List<Comment> comments = detailDao.selectComments(displayInfoId);
+		for(Comment c : comments) {
+			c.setCommentImages(detailDao.selectCommentImages(c.getCommentId()));
+		}
+		return comments;
 	}
 
 	@Override
