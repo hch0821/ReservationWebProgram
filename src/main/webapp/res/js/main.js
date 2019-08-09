@@ -78,8 +78,14 @@ function getCategories() {
 			function (v) {
 				resultHTML += html.replace("{name}", v.name).replace(
 					/{id}/g, v.id);
-				tabList.innerHTML = resultHTML;
-			})
+			});
+		tabList.innerHTML = resultHTML;
+		var elems = document.querySelectorAll(".event_tab_lst.tab_lst_min > .item > a");
+		Array.prototype.forEach.call(elems, function (v) {
+			v.addEventListener("click", function () {
+				getProducts(true, parseInt(v.parentElement.className.split(" ")[1]), 0);
+			});
+		});
 		getProducts(true, 0, 0);
 	})
 
@@ -195,9 +201,20 @@ function setVisibility(selectors, isShown) {
 	}
 }
 
+//click 리스너를 등록하는 함수
+function registerClickListener(selector, onclickListener) {
+	document.querySelector(selector).addEventListener("click", onclickListener);
+}
+
 window.addEventListener('load', function () {
 
 	//사이트가 처음 로드되었을 경우 호출
 	getCategories();
 	getPromotions();
+
+	registerClickListener(".more > .btn", moreClicked, false);
+	registerClickListener(".gototop > .lnk_top", gototopClicked, false);
+
+
+
 })

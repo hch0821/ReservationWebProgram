@@ -183,6 +183,11 @@ var Utils = {
 	// 이전 사이트로 이동하는 함수
 	tothePreviousSite: function () {
 		history.go(-1);
+	},
+
+	//click 리스너를 등록하는 함수
+	registerClickListener: function (selector, onclickListener) {
+		document.querySelector(selector).addEventListener("click", onclickListener);
 	}
 
 }

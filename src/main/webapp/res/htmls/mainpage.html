@@ -2,16 +2,13 @@
 <html lang="ko">
 
 <head>
-<meta charset="utf-8">
-<meta name="description"
-	content="네이버 예약, 네이버 예약이 연동된 곳 어디서나 바로 예약하고, 네이버 예약 홈(나의예약)에서 모두 관리할 수 있습니다.">
-<meta name="viewport"
-	content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
-<title>네이버 예약</title>
-<link rel="shortcut icon" href="/reserv/res/img/favicon.ico">
-<link rel="stylesheet" type="text/css" href="/reserv/res/css/style.css">
-<link rel="stylesheet" type="text/css"
-	href="/reserv/res/css/main.css">
+	<meta charset="utf-8">
+	<meta name="description" content="네이버 예약, 네이버 예약이 연동된 곳 어디서나 바로 예약하고, 네이버 예약 홈(나의예약)에서 모두 관리할 수 있습니다.">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+	<title>네이버 예약</title>
+	<link rel="shortcut icon" href="/reserv/res/img/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="/reserv/res/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/reserv/res/css/main.css">
 </head>
 
 <body>
@@ -20,13 +17,12 @@
 			<header class="header_tit">
 				<h1 class="logo">
 					<a href="https://m.naver.com/" class="lnk_logo" title="네이버"> <span
-						class="spr_bi ico_n_logo">네이버</span>
-					</a> <a href="/reserv/" class="lnk_logo"
-						title="예약"> <span class="spr_bi ico_bk_logo">예약</span>
+							class="spr_bi ico_n_logo">네이버</span>
+					</a> <a href="/reserv/" class="lnk_logo" title="예약"> <span class="spr_bi ico_bk_logo">예약</span>
 					</a>
 				</h1>
-				<a href="/reserv/res/htmls/bookinglogin.html" class="btn_my"> <span
-					class="viewReservation" title="예약확인">예약확인</span>
+				<a href="/reserv/res/htmls/bookinglogin.html" class="btn_my"> <span class="viewReservation"
+						title="예약확인">예약확인</span>
 				</a>
 			</header>
 		</div>
@@ -37,15 +33,13 @@
 					<div class="container_visual">
 						<div class="prev_e" style="display: none;">
 							<div class="prev_inn">
-								<a href="#" class="btn_pre_e" title="이전"> <i
-									class="spr_book_event spr_event_pre">이전</i>
+								<a href="#" class="btn_pre_e" title="이전"> <i class="spr_book_event spr_event_pre">이전</i>
 								</a>
 							</div>
 						</div>
 						<div class="nxt_e" style="display: none;">
 							<div class="nxt_inn">
-								<a href="#" class="btn_nxt_e" title="다음"> <i
-									class="spr_book_event spr_event_nxt">다음</i>
+								<a href="#" class="btn_nxt_e" title="다음"> <i class="spr_book_event spr_event_nxt">다음</i>
 								</a>
 							</div>
 						</div>
@@ -64,7 +58,7 @@
 				<ul class="event_tab_lst tab_lst_min">
 					<li class="item" data-category="0"><a class="anchor active">
 							<span>전체리스트</span>
-					</a></li>
+						</a></li>
 				</ul>
 			</div>
 			<div class="section_event_lst">
@@ -81,7 +75,7 @@
 					</ul>
 					<!-- 더보기 -->
 					<div class="more">
-						<button class="btn" onclick="moreClicked()">
+						<button class="btn">
 							<span>더보기</span>
 						</button>
 					</div>
@@ -91,7 +85,7 @@
 	</div>
 	<footer>
 		<div class="gototop">
-			<a class="lnk_top" onclick="gototopClicked()"> <span class="lnk_top_text">TOP</span>
+			<a class="lnk_top"> <span class="lnk_top_text">TOP</span>
 			</a>
 		</div>
 		<div class="footer">
@@ -132,8 +126,8 @@
 
 	<!-- 탭에 들어갈 아이템 템플릿 -->
 	<script type="rv-template" id="tabitem">
-        <li class="item" data-category="{id}">
-            <a class="anchor" href="javascript:void(0);" onclick="getProducts(true, {id}, 0); return false;"><span>{name}</span></a>
+        <li class="item {id}">
+            <a class="anchor" href="javascript:void(0);"><span>{name}</span></a>
         </li> 
     </script>
 

@@ -16,15 +16,9 @@ function getDisplayInfoResponse(displayInfoId) {
 	oReq.send();
 }
 
-// click 리스너를 등록하는 함수
-function registerClickListener(selector, onclickListener) {
-	document.querySelector(selector).addEventListener("click", onclickListener);
-}
-
 // 사이트가 처음 로드되었을 경우 호출
 window.addEventListener('load', function () {
 	getDisplayInfoResponse(Utils.getParameterByName("displayInfoId"));
-	registerClickListener(".top_title.gr > .btn_back", Utils.tothePreviousSite); // 뒤로 가기 버튼을 눌렀을 때
-	registerClickListener(".gototop > .lnk_top", Utils.scrollToTop); // TOP 버튼을 눌렀을 때
-
+	Utils.registerClickListener(".top_title.gr > .btn_back", Utils.tothePreviousSite); // 뒤로 가기 버튼을 눌렀을 때
+	Utils.registerClickListener(".gototop > .lnk_top", Utils.scrollToTop); // TOP 버튼을 눌렀을 때
 });
