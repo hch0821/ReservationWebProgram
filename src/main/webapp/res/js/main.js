@@ -1,4 +1,4 @@
-//메인 페이지를 위한 스크립트
+// 메인 페이지를 위한 스크립트
 
 var curStart = -1; // 더보기를 누를때마다 0부터 시작하여 NUM_ITEM만큼 증가
 var curCategoryId = -1; // 현재 선택되어있는 카테고리의 아이디
@@ -9,14 +9,14 @@ const NUM_ITEM = 4; // ajax 요청을 통해 (추가로) 읽어들일 상품의 
 // ajax 요청을 통해 프로모션 영역에 뿌릴 정보 가져오는 함수
 function getPromotions() {
 	oReq = new XMLHttpRequest();
-	oReq.addEventListener("load", function() {
+	oReq.addEventListener("load", function () {
 		var jsonObj = JSON.parse(this.responseText);
 		var items = jsonObj.items;
 
 		var html = document.querySelector("#promotionItem").innerHTML;
 		var resultHTML = "";
 		var visualImg = document.querySelector(".visual_img");
-		Array.prototype.forEach.call(items, function(v) {
+		Array.prototype.forEach.call(items, function (v) {
 			resultHTML += html.replace("{productImageUrl}", v.productImageUrl)
 			visualImg.innerHTML = resultHTML
 		});
@@ -52,12 +52,12 @@ function animatePromotions(visualImg) {
 		}
 		if (cnt >= promotionLength + 1) {
 			setTransition(children, false);
-			setTimeout(function() {
+			setTimeout(function () {
 				setTransition(children, true);
 			}, 1000)
 			cnt = 0;
 		}
-		setTimeout(function() {
+		setTimeout(function () {
 			animate();
 		}, 2000)
 	}
@@ -67,7 +67,7 @@ function animatePromotions(visualImg) {
 // 카테고리 목록을 ajax 요청을 통해 받고 화면에 추가하는 함수
 function getCategories() {
 	oReq = new XMLHttpRequest();
-	oReq.addEventListener("load", function() {
+	oReq.addEventListener("load", function () {
 		var jsonObj = JSON.parse(this.responseText);
 		var items = jsonObj.items;
 
@@ -75,11 +75,11 @@ function getCategories() {
 		var resultHTML = "";
 		var tabList = document.querySelector(".event_tab_lst.tab_lst_min");
 		Array.prototype.forEach.call(items,
-				function(v) {
-					resultHTML += html.replace("{name}", v.name).replace(
-							/{id}/g, v.id);
-					tabList.innerHTML = resultHTML;
-				})
+			function (v) {
+				resultHTML += html.replace("{name}", v.name).replace(
+					/{id}/g, v.id);
+				tabList.innerHTML = resultHTML;
+			})
 		getProducts(true, 0, 0);
 	})
 
@@ -106,13 +106,13 @@ function getProducts(isTabClicked, categoryId, start) {
 	if (categoryId == curCategoryId && isTabClicked)
 		return;
 	oReq = new XMLHttpRequest();
-	oReq.addEventListener("load", function() {
+	oReq.addEventListener("load", function () {
 		var jsonObj = JSON.parse(this.responseText)
 		getProductInfo(isTabClicked, categoryId, jsonObj)
 	});
 
 	oReq.open("GET", "/reserv/api/products?categoryId=" + categoryId
-			+ "&start=" + start);
+		+ "&start=" + start);
 	oReq.send();
 	curStart = start;
 	curCategoryId = categoryId;
@@ -128,7 +128,7 @@ function getProductInfo(isTabClicked, categoryId, jsonObj) {
 	if (isTabClicked) {
 		emptyProducts();
 		document.querySelector(".event_lst_txt>.pink").innerHTML = jsonObj.totalCount
-				+ "개";
+			+ "개";
 		var children = document.querySelector(".event_tab_lst.tab_lst_min").children;
 		for (var i = 0; i < children.length; i++) {
 			children[i].firstElementChild.className = "anchor";
@@ -141,13 +141,13 @@ function getProductInfo(isTabClicked, categoryId, jsonObj) {
 	eventBoxes = document.querySelector(".wrap_event_box").children;
 	length = 0;
 
-	Array.prototype.forEach.call(jsonObj.items, function(v) {
+	Array.prototype.forEach.call(jsonObj.items, function (v) {
 		var resultHTML = "";
 		resultHTML = html.replace("{productId}", v.productId).replace(
-				/{productDescription}/g, v.productDescription).replace(
+			/{productDescription}/g, v.productDescription).replace(
 				"{productContent}", v.productContent).replace("{placeName}",
-				v.placeName).replace("{productId}", v.productId).replace(
-				"{displayInfoId}", v.displayInfoId);
+					v.placeName).replace("{productId}", v.productId).replace(
+						"{displayInfoId}", v.displayInfoId);
 		if (flag) {
 			eventBoxes[0].innerHTML += resultHTML;
 		} else {
@@ -181,9 +181,9 @@ function moreClicked() {
 function gototopClicked() {
 
 	window.scrollTo({
-		top : 0,
-		left : 0,
-		behavior : 'smooth'
+		top: 0,
+		left: 0,
+		behavior: 'smooth'
 	});
 }
 // selector string에 해당하는 element가 보여질지 말지 설정하는 함수
@@ -195,7 +195,7 @@ function setVisibility(selectors, isShown) {
 	}
 }
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
 
 	//사이트가 처음 로드되었을 경우 호출
 	getCategories();
