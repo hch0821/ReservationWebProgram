@@ -116,7 +116,7 @@ var ProductImage = {
 	setTransition : function(elemList, on) {
 		if (on) {
 			for (idx = 0; idx < elemList.length; idx++) {
-				elemList[idx].style.transition = "transform 1s ease-in-out";
+				elemList[idx].style.transition = "transform 0.2s ease-in-out";
 			}
 		} else {
 			for (idx = 0; idx < elemList.length; idx++) {
