@@ -16,7 +16,7 @@ var ProductImage = {
 		}
 		Handlebars.registerHelper("title", function () {
 			return displayInfo.productDescription;
-		})
+		});
 
 		var ul = document.querySelector(".visual_img.detail_swipe");
 		var template = document.querySelector("#visual_img_list").innerText;
@@ -30,15 +30,10 @@ var ProductImage = {
 		var figurePagination = document.querySelector(".figure_pagination");
 
 		figurePagination.querySelector(".num.off span").innerText = imageLength;
-
-		var prevProductImageButton = document
-			.querySelector(".prev_inn > .btn_prev");
-		var nextProductImageButton = document
-			.querySelector(".nxt_inn > .btn_nxt");
-
+		
 		if (imageLength < 2) {
-			prevProductImageButton.style.display = "none";
-			nextProductImageButton.style.display = "none";
+			Utils.setVisibility(".prev_inn > .btn_prev", false);
+			Utils.setVisibility(".nxt_inn > .btn_nxt", false)
 		}
 
 		productImageIndex = 0;
@@ -57,7 +52,7 @@ var ProductImage = {
 	},
 
 	// 슬라이드 이미지를 왼쪽 또는 오른쪽으로 넘기는 효과를 주는 함수
-	animate: function (children, childrenLength, direction) {
+	animateProductImage: function (children, childrenLength, direction) {
 		var idx = 0;
 
 		this.setEnableArrowButton(".btn_prev", this.animateToLeft,
@@ -103,11 +98,10 @@ var ProductImage = {
 		var anchor = document.querySelector(anchorSelector);
 		if (isEnabled) {
 			anchor.addEventListener("click", onclickListener);
-			anchor.children[0].className = anchor.children[0].className
-				.replace(" off", "");
+			Utils.removeClass(anchor.children[0], "off", false);
 		} else {
 			anchor.removeEventListener("click", onclickListener);
-			anchor.children[0].className = anchor.children[0].className += " off";
+			Utils.addClass(anchor.children[0], "off", false);
 		}
 	},
 
@@ -129,7 +123,7 @@ var ProductImage = {
 		var swipeUlChildren = document
 			.querySelector(".visual_img.detail_swipe").children;
 		var swipeUlChildlrenLength = swipeUlChildren.length;
-		ProductImage.animate(swipeUlChildren, swipeUlChildlrenLength, "left");
+		ProductImage.animateProductImage(swipeUlChildren, swipeUlChildlrenLength, "left");
 		productImageIndex--;
 		if (productImageIndex < 0) {
 			productImageIndex = swipeUlChildlrenLength - 3;
@@ -144,7 +138,7 @@ var ProductImage = {
 		var swipeUlChildren = document
 			.querySelector(".visual_img.detail_swipe").children;
 		var swipeUlChildlrenLength = swipeUlChildren.length;
-		ProductImage.animate(swipeUlChildren, swipeUlChildlrenLength, "right");
+		ProductImage.animateProductImage(swipeUlChildren, swipeUlChildlrenLength, "right");
 		productImageIndex = (productImageIndex + 1) % imageLength;
 
 		lengthInfo.querySelector(".num").innerText = productImageIndex + 1;
@@ -188,8 +182,68 @@ var Utils = {
 	//click 리스너를 등록하는 함수
 	registerClickListener: function (selector, onclickListener) {
 		document.querySelector(selector).addEventListener("click", onclickListener);
+	},
+	//click 리스너를 등록 해지하는 함수
+	unregisterClickListener: function (selector, onclickListener) {
+		document.querySelector(selector).removeEventListener("click", onclickListener);
+	},
+	
+	// selector string에 해당하는 element가 보여질지 말지 설정하는 함수
+	setVisibility: function (selectors, isShown) {
+		if (isShown) {
+			document.querySelector(selectors).style.display = "";
+		} else {
+			document.querySelector(selectors).style.display = "none";
+		}
+	},
+	
+	//html 요소에 클래스이름을 추가하는 함수
+	//요소에 이미 추가하려는 클래스 이름이 있어도 정상 동작한다.
+	//참조 : 리뷰어 '배돌이'님의 피드백
+	
+	//예시
+	//<h1 class="title orange">제목</h1> 이라는 요소에 hide라는 클래스를 추가하고 싶다면
+	//var h1 = Utils.addClass(".title.orange", "hide", true); 로 실행하면 된다.
+	//결과는 <h1 class="title orange hide">제목</h1> 가 된다.
+	addClass: function(object, classString, isObjectSelector){
+		var element;
+		if(isObjectSelector)
+		{
+			element = document.querySelector(object);
+		}
+		else{
+			element = object;
+		}
+		element.className = element
+			   .className // return: "title orange"
+			   .split(' ') // return: ["title", "orange"]
+			   
+			   // return: ["title", "orange"]
+			   // 만약 classString이 "orange"일 경우 classString이 아닌 배열의 값만 리턴하므로 ["title"]이 리턴 된다. 
+			   .filter(function(name){return name !== classString;}) 
+			   .concat(classString) // return: ["title", "orange", "hide"]
+			   .join(' '); // return "title orange hide"
+	},
+	
+	//html 요소에 있는 클래스 이름을 제거하는 함수
+	//요소에 제거하려는 클래스 이름이 있든 없든 정상 동작한다.
+	//참조 : 리뷰어 '배돌이'님의 피드백
+	
+	removeClass: function(object, classString, isObjectSelector){
+		var element;
+		if(isObjectSelector)
+		{
+			element = document.querySelector(object);
+		}
+		else{
+			element = object;
+		}
+		element.className = element
+			   .className
+			   .split(' ')
+			   .filter(function(name){return name!==classString;})
+			   .join(' ');
 	}
-
 }
 
 // 댓글 관련 객체
@@ -227,9 +281,9 @@ var Comment = {
 		// 올린 이미지가 없을 경우 이미지 개수를 표시하지 않음
 		Handlebars.registerHelper("thumb_area_style", function (commentImages) {
 			if (commentImages.length < 1) {
-				return "display:none;"
+				return "display:none;";
 			} else {
-				return ""
+				return "";
 			}
 		});
 
@@ -291,17 +345,17 @@ var Comment = {
 
 	// 댓글의 개수에 따라 더보기 버튼이 보여질지 말지 결정하는 함수
 	updateMoreCommentButton: function (comments) {
-		var buttonReviewMore = document.querySelector(".btn_review_more");
 		if (comments.length == 0) {
-			buttonReviewMore.style.display = "none";
+			Utils.setVisibility(".btn_review_more", false);
 		} else {
-			buttonReviewMore.style.display = "";
+			Utils.setVisibility(".btn_review_more", true);
 		}
 	}
 };
 
 // 상영관 또는 콘서트장 위치 관련 객체
 var Location = {
+		
 	// 위치 정보 탭에 해당하는 뷰의 내용들을 displayInfo 객체로부터 뿌리는 함수
 	updateLocationInfoArea: function (displayInfo, displayInfoImage) {
 		document.querySelector(".store_addr.store_addr_bold").innerText = displayInfo.placeStreet;
@@ -310,8 +364,6 @@ var Location = {
 		document
 			.querySelector(".box_store_info.no_topline > .store_location > .store_map.img_thumb").src = "/reserv/res/"
 			+ displayInfoImage.saveFileName;
-		document.querySelector(".box_store_info.no_topline > .store_location").href = "https://m.map.naver.com/search2/search.nhn?sm=hty&style=v4&query="
-			+ displayInfo.placeStreet;
 		document.querySelector(".store_name").innerText = displayInfo.productDescription;
 		var telAnchor = document.querySelector(".lst_store_info .store_tel");
 		var tel = displayInfo.telephone;
@@ -324,11 +376,12 @@ var Location = {
 	// 찾아오시는 길 탭을 눌렀을때 상세정보 탭의 내용을 숨기고 해당 내용을 보여주는 함수
 	showLocationTab: function () {
 		var sectionInfoTab = document.querySelector(".section_info_tab");
-		sectionInfoTab.children[1].className = "detail_area_wrap hide";
-		sectionInfoTab.children[2].className = "detail_location";
-
-		document.querySelector(".info_tab_lst> .item._detail > a").className = "anchor";
-		document.querySelector(".info_tab_lst> .item._path > a").className = "anchor active";
+		Utils.addClass(sectionInfoTab.children[1], "detail_area_wrap hide", false);
+		Utils.removeClass(sectionInfoTab.children[2], "hide", false);	
+		
+		Utils.removeClass(".info_tab_lst> .item._detail > a", "active", true);
+		Utils.addClass(".info_tab_lst> .item._path > a", "active", true);
+		
 	}
 };
 
@@ -342,26 +395,26 @@ var Content = {
 
 	// 상품 내용을 펼쳐서 보여주는 함수
 	getMoreText: function () {
-		document.querySelector(".store_details.close3").className = "store_details";
-		document.querySelector(".bk_more._open").style.display = "none";
-		document.querySelector(".bk_more._close").style.display = "";
+		Utils.removeClass(".store_details.close3", "close3", true);
+		Utils.setVisibility(".bk_more._open", false);
+		Utils.setVisibility(".bk_more._close", true);
 	},
 
 	// 상품 내용을 축약해주는 함수
 	minifyText: function () {
-		document.querySelector(".store_details").className = "store_details close3";
-		document.querySelector(".bk_more._open").style.display = "";
-		document.querySelector(".bk_more._close").style.display = "none";
+		Utils.addClass(".store_details", "close3", true);
+		Utils.setVisibility(".bk_more._open", true);
+		Utils.setVisibility(".bk_more._close", false);
 	},
 
 	// 상세정보 탭을 눌렀을 때 찾아오시는길 탭의 내용을 숨기고 해당 내용을 보여주는 함수
 	showContentTab: function () {
 		var sectionInfoTab = document.querySelector(".section_info_tab");
-		sectionInfoTab.children[1].className = "detail_area_wrap";
-		sectionInfoTab.children[2].className = "detail_location hide";
-
-		document.querySelector(".info_tab_lst> .item._detail > a").className = "anchor active";
-		document.querySelector(".info_tab_lst> .item._path > a").className = "anchor";
+		Utils.removeClass(sectionInfoTab.children[1], "hide", false);
+		Utils.addClass(sectionInfoTab.children[2], "hide", false);
+		
+		Utils.addClass(".info_tab_lst> .item._detail > a", "active", true);
+		Utils.removeClass(".info_tab_lst> .item._path > a", "active", true);
 	}
 
 };
