@@ -312,6 +312,7 @@ var Location = {
 			+ displayInfoImage.saveFileName;
 		document.querySelector(".box_store_info.no_topline > .store_location").href = "https://m.map.naver.com/search2/search.nhn?sm=hty&style=v4&query="
 			+ displayInfo.placeStreet;
+		document.querySelector(".store_name").innerText = "["+displayInfo.categoryName + "] " + displayInfo.productDescription;
 		var telAnchor = document.querySelector(".lst_store_info .store_tel");
 		var tel = displayInfo.telephone;
 		if (tel == "") {
