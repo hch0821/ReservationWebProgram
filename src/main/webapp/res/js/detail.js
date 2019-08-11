@@ -39,4 +39,9 @@ window.addEventListener('load', function () {
 	Utils.registerClickListener(".item._detail > a", Content.showContentTab);//'상세정보' 탭을 눌렀을때
 	Utils.registerClickListener(".item._path > a", Location.showLocationTab);//'오시는 길' 탭을 눌렀을때
 	Utils.registerClickListener(".lnk_top", Utils.scrollToTop);// TOP 버튼을 눌렀을 때
+	Utils.registerClickListener(".section_btn > .bk_btn", function(){ // 예매하기 버튼 눌렀을 때
+		
+		// 참조 사이트: https://www.w3schools.com/howto/howto_js_redirect_webpage.asp
+		window.location.href="/reserv/res/htmls/reserve.html";
+	});
 });
