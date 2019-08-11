@@ -9,8 +9,8 @@ function getDisplayInfoResponse(displayInfoId) {
 		var jsonObj = JSON.parse(this.responseText);
 		var comments = jsonObj.comments;
 		var averageScore = jsonObj.averageScore;
-		Comment.addAverageScore(averageScore, comments);
-		Comment.addComments(comments, false);
+		Comment.updateAverageScore(averageScore, comments);
+		Comment.updateCommentList(comments, false);
 	})
 	oReq.open("GET", "/reserv/api/products/" + displayInfoId);
 	oReq.send();

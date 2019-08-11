@@ -1,4 +1,4 @@
-package com.chung.dto;
+package com.chung.dto.product;
 
 public class Product {
 	private int displayInfoId; // 전시 id

@@ -1,4 +1,4 @@
-package com.chung.dto;
+package com.chung.dto.display;
 
 //description:	상품 전시 (Display) 모델
 public class DisplayInfo {

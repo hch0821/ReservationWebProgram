@@ -5,27 +5,27 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.chung.dao.DetailDao;
-import com.chung.dto.Comment;
-import com.chung.dto.DisplayInfo;
-import com.chung.dto.DisplayInfoImage;
-import com.chung.dto.ProductImage;
-import com.chung.dto.ProductPrice;
-
+import com.chung.dao.ReservDao;
+import com.chung.dto.comment.Comment;
+import com.chung.dto.display.DisplayInfo;
+import com.chung.dto.display.DisplayInfoImage;
+import com.chung.dto.product.Product;
+import com.chung.dto.product.ProductImage;
+import com.chung.dto.product.ProductPrice;
 
 @Service
-public class DetailService implements IService.Detail{
+public class DetailService implements IRateService, IDisplayService, IProductService {
 
 	@Autowired
-	DetailDao detailDao;
+	ReservDao reservDao;
 
 	@Override
 	public Double getAverageScore(List<Comment> comments) {
 		double avgScore = 0.0;
-		if(comments.size() == 0) 
+		if (comments.isEmpty())
 			return avgScore;
-		
-		for(Comment c : comments) {
+
+		for (Comment c : comments) {
 			avgScore += c.getScore();
 		}
 		avgScore /= comments.size();
@@ -33,34 +33,43 @@ public class DetailService implements IService.Detail{
 	}
 
 	@Override
-	public List<Comment> getComments(Integer displayInfoId) {
-		List<Comment> comments = detailDao.selectComments(displayInfoId);
-		for(Comment c : comments) {
-			c.setCommentImages(detailDao.selectCommentImages(c.getCommentId()));
+	public List<Comment> getComments(int displayInfoId) {
+		List<Comment> comments = reservDao.selectComments(displayInfoId);
+		for (Comment c : comments) {
+			c.setCommentImages(reservDao.selectCommentImages(c.getCommentId()));
 		}
 		return comments;
 	}
 
 	@Override
-	public DisplayInfo getDisplayInfo(Integer displayInfoId) {
-		return detailDao.selectDisplayInfo(displayInfoId);
+	public DisplayInfo getDisplayInfo(int displayInfoId) {
+
+		return reservDao.selectDisplayInfo(displayInfoId);
 	}
 
 	@Override
-	public DisplayInfoImage getDisplayInfoImage(Integer displayInfoId) {
-		return detailDao.selectDisplayInfoImage(displayInfoId);
+	public DisplayInfoImage getDisplayInfoImage(int displayInfoId) {
+		return reservDao.selectDisplayInfoImage(displayInfoId);
 	}
 
 	@Override
-	public List<ProductImage> getProductImages(Integer productId) {
-		return detailDao.selectProductImages(productId);
+	public List<ProductImage> getProductImages(int productId) {
+		return reservDao.selectProductImages(productId);
 	}
 
 	@Override
-	public List<ProductPrice> getProductPrices(Integer productId) {
-		return detailDao.selectProducPrices(productId);
+	public List<ProductPrice> getProductPrices(int productId) {
+		return reservDao.selectProducPrices(productId);
 	}
-	
-	
+
+	@Override
+	public List<Product> getProducts(int categoryId, int start) {
+		return null;
+	}
+
+	@Override
+	public ProductImage getProductImage(int productId, String type) {
+		return null;
+	}
 
 }

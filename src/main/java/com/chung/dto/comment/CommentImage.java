@@ -1,4 +1,4 @@
-package com.chung.dto;
+package com.chung.dto.comment;
 
 //description:	상품평 이미지
 public class CommentImage {

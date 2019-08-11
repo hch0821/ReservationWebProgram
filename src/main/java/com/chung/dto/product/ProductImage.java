@@ -1,4 +1,4 @@
-package com.chung.dto;
+package com.chung.dto.product;
 
 public class ProductImage {
 	public class Type {

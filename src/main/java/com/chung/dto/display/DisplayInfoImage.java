@@ -1,4 +1,4 @@
-package com.chung.dto;
+package com.chung.dto.display;
 
 //description:	상품 이미지 모델
 

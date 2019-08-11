@@ -1,73 +1,81 @@
 package com.chung.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.chung.dao.MainDao;
-import com.chung.dto.Category;
-import com.chung.dto.Product;
-import com.chung.dto.ProductImage;
-import com.chung.dto.Promotion;
+import com.chung.dao.ReservDao;
+import com.chung.dto.category.Category;
+import com.chung.dto.product.Product;
+import com.chung.dto.product.ProductImage;
+import com.chung.dto.product.ProductPrice;
+import com.chung.dto.promotion.Promotion;
 
 @Service
-public class MainService implements IService.Main {
+public class MainService implements IProductService {
 
 	@Autowired
-	MainDao mainDao;
+	ReservDao reservDao;
 
 	@Override
-	public List<Product> getProducts(Integer categoryId, Integer start) {
+	public List<Product> getProducts(int categoryId, int start) {
 		List<Product> list = null;
-		if (categoryId.intValue() == 0) {
-			list = mainDao.selectAllProduct(start);
+		if (categoryId == 0) {
+			list = reservDao.selectAllProduct(start);
 		} else {
-			list = mainDao.selectProducts(categoryId, start);
+			list = reservDao.selectProducts(categoryId, start);
 		}
 		for (Product prod : list) {
-			prod.setProductImageUrl("http://localhost:8080/productImages/" + prod.getProductId() + "?type="
-					+ ProductImage.Type.TYPE_TH);
+			prod.setProductImageUrl(
+					"/reserv/api/productImages/" + prod.getProductId() + "?type=" + ProductImage.Type.TYPE_TH);
 		}
 		return list;
 
 	}
 
-	@Override
 	public List<Category> getCategories() {
-		List<Category> categories = mainDao.selectCategory();
-		List<Integer> productCount = mainDao.selectProductCount();
+		List<Category> categories = reservDao.selectCategory();
+		List<Integer> productCount = reservDao.selectProductCount();
 		int allProductCntSum = 0;
 		int i, cnt;
-		Category allCate = new Category();
-		allCate.setName("전체 리스트");
-		allCate.setId(0);
+		Category allCategory = new Category();
+		allCategory.setName("전체 리스트");
+		allCategory.setId(0);
 
 		for (i = 0; i < categories.size(); i++) {
 			cnt = productCount.get(i);
 			allProductCntSum += cnt;
 			categories.get(i).setCount(cnt);
 		}
-		allCate.setCount(allProductCntSum);
+		allCategory.setCount(allProductCntSum);
 
-		categories.add(0, allCate);
+		categories.add(0, allCategory);
 		return categories;
 	}
 
-	@Override
 	public List<Promotion> getPromotions() {
-		List<Promotion> promotions = mainDao.selectPromotion();
+		List<Promotion> promotions = reservDao.selectPromotion();
 		for (Promotion pro : promotions) {
-			pro.setProductImageUrl("http://localhost:8080/reserv/api/productImages/" + pro.getProductId() + "?type="
-					+ ProductImage.Type.TYPE_TH);
+			pro.setProductImageUrl(
+					"/reserv/api/productImages/" + pro.getProductId() + "?type=" + ProductImage.Type.TYPE_TH);
 		}
 
 		return promotions;
 	}
 
 	@Override
-	public ProductImage getProductImage(Integer productId, String type) {
-		return mainDao.selectProductImage(productId, type);
+	public ProductImage getProductImage(int productId, String type) {
+		return reservDao.selectProductImage(productId, type);
+	}
+
+	@Override
+	public List<ProductPrice> getProductPrices(int productId) {
+		return null;
+	}
+
+	@Override
+	public List<ProductImage> getProductImages(int productId) {
+		return null;
 	}
 }

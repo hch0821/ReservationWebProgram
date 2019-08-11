@@ -1,4 +1,4 @@
-package com.chung.dto;
+package com.chung.dto.category;
 
 public class Category {
 	private int count; // Category 에 속한 전시상품 수

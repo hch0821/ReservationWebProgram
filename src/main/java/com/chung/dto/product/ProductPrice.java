@@ -1,4 +1,4 @@
-package com.chung.dto;
+package com.chung.dto.product;
 
 //description:	상품 가격
 public class ProductPrice {

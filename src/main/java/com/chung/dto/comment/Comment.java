@@ -1,4 +1,4 @@
-package com.chung.dto;
+package com.chung.dto.comment;
 
 import java.util.Arrays;
 import java.util.List;

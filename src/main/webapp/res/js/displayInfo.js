@@ -8,7 +8,7 @@ var ProductImage = {
 	productImageIndex: 0, // 슬라이드 이미지의 인덱스
 
 	// 슬라이드 이미지에 이미지를 추가하는 함수
-	addProductImages: function (productImages, displayInfo) {
+	addImages: function (productImages, displayInfo) {
 		var imageLength = productImages.length;
 		if (imageLength > 2) {
 			productImages = productImages.slice(0, 2);
@@ -195,7 +195,7 @@ var Utils = {
 // 댓글 관련 객체
 var Comment = {
 	// 평점과 댓글의 갯수를 뿌리는 함수
-	addAverageScore: function (averageScore, comments) {
+	updateAverageScore: function (averageScore, comments) {
 		var graph_value = document
 			.querySelector(".grade_area>.graph_mask>.graph_value");
 		graph_value.style.width = ((averageScore / 5.0) * 100) + "%";
@@ -207,7 +207,7 @@ var Comment = {
 	},
 
 	// comments 객체로부터 템플릿 html을 이용하여 댓글 목록을 형성하는 함수
-	addComments: function (comments, showLess) {
+	updateCommentList: function (comments, showLess) {
 
 		// 사용자가 올린 이미지 추가
 		Handlebars.registerHelper("thumb_area_image", function (commentImages) {
@@ -303,7 +303,7 @@ var Comment = {
 // 상영관 또는 콘서트장 위치 관련 객체
 var Location = {
 	// 위치 정보 탭에 해당하는 뷰의 내용들을 displayInfo 객체로부터 뿌리는 함수
-	addLocationInfoArea: function (displayInfo, displayInfoImage) {
+	updateLocationInfoArea: function (displayInfo, displayInfoImage) {
 		document.querySelector(".store_addr.store_addr_bold").innerText = displayInfo.placeStreet;
 		document.querySelector(".store_addr > .addr_old_detail").innerText = displayInfo.placeLot;
 		document.querySelector(".store_addr.addr_detail").innerText = displayInfo.placeName;
@@ -321,7 +321,7 @@ var Location = {
 	},
 
 	// 찾아오시는 길 탭을 눌렀을때 상세정보 탭의 내용을 숨기고 해당 내용을 보여주는 함수
-	showLocationInfo: function () {
+	showLocationTab: function () {
 		var sectionInfoTab = document.querySelector(".section_info_tab");
 		sectionInfoTab.children[1].className = "detail_area_wrap hide";
 		sectionInfoTab.children[2].className = "detail_location";
@@ -334,27 +334,27 @@ var Location = {
 // 상품 상세 내용 관련 객체
 var Content = {
 	// 상품 내용을 뷰에 뿌리는 함수
-	addProductContent: function (displayInfo) {
+	updateProductContent: function (displayInfo) {
 		document.querySelector(".dsc").innerHTML = displayInfo.productContent;
 		document.querySelector(".detail_info_group .in_dsc").innerHTML = displayInfo.productContent;
 	},
 
 	// 상품 내용을 펼쳐서 보여주는 함수
 	getMoreText: function () {
-		document.querySelector(".store_details.close3").className = "store_details open";
+		document.querySelector(".store_details.close3").className = "store_details";
 		document.querySelector(".bk_more._open").style.display = "none";
 		document.querySelector(".bk_more._close").style.display = "";
 	},
 
 	// 상품 내용을 축약해주는 함수
 	minifyText: function () {
-		document.querySelector(".store_details.open").className = "store_details close3";
+		document.querySelector(".store_details").className = "store_details close3";
 		document.querySelector(".bk_more._open").style.display = "";
 		document.querySelector(".bk_more._close").style.display = "none";
 	},
 
 	// 상세정보 탭을 눌렀을 때 찾아오시는길 탭의 내용을 숨기고 해당 내용을 보여주는 함수
-	showContent: function () {
+	showContentTab: function () {
 		var sectionInfoTab = document.querySelector(".section_info_tab");
 		sectionInfoTab.children[1].className = "detail_area_wrap";
 		sectionInfoTab.children[2].className = "detail_location hide";
@@ -368,7 +368,7 @@ var Content = {
 // 이벤트 관련 객체
 var Event = {
 	// 이벤트 정보를 뿌리는 함수
-	addEventInfo: function (displayInfo) {
+	updateEventInfo: function (displayInfo) {
 		var productEvent;
 		if (displayInfo.productEvent == "") {
 			productEvent = "이벤트 정보가 없습니다.";

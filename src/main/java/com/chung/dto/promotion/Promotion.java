@@ -1,4 +1,4 @@
-package com.chung.dto;
+package com.chung.dto.promotion;
 
 public class Promotion {
 	private Integer id; // 프로모션 id
