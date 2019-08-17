@@ -102,7 +102,7 @@ public class ReservSqls {
 	    
 	/*productPrices > ProductPrice dto*/
 	public final static String SELECT_PRODUCT_PRICES = 
-	"select create_date, discount_rate, modify_date, price, price_type_name, product_id, id "+
+	"select create_date, discount_rate, modify_date, price, price_type_name, product_id, id as productPriceId "+
 	"from product_price " +
 	"where product_id = :productId";
 	
@@ -124,22 +124,9 @@ public class ReservSqls {
 
 	/*예약한 상품 총 가격*/
 	public final static String SELECT_TOTAL_PRICE_OF_RESERVATION = 
-	"select sum((price * 0.01 * (100 - discount_rate)) * (select group_concat(count) from reservation_info_price where reservation_info_id = 1)) as totalPrice "+
+	"select sum((price * 0.01 * (100 - discount_rate)) * (select group_concat(count) from reservation_info_price where reservation_info_id = :reservationInfoId)) as totalPrice "+
 	"from product_price "+
 	"where id in (select product_price_id from reservation_info_price where reservation_info_id = :reservationInfoId)";
-	
-	/*=========예약하기========*/
-	public static final String INSERT_RESERVATION_INFO = 
-	"insert into reservation_info (display_info_id, product_id, reservation_email, reservation_name, reservation_tel, reservation_date, create_date, modify_date) "+
-	"values (:displayInfoId, :productId, :reservationEmail, :reservationName, :reservationTel, :reservationDate, current_timestamp, current_timestamp)";
-
-	public static final String INSERT_RESERVATION_INFO_PRICE = 
-	"insert into reservation_info_price (count, product_price_id, reservation_info_id) "+
-	"values (:count, :productPriceId, :reservationInfoId)";
-//	insert into reservation_info_price (count, product_price_id, reservation_info_id, id)
-//	values (1, 8, 18, 21);
-//	insert into reservation_info_price (count, product_price_id, reservation_info_id, id)
-//	values (1, 9, 18, 22);
 
 	/*=========예약 취소 ========*/
 	public final static String UPDATE_CANCEL_FLAG_OF_RESERVATION_INFO = 
@@ -159,7 +146,6 @@ public class ReservSqls {
 	"select count, product_price_id, reservation_info_id, id as reservationInfoPriceId "+
 	"from reservation_info_price "+
 	"where reservation_info_id = :reservationInfoId"; 
-	
 	//==============================================================================================
 	//예약 페이지 끝
 	//==============================================================================================
