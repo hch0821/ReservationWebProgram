@@ -7,9 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,12 +20,8 @@ import com.chung.dto.product.Product;
 import com.chung.dto.product.ProductImage;
 import com.chung.dto.product.ProductPrice;
 import com.chung.dto.promotion.Promotion;
-import com.chung.dto.reservation.ReservationInfo;
-import com.chung.dto.reservation.ReservationParam;
-import com.chung.dto.reservation.ReservationPrice;
 import com.chung.service.impl.DetailService;
 import com.chung.service.impl.MainService;
-import com.chung.service.impl.ReservationService;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -38,9 +31,6 @@ public class ReservController {
 
 	@Autowired
 	DetailService detailService;
-	
-	@Autowired
-	ReservationService reservationService;
 
 //=======================================================================
 //메인 화면을 위한 컨트롤
@@ -122,74 +112,4 @@ public class ReservController {
 //=======================================================================
 //상세 화면을 위한 컨트롤 끝
 //=======================================================================
-	
-//=======================================================================
-//예약 화면을 위한 컨트롤
-//=======================================================================	
-	
-	
-	// 예약 조회
-	// http://localhost:8080/reserv/api/reservations?reservationEmail=reservationEmail
-	@GetMapping("/reservations")
-	public Map<String, Object> inquireReservationInfoResponse(@RequestParam(name = "reservationEmail", required = true) String reservationEmail) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<ReservationInfo> reservations = reservationService.inquireReservations(reservationEmail);
-		int size = reservations.size();
-		map.put("reservations", reservations);
-		map.put("size", size);
-		return map;
-	}
-	
-	// 예약 하기
-	// http://localhost:8080/reserv/api/reservations
-	@PostMapping("/reservations")
-	public Map<String, Object> makeReservationResponse(@RequestBody ReservationParam reservationParam)
-	{
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		Map<String, Object> reservationResultMap = reservationService.makeReservation(reservationParam);
-		List<ReservationPrice> prices = (List<ReservationPrice>) reservationResultMap.get("reservationPrices");
-		ReservationInfo reservationInfo = (ReservationInfo) reservationResultMap.get("reservationInfo");
-		map.put("cancelYn", reservationInfo.isCancelYn());
-		map.put("createDate", reservationInfo.getCreateDate());
-		map.put("displayInfoId", reservationInfo.getDisplayInfoId());
-		map.put("modifyDate", reservationInfo.getModifyDate());
-		map.put("prices", prices);
-		map.put("productId", reservationInfo.getProductId());
-		map.put("reservationDate", reservationInfo.getReservationDate());
-		map.put("reservationEmail", reservationInfo.getReservationEmail());
-		map.put("reservationInfoId", reservationInfo.getReservationInfoId());
-		map.put("reservationName", reservationInfo.getReservationName());
-		map.put("reservationTelephone", reservationInfo.getReservationTelephone());
-		return map;
-	}
-	
-	// 예약 취소
-	// http://localhost:8080/reserv/api/reservations/{reservationInfoId}
-	@PutMapping("/reservations/{reservationInfoId}")
-	public Map<String, Object> cancelReservationResponse(@PathVariable(name = "reservationInfoId") Integer reservationInfoId) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		Map<String, Object> reservationCancelResultMap = reservationService.cancelReservation(reservationInfoId);
-
-		List<ReservationPrice> prices = (List<ReservationPrice>) reservationCancelResultMap.get("reservationPrices");
-		ReservationInfo reservationInfo = (ReservationInfo) reservationCancelResultMap.get("reservationInfo");
-		map.put("cancelYn", reservationInfo.isCancelYn());
-		map.put("createDate", reservationInfo.getCreateDate());
-		map.put("displayInfoId", reservationInfo.getDisplayInfoId());
-		map.put("modifyDate", reservationInfo.getModifyDate());
-		map.put("prices", prices);
-		map.put("productId", reservationInfo.getProductId());
-		map.put("reservationDate", reservationInfo.getReservationDate());
-		map.put("reservationEmail", reservationInfo.getReservationEmail());
-		map.put("reservationInfoId", reservationInfo.getReservationInfoId());
-		map.put("reservationName", reservationInfo.getReservationName());
-		map.put("reservationTelephone", reservationInfo.getReservationTelephone());
-		
-		return map;
-	}
-	
-	
-//=======================================================================
-//예약 화면을 위한 컨트롤 끝
-//=======================================================================		
 }

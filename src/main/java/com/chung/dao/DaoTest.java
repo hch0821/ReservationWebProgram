@@ -13,7 +13,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.chung.config.ApplicationConfig;
 import com.chung.dto.display.DisplayInfo;
 import com.chung.dto.reservation.ReservationInfo;
-import com.chung.dto.reservation.ReservationInfoForInsertAction;
+import com.chung.dto.reservation.ReservationInfoForDao;
 import com.chung.dto.reservation.ReservationPrice;
 
 public class DaoTest {
@@ -23,7 +23,7 @@ public class DaoTest {
 		ReservationDao reservationDao = ac.getBean(ReservationDao.class);
 		DisplayInfoDao displayInfoDao = ac.getBean(DisplayInfoDao.class);
 		
-		int reservationInfoId = 23;
+//		int reservationInfoId = 18;
 //		ReservationInfo reservationInfo = reservationDao.selectReservationInfo(reservationInfoId);
 //		int totalPrice = reservationDao.selectTotalPriceofReservation(reservationInfoId);
 //		DisplayInfo displayInfo = displayInfoDao.selectDisplayInfo(reservationInfo.getDisplayInfoId());
@@ -52,23 +52,18 @@ public class DaoTest {
 		
 //		List<ReservationPrice> reservationPrices =  reservationDao.selectReservationInfoPrices(reservationInfoId);
 //		print(reservationPrices);
-//		
-//		Date todayDate = new Date();
-//        Calendar cal = Calendar.getInstance();
-//        cal.setTime(todayDate);
-//        cal.add(Calendar.DATE, (new Random().nextInt(5) + 1));
-//        Date reservationDate = new Date(cal.getTimeInMillis());
+		
+		Date todayDate = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(todayDate);
+        cal.add(Calendar.DATE, (new Random().nextInt(5) + 1));
+        Date reservationDate = new Date(cal.getTimeInMillis());
 //		print(reservationDao.insertReservationInfo
 //		(
-//			new ReservationInfoForInsertAction(3, 3, "hch0821@naver.com", "황충희", "010-5555-5555", reservationDate, 0, new Date())
+//			new ReservationInfoForDao(3, 3, "hch0821@naver.com", "황충희", "010-5555-5555", reservationDate, 0, new Date())
 //		));
-//		
-       //print(reservationDao.insertReservationInfoPrice(new ReservationPrice(1, 7, 20))); //products/1
-//		
-//		print(reservationDao.selectReservationInfoPrices(reservationInfoId));
 		
-		print(reservationDao.selectTotalPriceofReservation(23));
-		
+        print(reservationDao.insertReservationInfoPrice(new ReservationPrice(1, 7, 20)));
 		
 	}
 

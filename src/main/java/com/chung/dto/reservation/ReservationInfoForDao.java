@@ -2,7 +2,7 @@ package com.chung.dto.reservation;
 
 import java.util.Date;
 
-public class ReservationInfoForInsertAction {
+public class ReservationInfoForDao {
 	private int displayInfoId;
 	private int productId;
 	private String reservationEmail;
@@ -11,10 +11,9 @@ public class ReservationInfoForInsertAction {
 	private Date reservationDate;
 	private int cancelFlag;
 	private Date createDate;
-	private Date modifyDate;
 	
-	public ReservationInfoForInsertAction(int displayInfoId, int productId, String reservationEmail, String reservationName,
-			String reservationTel, Date reservationDate, int cancelFlag, Date createDate, Date modifyDate) {
+	public ReservationInfoForDao(int displayInfoId, int productId, String reservationEmail, String reservationName,
+			String reservationTel, Date reservationDate, int cancelFlag, Date createDate) {
 		this.displayInfoId = displayInfoId;
 		this.productId = productId;
 		this.reservationEmail = reservationEmail;
@@ -23,7 +22,6 @@ public class ReservationInfoForInsertAction {
 		this.reservationDate = reservationDate;
 		this.cancelFlag = cancelFlag;
 		this.createDate = createDate;
-		this.modifyDate = modifyDate;
 	}
 
 	public int getDisplayInfoId() {
@@ -88,22 +86,6 @@ public class ReservationInfoForInsertAction {
 
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
-	}
-
-	public Date getModifyDate() {
-		return modifyDate;
-	}
-
-	public void setModifyDate(Date modifyDate) {
-		this.modifyDate = modifyDate;
-	}
-
-	@Override
-	public String toString() {
-		return "ReservationInfoForInsertAction [displayInfoId=" + displayInfoId + ", productId=" + productId
-				+ ", reservationEmail=" + reservationEmail + ", reservationName=" + reservationName
-				+ ", reservationTel=" + reservationTel + ", reservationDate=" + reservationDate + ", cancelFlag="
-				+ cancelFlag + ", createDate=" + createDate + ", modifyDate=" + modifyDate + "]";
 	}
 	
 	
