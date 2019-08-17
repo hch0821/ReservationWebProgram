@@ -1,23 +1,35 @@
-package com.chung.service;
+package com.chung.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.chung.dao.ReservDao;
+import com.chung.dao.CommentDao;
+import com.chung.dao.DisplayInfoDao;
+import com.chung.dao.ProductDao;
 import com.chung.dto.comment.Comment;
 import com.chung.dto.display.DisplayInfo;
 import com.chung.dto.display.DisplayInfoImage;
 import com.chung.dto.product.Product;
 import com.chung.dto.product.ProductImage;
 import com.chung.dto.product.ProductPrice;
+import com.chung.service.IDisplayService;
+import com.chung.service.IProductService;
+import com.chung.service.IRateService;
 
 @Service
 public class DetailService implements IRateService, IDisplayService, IProductService {
 
 	@Autowired
-	ReservDao reservDao;
+	CommentDao commentDao;
+	
+	@Autowired
+	DisplayInfoDao displayInfoDao;
+	
+	@Autowired
+	ProductDao productDao;
 
 	@Override
 	public Double getAverageScore(List<Comment> comments) {
@@ -34,9 +46,9 @@ public class DetailService implements IRateService, IDisplayService, IProductSer
 
 	@Override
 	public List<Comment> getComments(int displayInfoId) {
-		List<Comment> comments = reservDao.selectComments(displayInfoId);
+		List<Comment> comments = commentDao.selectComments(displayInfoId);
 		for (Comment c : comments) {
-			c.setCommentImages(reservDao.selectCommentImages(c.getCommentId()));
+			c.setCommentImages(commentDao.selectCommentImages(c.getCommentId()));
 		}
 		return comments;
 	}
@@ -44,32 +56,33 @@ public class DetailService implements IRateService, IDisplayService, IProductSer
 	@Override
 	public DisplayInfo getDisplayInfo(int displayInfoId) {
 
-		return reservDao.selectDisplayInfo(displayInfoId);
+		return displayInfoDao.selectDisplayInfo(displayInfoId);
 	}
 
 	@Override
 	public DisplayInfoImage getDisplayInfoImage(int displayInfoId) {
-		return reservDao.selectDisplayInfoImage(displayInfoId);
+		return displayInfoDao.selectDisplayInfoImage(displayInfoId);
 	}
 
 	@Override
 	public List<ProductImage> getProductImages(int productId) {
-		return reservDao.selectProductImages(productId);
+		return productDao.selectProductImages(productId);
 	}
 
 	@Override
 	public List<ProductPrice> getProductPrices(int productId) {
-		return reservDao.selectProducPrices(productId);
+		return productDao.selectProductPrices(productId);
 	}
 
+	
 	@Override
 	public List<Product> getProducts(int categoryId, int start) {
-		return null;
+		return new ArrayList<>();
 	}
 
 	@Override
 	public ProductImage getProductImage(int productId, String type) {
-		return null;
+		return new ProductImage();
 	}
 
 }

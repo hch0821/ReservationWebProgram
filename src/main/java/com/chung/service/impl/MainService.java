@@ -1,42 +1,52 @@
-package com.chung.service;
+package com.chung.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.chung.dao.ReservDao;
+import com.chung.dao.CategoryAndPromotionDao;
+import com.chung.dao.ProductDao;
 import com.chung.dto.category.Category;
 import com.chung.dto.product.Product;
 import com.chung.dto.product.ProductImage;
 import com.chung.dto.product.ProductPrice;
 import com.chung.dto.promotion.Promotion;
+import com.chung.service.IProductService;
+import com.chung.service.IPromotionAndCategoryService;
 
 @Service
-public class MainService implements IProductService {
+public class MainService implements IProductService, IPromotionAndCategoryService {
 
 	@Autowired
-	ReservDao reservDao;
+	ProductDao productDao;
 
+	@Autowired
+	CategoryAndPromotionDao categoryAndPromotionDao;
+	
+	
 	@Override
 	public List<Product> getProducts(int categoryId, int start) {
 		List<Product> list = null;
 		if (categoryId == 0) {
-			list = reservDao.selectAllProduct(start);
+			list = productDao.selectAllProduct(start);
 		} else {
-			list = reservDao.selectProducts(categoryId, start);
+			list = productDao.selectProducts(categoryId, start);
 		}
-		for (Product prod : list) {
-			prod.setProductImageUrl(
-					"/reserv/api/productImages/" + prod.getProductId() + "?type=" + ProductImage.Type.TYPE_TH);
+		for (Product product : list) {
+			product.setProductImageUrl(
+					"/reserv/api/productImages/" + product.getProductId() + "?type=" + ProductImage.Type.TYPE_TH);
 		}
 		return list;
 
 	}
 
+	
+	@Override
 	public List<Category> getCategories() {
-		List<Category> categories = reservDao.selectCategory();
-		List<Integer> productCount = reservDao.selectProductCount();
+		List<Category> categories = categoryAndPromotionDao.selectCategory();
+		List<Integer> productCount = productDao.selectProductCount();
 		int allProductCntSum = 0;
 		int i, cnt;
 		Category allCategory = new Category();
@@ -54,8 +64,9 @@ public class MainService implements IProductService {
 		return categories;
 	}
 
+	@Override
 	public List<Promotion> getPromotions() {
-		List<Promotion> promotions = reservDao.selectPromotion();
+		List<Promotion> promotions = categoryAndPromotionDao.selectPromotion();
 		for (Promotion pro : promotions) {
 			pro.setProductImageUrl(
 					"/reserv/api/productImages/" + pro.getProductId() + "?type=" + ProductImage.Type.TYPE_TH);
@@ -66,16 +77,16 @@ public class MainService implements IProductService {
 
 	@Override
 	public ProductImage getProductImage(int productId, String type) {
-		return reservDao.selectProductImage(productId, type);
+		return productDao.selectProductImage(productId, type);
 	}
 
 	@Override
 	public List<ProductPrice> getProductPrices(int productId) {
-		return null;
+		return new ArrayList<ProductPrice>();
 	}
 
 	@Override
 	public List<ProductImage> getProductImages(int productId) {
-		return null;
+		return new ArrayList<ProductImage>();
 	}
 }

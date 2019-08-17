@@ -20,8 +20,8 @@ import com.chung.dto.product.Product;
 import com.chung.dto.product.ProductImage;
 import com.chung.dto.product.ProductPrice;
 import com.chung.dto.promotion.Promotion;
-import com.chung.service.DetailService;
-import com.chung.service.MainService;
+import com.chung.service.impl.DetailService;
+import com.chung.service.impl.MainService;
 
 @RestController
 @RequestMapping(path = "/api")
