@@ -1,7 +1,5 @@
 package com.chung.dao;
 
-import static com.chung.dao.ReservSqls.INSERT_RESERVATION_INFO;
-import static com.chung.dao.ReservSqls.INSERT_RESERVATION_INFO_PRICE;
 import static com.chung.dao.ReservSqls.SELECT_RESERVATION_INFOS_BY_RESERVATION_EMAIL;
 import static com.chung.dao.ReservSqls.SELECT_RESERVATION_INFO_BY_RESERVATION_INFO_ID;
 import static com.chung.dao.ReservSqls.SELECT_RESERVATION_INFO_PRICES;
@@ -9,6 +7,7 @@ import static com.chung.dao.ReservSqls.SELECT_TOTAL_PRICE_OF_RESERVATION;
 import static com.chung.dao.ReservSqls.UPDATE_CANCEL_FLAG_OF_RESERVATION_INFO;
 import static com.chung.dao.ReservSqls.UPDATE_MODIFY_DATE_RESERVATION_INFO;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import com.chung.dto.reservation.ReservationInfo;
-import com.chung.dto.reservation.ReservationInfoForDao;
+import com.chung.dto.reservation.ReservationInfoForInsertAction;
 import com.chung.dto.reservation.ReservationPrice;
 
 @Repository
@@ -45,9 +44,9 @@ public class ReservationDao {
 				.usingGeneratedKeyColumns("id");
 	}
 	
-	public ReservationInfo selectReservationInfo(int reservationInfoId) 
+	public ReservationInfo selectReservationInfo(long reservationInfoId) 
 	{
-		Map<String, Integer> params = new HashMap<String, Integer>();
+		Map<String, Long> params = new HashMap<String, Long>();
 		params.put("reservationInfoId", reservationInfoId);
 		return jdbc.queryForObject(SELECT_RESERVATION_INFO_BY_RESERVATION_INFO_ID, params, reservationInfoMapper);
 	}
@@ -59,9 +58,9 @@ public class ReservationDao {
 		return jdbc.query(SELECT_RESERVATION_INFOS_BY_RESERVATION_EMAIL, params, reservationInfoMapper);
 	}
 
-	public int selectTotalPriceofReservation(int reservationInfoId) 
+	public int selectTotalPriceofReservation(long reservationInfoId) 
 	{
-		Map<String, Integer> params = new HashMap<String, Integer>();
+		Map<String, Long> params = new HashMap<String, Long>();
 		params.put("reservationInfoId", reservationInfoId);
 		return jdbc.queryForObject(SELECT_TOTAL_PRICE_OF_RESERVATION, params, Integer.class);
 	}
@@ -88,11 +87,12 @@ public class ReservationDao {
 		return jdbc.query(SELECT_RESERVATION_INFO_PRICES, params, reservationPriceMapper);
 	}
 
-	public Long insertReservationInfo(ReservationInfoForDao reservationInfoForDao)
+	public Long insertReservationInfo(ReservationInfoForInsertAction reservationInfoForInsertAction)
 	{
-		SqlParameterSource params = new BeanPropertySqlParameterSource(reservationInfoForDao);
+		SqlParameterSource params = new BeanPropertySqlParameterSource(reservationInfoForInsertAction);
 		return insertReservationInfoAction.executeAndReturnKey(params).longValue();
 	}
+
 	
 	public Long insertReservationInfoPrice(ReservationPrice reservationPrice)
 	{
