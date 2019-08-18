@@ -37,7 +37,7 @@ import com.chung.service.impl.ReservationService;
 
 @RestController
 @RequestMapping(path = "/api")
-public class ReservController {
+public class ReservationApiController {
 	@Autowired
 	MainService mainService;
 
@@ -145,6 +145,7 @@ public class ReservController {
 		return map;
 	}
 
+	//공연일자를 오늘을 포함하여 1~5일 뒤의 날짜로 설정
 	@GetMapping("/reservations/reservationDate")
 	public Map<String, Object> getReservationDate() {
 		Map<String, Object> map = new HashMap<String, Object>();

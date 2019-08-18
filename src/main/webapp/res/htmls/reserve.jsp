@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -21,7 +25,13 @@
                     <a href="/reserv/" class="lnk_logo" title="예약"> <span class="spr_bi ico_bk_logo">예약</span>
                     </a>
                 </h1>
-                <a href="#" class="btn_my"> <span title="예약확인">예약확인</span> </a>
+                <c:if test="${sessionScope.reservationEmail != null}">
+                    <a href="/reserv/checkSession" class="btn_my"> <span title="예약확인">${sessionScope.reservationEmail}</span> </a>
+                    <a href="/reserv/logoutrequest" class="btn_my bot"> <span title="로그아웃">로그아웃</span> </a>	
+		        </c:if>
+		        <c:if test="${sessionScope.reservationEmail == null}">
+			        <a href="/reserv/checkSession" class="btn_my"> <span title="예약확인">예약확인</span> </a>
+		        </c:if>
             </header>
         </div>
         <div class="ct">
@@ -65,6 +75,8 @@
                             <h3 class="out_tit">예매자 정보</h3>
                             <div class="agreement_nessasary help_txt"> <span class="spr_book ico_nessasary"></span>
                                 <span>필수입력</span> </div>
+
+                            <dialog id="errorDialog"></dialog>    
                             <form class="form_horizontal">
                                 <div class="inline_form"> <label class="label" for="name"> <span
                                             class="spr_book ico_nessasary">필수</span> <span>예매자</span> </label>
@@ -105,7 +117,7 @@
                         <!-- [D] 약관 보기 클릭 시 agreement에 open 클래스 추가 -->
                         <div class="agreement"> <span class="chk_txt_span"> <i class="spr_book ico_arr_ipc2"></i>
                                 <span>개인정보 수집 및 이용 동의</span> </span>
-                            <a href="#" class="btn_agreement"> <span class="btn_text">보기</span> <i
+                            <a href="javascript:void(0);" class="btn_agreement"> <span class="btn_text">보기</span> <i
                                     class="fn fn-down2"></i> </a>
                             <div class="useragreement_details">&lt;개인정보 수집 및 이용 동의&gt;<br><br> 1. 수집항목 : [필수] 이름, 연락처,
                                 [선택] 이메일주소<br><br> 2. 수집 및 이용목적 : 사업자회원과 예약이용자의 원활한 거래 진행, 고객상담, 불만처리 등 민원 처리, 분쟁조정 해결을
@@ -117,7 +129,7 @@
                         <!-- [D] 약관 보기 클릭 시 agreement에 open 클래스 추가 -->
                         <div class="agreement"> <span class="chk_txt_span"> <i class="spr_book ico_arr_ipc2"></i>
                                 <span>개인정보 제3자 제공 동의</span> </span>
-                            <a href="#" class="btn_agreement"> <span class="btn_text">보기</span> <i
+                            <a href="javascript:void(0);" class="btn_agreement"> <span class="btn_text">보기</span> <i
                                     class="fn fn-down2"></i> </a>
                             <div class="useragreement_details custom_details_wrap">
                                 <div class="custom_details">&lt;개인정보 제3자 제공 동의&gt;<br><br> 1. 개인정보를 제공받는 자 :
@@ -175,6 +187,7 @@
     <!--Handlebar library-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"
         integrity="sha256-ngJY93C4H39YbmrWhnLzSyiepRuQDVKDNCWO2iyMzFw=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src='/reserv/res/js/utils.js'></script>
     <script type="text/javascript" src='/reserv/res/js/reserve.js'></script>
 
 </body>

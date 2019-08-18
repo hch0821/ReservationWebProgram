@@ -793,7 +793,7 @@ button {
 
 .btn_my,.logo {
     position: absolute;
-    height: 48px
+    height: 24px
 }
 
 .logo {
@@ -821,11 +821,15 @@ button {
 .btn_my {
     z-index: 100;
     right: 0;
-    padding: 12px 17.5px 12px 0;
-    font-size: 21px;
+    padding: 5px 17.5px 12px 0;
+    font-size: 15px;
     color: #fff;
     font-weight: 300;
-    box-sizing: border-box
+    box-sizing: border-box;
+}
+
+.btn_my.bot{
+    margin-top:20px;
 }
 
 .top_title {

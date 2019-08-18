@@ -26,10 +26,12 @@ public class WebMvcContextConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addViewControllers(final ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("/res/htmls/mainpage.html");
-		registry.addViewController("/detail").setViewName("/res/htmls/detail.html");
-		registry.addViewController("/review").setViewName("/res/htmls/review.html");
-		registry.addViewController("/reserve").setViewName("/res/htmls/reserve.html");
+		registry.addViewController("/").setViewName("/res/htmls/mainpage.jsp");
+		registry.addViewController("/detail").setViewName("/res/htmls/detail.jsp");
+		registry.addViewController("/review").setViewName("/res/htmls/review.jsp");
+		registry.addViewController("/reserve").setViewName("/res/htmls/reserve.jsp");
+		registry.addViewController("/bookinglogin").setViewName("/res/htmls/bookinglogin.html");
+		registry.addViewController("/myreservation").setViewName("/res/htmls/myreservation.jsp");
 	}
 
 	@Bean

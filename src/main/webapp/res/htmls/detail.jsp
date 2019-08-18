@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -24,7 +28,13 @@
                             class="spr_bi ico_n_logo">네이버</span> </a>
                     <a href="/reserv/" class="lnk_logo" title="예약"> <span class="spr_bi ico_bk_logo">예약</span> </a>
                 </h1>
-                <a href="/reserv/res/htmls/bookinglogin.html" class="btn_my"> <span title="예약확인">예약확인</span> </a>
+                <c:if test="${sessionScope.reservationEmail != null}">
+                    <a href="/reserv/checkSession" class="btn_my"> <span title="예약확인">${sessionScope.reservationEmail}</span> </a> 
+                    <a href="/reserv/logoutrequest" class="btn_my bot"> <span title="로그아웃">로그아웃</span> </a>	
+		        </c:if>
+		        <c:if test="${sessionScope.reservationEmail == null}">
+			        <a href="/reserv/checkSession" class="btn_my"> <span title="예약확인">예약확인</span> </a>
+		        </c:if>
             </header>
         </div>
         <div class="ct main">
@@ -34,11 +44,16 @@
                         <h1 class="logo">
                             <a href="https://m.naver.com/" class="lnk_logo" title="네이버"> <span
                                     class="spr_bi ico_n_logo">네이버</span> </a>
-                            <a href="/reserv/" class="lnk_logo" title="예약"> <span class="spr_bi ico_bk_logo">예약</span>
+                            <a href="/reserv" class="lnk_logo" title="예약"> <span class="spr_bi ico_bk_logo">예약</span>
                             </a>
                         </h1>
-                        <a href="/reserv/res/htmls/bookinglogin.html" class="btn_my"> <span class="viewReservation"
-                                title="예약확인">예약확인</span> </a>
+                        <c:if test="${sessionScope.reservationEmail != null}">
+                            <a href="/reserv/checkSession" class="btn_my"> <span title="예약확인">${sessionScope.reservationEmail}</span> </a> 
+                            <a href="/reserv/logoutrequest" class="btn_my bot"> <span title="로그아웃">로그아웃</span> </a>	
+                        </c:if>
+                        <c:if test="${sessionScope.reservationEmail == null}">
+                            <a href="/reserv/checkSession" class="btn_my"> <span class="viewReservation" title="예약확인">예약확인</span> </a>
+                        </c:if>        
                     </header>
                     <div class="pagination">
                         <div class="bg_pagination"></div>
