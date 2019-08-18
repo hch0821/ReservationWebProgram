@@ -65,11 +65,7 @@ public class ReservationService implements IReservationService {
 
 		try {
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
-			Calendar cal = Calendar.getInstance();
 			Date reservationDate = simpleDateFormat.parse(reservationDateStr);
-			cal.setTime(reservationDate);
-			cal.add(Calendar.DATE, (new Random().nextInt(5) + 1));
-			reservationDate = new Date(cal.getTimeInMillis());
 			reservationInfoForInsertAction.setReservationDate(reservationDate);
 		} catch (ParseException e) {
 			e.printStackTrace();

@@ -1,8 +1,13 @@
 package com.chung.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +43,7 @@ public class ReservController {
 
 	@Autowired
 	DetailService detailService;
-	
+
 	@Autowired
 	ReservationService reservationService;
 
@@ -122,16 +127,16 @@ public class ReservController {
 //=======================================================================
 //상세 화면을 위한 컨트롤 끝
 //=======================================================================
-	
+
 //=======================================================================
 //예약 화면을 위한 컨트롤
 //=======================================================================	
-	
-	
+
 	// 예약 조회
 	// http://localhost:8080/reserv/api/reservations?reservationEmail=reservationEmail
 	@GetMapping("/reservations")
-	public Map<String, Object> inquireReservationInfoResponse(@RequestParam(name = "reservationEmail", required = true) String reservationEmail) {
+	public Map<String, Object> inquireReservationInfoResponse(
+			@RequestParam(name = "reservationEmail", required = true) String reservationEmail) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<ReservationInfo> reservations = reservationService.inquireReservations(reservationEmail);
 		int size = reservations.size();
@@ -139,13 +144,31 @@ public class ReservController {
 		map.put("size", size);
 		return map;
 	}
-	
+
+	@GetMapping("/reservations/reservationDate")
+	public Map<String, Object> getReservationDate() {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		Date reservationDate = new Date();
+		String reservationDateStr = "";
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(reservationDate);
+		cal.add(Calendar.DATE, (new Random().nextInt(6)));
+		reservationDate = new Date(cal.getTimeInMillis());
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
+		reservationDateStr = simpleDateFormat.format(reservationDate);
+		
+		map.put("reservationDate", reservationDateStr);
+		
+		return map;
+	}
+
 	// 예약 하기
 	// http://localhost:8080/reserv/api/reservations
 	@PostMapping("/reservations")
-	public Map<String, Object> makeReservationResponse(@RequestBody ReservationParam reservationParam)
-	{
-		
+	public Map<String, Object> makeReservationResponse(@RequestBody ReservationParam reservationParam) {
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> reservationResultMap = reservationService.makeReservation(reservationParam);
 		List<ReservationPrice> prices = (List<ReservationPrice>) reservationResultMap.get("reservationPrices");
@@ -163,11 +186,12 @@ public class ReservController {
 		map.put("reservationTelephone", reservationInfo.getReservationTelephone());
 		return map;
 	}
-	
+
 	// 예약 취소
 	// http://localhost:8080/reserv/api/reservations/{reservationInfoId}
 	@PutMapping("/reservations/{reservationInfoId}")
-	public Map<String, Object> cancelReservationResponse(@PathVariable(name = "reservationInfoId") Integer reservationInfoId) {
+	public Map<String, Object> cancelReservationResponse(
+			@PathVariable(name = "reservationInfoId") Integer reservationInfoId) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> reservationCancelResultMap = reservationService.cancelReservation(reservationInfoId);
 
@@ -184,11 +208,10 @@ public class ReservController {
 		map.put("reservationInfoId", reservationInfo.getReservationInfoId());
 		map.put("reservationName", reservationInfo.getReservationName());
 		map.put("reservationTelephone", reservationInfo.getReservationTelephone());
-		
+
 		return map;
 	}
-	
-	
+
 //=======================================================================
 //예약 화면을 위한 컨트롤 끝
 //=======================================================================		
