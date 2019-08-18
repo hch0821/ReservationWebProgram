@@ -84,6 +84,12 @@ class ReservationView {
 	updateReservationDate() {
 		var utils = new Utils();
 		utils.requestAjax("GET", "/reserv/api/reservations/reservationDate", function () {
+
+			if(this == null || this.responseText == null || !this.responseText){
+				alert("공연일 정보를 받는 데 실패하였습니다.");
+				return;
+			}
+
 			var reservationDate = JSON.parse(this.responseText).reservationDate;
 			document.querySelector("#reservation_date").innerText = reservationDate;
 		}, null);
@@ -235,7 +241,7 @@ class ReservationView {
 }
 
 class ReservationInfo {
-	static VALIDATE_ERR_MESSAGES = {
+	static validateErrorMessages = {
 		NAME_EMPTY: "예매자 항목 입력은 필수입니다.",
 		TEL_EMPTY: "연락처 항목 입력은 필수입니다.",
 		EMAIL_EMPTY: "이메일 항목 입력은 필수입니다.",
@@ -286,25 +292,25 @@ class ReservationInfo {
 		var telRegex = /01[01789]-\d{3,4}-\d{4}/;
 		var emailRegex = /^[\w+_]\w+@\w+\.\w+(\.\w+)?$/;
 		if (this.reservationName == "") {
-			errorMessages.push(ReservationInfo.VALIDATE_ERR_MESSAGES.NAME_EMPTY);
+			errorMessages.push(ReservationInfo.validateErrorMessages.NAME_EMPTY);
 		}
 
 		if (this.reservationEmail == "") {
-			errorMessages.push(ReservationInfo.VALIDATE_ERR_MESSAGES.EMAIL_EMPTY);
+			errorMessages.push(ReservationInfo.validateErrorMessages.EMAIL_EMPTY);
 		}
 		else if (!this.reservationEmail.match(emailRegex)) {
-			errorMessages.push(ReservationInfo.VALIDATE_ERR_MESSAGES.EMAIL_FORMAT_NOT_MATCHED);
+			errorMessages.push(ReservationInfo.validateErrorMessages.EMAIL_FORMAT_NOT_MATCHED);
 		}
 
 		if (this.reservationTelephone == "") {
-			errorMessages.push(ReservationInfo.VALIDATE_ERR_MESSAGES.TEL_EMPTY);
+			errorMessages.push(ReservationInfo.validateErrorMessages.TEL_EMPTY);
 		}
 		else if (!this.reservationTelephone.match(telRegex)) {
-			errorMessages.push(ReservationInfo.VALIDATE_ERR_MESSAGES.TEL_FORMAT_NOT_MATCHED);
+			errorMessages.push(ReservationInfo.validateErrorMessages.TEL_FORMAT_NOT_MATCHED);
 		}
 
 		if (this.prices.length == 0) {
-			errorMessages.push(ReservationInfo.VALIDATE_ERR_MESSAGES.TICKET_NOT_CHOSEN);
+			errorMessages.push(ReservationInfo.validateErrorMessages.TICKET_NOT_CHOSEN);
 		}
 
 

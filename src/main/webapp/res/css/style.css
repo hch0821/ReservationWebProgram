@@ -3317,7 +3317,7 @@ button {
 	border: 1px solid #ccc;
 	background-color: #fff;
 }
-.booking_cancel .btn {
+.booking_cancel .btn, .booking_comment .btn {
 	margin: 20px 0 10px;
 	width: 100%;
 	height: 36px;

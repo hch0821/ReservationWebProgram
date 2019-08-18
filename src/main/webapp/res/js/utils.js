@@ -24,8 +24,8 @@ class Utils {
 		var oReq = new XMLHttpRequest();
 		oReq.addEventListener("load", loadListener);
 		oReq.open(method, url);
-		oReq.setRequestHeader("Content-Type", "application/json");
 		if (object != null && object != undefined) {
+            oReq.setRequestHeader("Content-Type", "application/json");
 			var data = JSON.stringify(object);
 			oReq.send(data);
 		}
@@ -42,13 +42,8 @@ class Utils {
 			left: 0,
 			behavior: 'smooth'
 		});
-	}
-
-	// Anchor 태그의 href URL을 바꾸는 함수
-	changeAnchorUrl(selector, url) {
-		document.querySelector(selector).href = url;
-	}
-
+    }
+    
 	// 이전 사이트로 이동하는 함수
 	tothePreviousSite() {
 		history.go(-1);
@@ -64,22 +59,20 @@ class Utils {
 		}
 	}
 
-	//click 리스너를 등록 해지하는 함수
-	unregisterClickListener(object, onclickListener) {
+	// element가 보여질지 말지 설정하는 함수
+	setVisibility(object, isShown) {
+        var element;
 		if (typeof (object) == "string") {
-			document.querySelector(object).removeEventListener("click", onclickListener);
+			element = document.querySelector(object);
 		}
 		else {
-			object.removeEventListener("click", onclickListener);
+			element = object;
 		}
-	}
 
-	// selector string에 해당하는 element가 보여질지 말지 설정하는 함수
-	setVisibility(selectors, isShown) {
 		if (isShown) {
-			document.querySelector(selectors).style.display = "";
+			element.style.display = "";
 		} else {
-			document.querySelector(selectors).style.display = "none";
+			element.style.display = "none";
 		}
 	}
 

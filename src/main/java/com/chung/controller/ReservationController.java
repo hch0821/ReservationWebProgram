@@ -19,11 +19,9 @@ public class ReservationController
 		Object reservationEmail = session.getAttribute("reservationEmail");
 		if(reservationEmail != null && !reservationEmail.toString().equals(""))
 		{
-			System.out.println("로그인 되어있음.");
 			return "redirect:/myreservation";
 		}
 		else {
-			System.out.println("로그인 필요.");
 			return "redirect:/bookinglogin";
 		}
 	}
@@ -32,9 +30,7 @@ public class ReservationController
 	public String login(@ModelAttribute LoginParam loginParam,
 			HttpSession session) 
 	{
-		String reservationEmail = loginParam.getReservationEmail();
-		System.out.println(reservationEmail);
-	
+		String reservationEmail = loginParam.getReservationEmail();	
 		session.setAttribute("reservationEmail", reservationEmail);
 
 		return "redirect:/myreservation"; 
