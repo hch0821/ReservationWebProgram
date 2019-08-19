@@ -133,7 +133,7 @@ public class ReservationApiController {
 //=======================================================================	
 
 	// 예약 조회
-	// http://localhost:8080/reserv/api/reservations?reservationEmail=reservationEmail
+	// http://localhost:8080/reserv/api/reservations?reservationEmail=xxxx@naver.com
 	@GetMapping("/reservations")
 	public Map<String, Object> inquireReservationInfoResponse(
 			@RequestParam(name = "reservationEmail", required = true) String reservationEmail) {
@@ -146,6 +146,7 @@ public class ReservationApiController {
 	}
 
 	// 공연일자를 오늘을 포함하여 1~5일 뒤의 날짜로 설정
+	// http://localhost:8080/reserv/api/reservations/reservationDate
 	@GetMapping("/reservations/reservationDate")
 	public Map<String, Object> getReservationDate() {
 		Map<String, Object> map = new HashMap<String, Object>();
