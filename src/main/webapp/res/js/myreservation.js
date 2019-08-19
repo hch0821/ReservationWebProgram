@@ -3,11 +3,11 @@
 //예약 확인 뷰 클래스
 class ReservationConfirmView {
     constructor(reservationInfos, typeCounts) {
-        this.reservationInfos = reservationInfos; //사용자가 예약했던 모든 예약 정보를 가지고 있는 객체
-        this.typeCounts = typeCounts;  //취소/이용완료/이용예정 인 티켓들의 각 갯수를 가지고 있는 배열
+        this.reservationInfos = reservationInfos; // 사용자가 예약했던 모든 예약 정보를 가지고 있는 객체
+        this.typeCounts = typeCounts;  // 취소/이용완료/이용예정 인 티켓들의 각 갯수를 가지고 있는 배열
     }
 
-    //취소/이용완료/이용예정인 티켓들의 개수를 상단에 표시해주는 함수
+    // 취소/이용완료/이용예정인 티켓들의 개수를 상단에 표시해주는 함수
     updateTabFigureSpan() {
         var figureSpans = document.querySelectorAll(".figure");
         var typeAllSpan = figureSpans[0];
@@ -21,7 +21,7 @@ class ReservationConfirmView {
         typeCanceledSpan.innerText = this.typeCounts[ReservationInfo.TypeList.CANCELED];
     }
 
-    //카드 머리들을 만들어주는 함수
+    // 카드 머리들을 만들어주는 함수
     makeCardHeads() {
         var listCards = document.querySelector(".list_cards");
         var cardHeadTemplate = document.querySelector("#card_head_template").innerText;
@@ -49,7 +49,7 @@ class ReservationConfirmView {
 
     }
 
-    //모든 탭들의 버튼 리스너들을 등록하는 함수
+    // 모든 탭들의 버튼 리스너들을 등록하는 함수
     initTabButtonListener() {
         var utils = Utils.getInstance();
         var tabButtons = document.querySelectorAll(".link_summary_board");
@@ -119,13 +119,13 @@ class ReservationConfirmView {
 
     }
 
-    //탭에 해당하는 예약 목록이 아무것도 없을 때 특정 뷰를 보여주는 함수
+    // 탭에 해당하는 예약 목록이 아무것도 없을 때 특정 뷰를 보여주는 함수
     setVisibilityofReservationIsEmptyView(visibility) {
         var utils = Utils.getInstance();
         utils.setVisibility(".err", visibility);
     }
 
-    //카드에 해당하는 데이터를 가져오고 뷰에 뿌려주는 함수
+    // 카드에 해당하는 데이터를 가져오고 뷰에 뿌려주는 함수
     initCardData() {
         var listHeadTemplate = document.querySelector("#list_card_template").innerHTML;
 
@@ -225,7 +225,7 @@ class ReservationConfirmView {
     }
 
 
-    //예약 취소 또는 리뷰 남기기 버튼의 리스너들을 등록하는 함수
+    // 예약 취소 또는 리뷰 남기기 버튼의 리스너들을 등록하는 함수
     initCancelAndCommentButton() {
         var utils = Utils.getInstance();
         var reservationInfos = this.reservationInfos;
@@ -266,7 +266,7 @@ class ReservationConfirmView {
         }.bind(this));
     }
 
-    //예약 취소 버튼을 눌렀을 때 확인 팝업을 띄우는 함수
+    // 예약 취소 버튼을 눌렀을 때 확인 팝업을 띄우는 함수
     showCancelationPopup(reservationInfo) {
         var utils = Utils.getInstance();
         utils.setVisibility(".popup_booking_wrapper", true);
@@ -291,8 +291,8 @@ class ReservationConfirmView {
         });
     }
 
-     //금액 값을 뒤자리에서부터 숫자 세 개당 , 를 반복해서 찍어주는 함수
-	//ex 100000 ==> 100,000
+     // 금액 값을 뒤자리에서부터 숫자 세 개당 , 를 반복해서 찍어주는 함수
+	// ex 100000 ==> 100,000
     getPriceNumberString(number) {
         number = number + "";
         var count = 0;
@@ -308,27 +308,27 @@ class ReservationConfirmView {
     }
 
 
-    //예약 확인 뷰의 모든 버튼들의 리스너를 등록하는 함수
+    // 예약 확인 뷰의 모든 버튼들의 리스너를 등록하는 함수
     initButtonListener() {
         var utils = Utils.getInstance();
         this.initTabButtonListener();
         this.initCancelAndCommentButton();
 
-        //TOP 버튼 클릭 시
+        // TOP 버튼 클릭 시
         utils.registerClickListener(".lnk_top", function () {
             utils.scrollToTop();
         });
 
-        //처음 로딩 시 첫번째 탭을 클릭하도록 함
+        // 처음 로딩 시 첫번째 탭을 클릭하도록 함
         document.querySelector(".summary_board").children[0].querySelector(".link_summary_board").click();
     }
 
 }
 
-//카드 하나에 해당하는 예약 정보를 담을 객체
+// 카드 하나에 해당하는 예약 정보를 담을 객체
 class ReservationInfo {
 
-    //예약 상태 목록을 반환하는 프로퍼티
+    // 예약 상태 목록을 반환하는 프로퍼티
     static get TypeList() {
         const typelist = {
             CANCELED: 0,
@@ -354,7 +354,7 @@ class ReservationInfo {
 }
 
 
-//사이트가 처음 로드되었을 때 호출
+// 사이트가 처음 로드되었을 때 호출
 window.addEventListener('load', function () {
     var utils = Utils.getInstance();
     var reservationEmail = document.querySelector(".btn_my").innerText;

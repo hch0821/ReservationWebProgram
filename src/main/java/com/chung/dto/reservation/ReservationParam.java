@@ -5,25 +5,25 @@ import java.util.List;
 // 예약하기 Request Body 모델
 public class ReservationParam {
 	private int displayInfoId;
-	//전시 상품 id
-	
+	// 전시 상품 id
+
 	private List<ReservationPrice> prices;
-	//예약 가격 정보들
-	
+	// 예약 가격 정보들
+
 	private int productId;
-	//상품 id
-	
+	// 상품 id
+
 	private String reservationEmail;
-	//예약자 이메일
-	
+	// 예약자 이메일
+
 	private String reservationName;
-	//예약자명
-	
+	// 예약자명
+
 	private String reservationTelephone;
-	//예약자 전화번호
-	
+	// 예약자 전화번호
+
 	private String reservationYearMonthDay;
-	//예약일
+	// 예약일
 
 	public int getDisplayInfoId() {
 		return displayInfoId;
@@ -88,6 +88,5 @@ public class ReservationParam {
 				+ ", reservationTelephone=" + reservationTelephone + ", reservationYearMonthDay="
 				+ reservationYearMonthDay + "]";
 	}
-	
-	
+
 }

@@ -5,40 +5,40 @@ import com.chung.dto.display.DisplayInfo;
 //예약 정보 모델
 public class ReservationInfo {
 	private boolean cancelYn;
-	//예약 취소 여부
+	// 예약 취소 여부
 
 	private String createDate;
-	//예약 생성일시
-	
+	// 예약 생성일시
+
 	private DisplayInfo displayInfo;
-	//전시 상품 정보
-	
+	// 전시 상품 정보
+
 	private int displayInfoId;
-	//전시상품 Id
-	
+	// 전시상품 Id
+
 	private String modifyDate;
-	//예약 수정일시
+	// 예약 수정일시
 
 	private int productId;
-	//상품 Id
+	// 상품 Id
 
 	private String reservationDate;
-	//예약일
+	// 예약일
 
 	private String reservationEmail;
-	//예약자 이메일
+	// 예약자 이메일
 
 	private int reservationInfoId;
-	//예약 Id
+	// 예약 Id
 
 	private String reservationName;
-	//예약자명
+	// 예약자명
 
 	private String reservationTelephone;
-	//예약자 전화번호
+	// 예약자 전화번호
 
 	private int totalPrice;
-	//예약한 상품 총 가격
+	// 예약한 상품 총 가격
 
 	public boolean isCancelYn() {
 		return cancelYn;

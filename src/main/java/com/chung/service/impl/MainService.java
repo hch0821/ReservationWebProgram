@@ -24,8 +24,7 @@ public class MainService implements IProductService, IPromotionAndCategoryServic
 
 	@Autowired
 	CategoryAndPromotionDao categoryAndPromotionDao;
-	
-	
+
 	@Override
 	public List<Product> getProducts(int categoryId, int start) {
 		List<Product> list = null;
@@ -42,7 +41,6 @@ public class MainService implements IProductService, IPromotionAndCategoryServic
 
 	}
 
-	
 	@Override
 	public List<Category> getCategories() {
 		List<Category> categories = categoryAndPromotionDao.selectCategory();

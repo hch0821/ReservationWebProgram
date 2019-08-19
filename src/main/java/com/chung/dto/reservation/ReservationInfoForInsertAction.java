@@ -13,9 +13,10 @@ public class ReservationInfoForInsertAction {
 	private int cancelFlag;
 	private Date createDate;
 	private Date modifyDate;
-	
-	public ReservationInfoForInsertAction(int displayInfoId, int productId, String reservationEmail, String reservationName,
-			String reservationTel, Date reservationDate, int cancelFlag, Date createDate, Date modifyDate) {
+
+	public ReservationInfoForInsertAction(int displayInfoId, int productId, String reservationEmail,
+			String reservationName, String reservationTel, Date reservationDate, int cancelFlag, Date createDate,
+			Date modifyDate) {
 		this.displayInfoId = displayInfoId;
 		this.productId = productId;
 		this.reservationEmail = reservationEmail;
@@ -106,7 +107,5 @@ public class ReservationInfoForInsertAction {
 				+ ", reservationTel=" + reservationTel + ", reservationDate=" + reservationDate + ", cancelFlag="
 				+ cancelFlag + ", createDate=" + createDate + ", modifyDate=" + modifyDate + "]";
 	}
-	
-	
 
 }

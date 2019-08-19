@@ -129,7 +129,7 @@ public class ReservationApiController {
 //=======================================================================
 
 //=======================================================================
-//예약 화면을 위한 API 컨트롤
+//예약 화면, 예약확인 화면을 위한 API 컨트롤
 //=======================================================================	
 
 	// 예약 조회
@@ -145,7 +145,7 @@ public class ReservationApiController {
 		return map;
 	}
 
-	//공연일자를 오늘을 포함하여 1~5일 뒤의 날짜로 설정
+	// 공연일자를 오늘을 포함하여 1~5일 뒤의 날짜로 설정
 	@GetMapping("/reservations/reservationDate")
 	public Map<String, Object> getReservationDate() {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -156,12 +156,12 @@ public class ReservationApiController {
 		cal.setTime(reservationDate);
 		cal.add(Calendar.DATE, (new Random().nextInt(6)));
 		reservationDate = new Date(cal.getTimeInMillis());
-		
+
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
 		reservationDateStr = simpleDateFormat.format(reservationDate);
-		
+
 		map.put("reservationDate", reservationDateStr);
-		
+
 		return map;
 	}
 
@@ -214,6 +214,6 @@ public class ReservationApiController {
 	}
 
 //=======================================================================
-//예약 화면을 위한 API 컨트롤 끝
+//예약 화면, 예약확인 화면을 위한 API 컨트롤 끝
 //=======================================================================		
 }

@@ -4,12 +4,12 @@
 class ReservationView 
 {
 	constructor(price, displayInfo, reservationInfo) {
-		this.price = price; //ajax로 부터 받은 가격 정보를 담은 객체
-		this.displayInfo = displayInfo; //ajax로 부터 받은 전시 정보 객체
-		this.reservationInfo = reservationInfo;	//ajax로 부터 받은 예약 정보를 가지고 있는 객체
+		this.price = price; // ajax로 부터 받은 가격 정보를 담은 객체
+		this.displayInfo = displayInfo; // ajax로 부터 받은 전시 정보 객체
+		this.reservationInfo = reservationInfo;	// ajax로 부터 받은 예약 정보를 가지고 있는 객체
 	}
 
-	//예약 페이지의 사진 영역을 업데이트하는 함수.
+	// 예약 페이지의 사진 영역을 업데이트하는 함수.
 	updateProductImageArea(productImage) {
 		document.querySelector(".visual_img > .item > .img_thumb").src = "/reserv/res/"
 			+ productImage.saveFileName;
@@ -17,7 +17,7 @@ class ReservationView
 		document.querySelector(".preview_txt_tit").innerText = this.displayInfo.productDescription;
 	}
 
-	//상품 정보 영역을 업데이트하는 함수
+	// 상품 정보 영역을 업데이트하는 함수
 	updateSectionProductDetail() {
 		var dscs = document.querySelectorAll(".dsc");
 		var placeDsc = dscs[0];
@@ -39,7 +39,7 @@ class ReservationView
 		pricesDsc.innerHTML = resultHTML;
 	}
 
-	//티켓 정보 영역을 업데이트하는 함수.
+	// 티켓 정보 영역을 업데이트하는 함수.
 	updateSectionBookingTicket() {
 		var productPrices = this.price.productPrices;
 		var ticket_body = document.querySelector(".ticket_body");
@@ -82,7 +82,7 @@ class ReservationView
 		ticket_body.innerHTML = resultHTML;
 	}
 
-	//ajax로 서버로부터 공연 일자를 받아오는 함수 (규칙 : 오늘날짜 포함 1~5일 뒤의 날짜를 받아옴.)
+	// ajax로 서버로부터 공연 일자를 받아오는 함수 (규칙 : 오늘날짜 포함 1~5일 뒤의 날짜를 받아옴.)
 	updateReservationDate() {
 		var utils = Utils.getInstance();
 		utils.requestAjax("GET", "/reserv/api/reservations/reservationDate", function () {
@@ -159,7 +159,7 @@ class ReservationView
 		}
 	}
 
-	//예약 폼의 input 값들이 올바른 형식이 아닐 때 에러 다이얼로그를 띄워주는 함수
+	// 예약 폼의 input 값들이 올바른 형식이 아닐 때 에러 다이얼로그를 띄워주는 함수
 	showValidateFailedDialog(errorMessages){
 		var utils = Utils.getInstance();
 		var errorDialog = document.querySelector("#errorDialog");
@@ -193,18 +193,18 @@ class ReservationView
 		}
 	}
 
-	//예약 페이지의 모든 버튼들의 리스너를 등록하는 함수
+	// 예약 페이지의 모든 버튼들의 리스너를 등록하는 함수
 	initButtonListeners() {
 		var utils = Utils.getInstance();
 
-		//맨 위로 가기 버튼 눌렀을 때
+		// 맨 위로 가기 버튼 눌렀을 때
 		utils.registerClickListener(".lnk_top", function () {
 			utils.scrollToTop();
 		})
 
 		this.initPlusMinusButtonListener();
 
-		//예약 버튼을 눌렀을 때
+		// 예약 버튼을 눌렀을 때
 		utils.registerClickListener(".bk_btn", function () {
 			if (document.querySelector(".bk_btn_wrap").className.includes("disable")) {
 				return;
@@ -229,17 +229,17 @@ class ReservationView
 			}
 		}.bind(this));
 
-		//약관 동의 버튼을 눌렀을 때
+		// 약관 동의 버튼을 눌렀을 때
 		var agreementCheckbox = document.querySelector(".chk_agree");
 		agreementCheckbox.addEventListener('change', function () {
 			if (this.checked) {
-				utils.removeClass(".bk_btn_wrap", "disable"); //예약하기 버튼 활성화
+				utils.removeClass(".bk_btn_wrap", "disable"); // 예약하기 버튼 활성화
 			} else {
-				utils.addClass(".bk_btn_wrap", "disable"); //예약하기 버튼 비활성화
+				utils.addClass(".bk_btn_wrap", "disable"); // 예약하기 버튼 비활성화
 			}
 		});
 
-		//약관 동의 상세 보기/접기 버튼 눌렀을 때
+		// 약관 동의 상세 보기/접기 버튼 눌렀을 때
 		var agreementButtons = document.querySelectorAll(".btn_agreement");
 		var agreementButtons_length = agreementButtons.length;
 		for(var i = 0 ; i < agreementButtons_length; i++)
@@ -264,10 +264,10 @@ class ReservationView
 	}
 }
 
-//사용자의 모든 예약 정보를 담을 클래스
+// 사용자의 모든 예약 정보를 담을 클래스
 class ReservationInfo {
 
-	//에러 메시지를 반환하는 프로퍼티
+	// 에러 메시지를 반환하는 프로퍼티
 	static get ErrorMessage()
 	{
 		const errorMessage = {
@@ -284,7 +284,7 @@ class ReservationInfo {
 		this.initReservationInfo();
 	}
 
-	//예약 정보 초기화하는 함수
+	// 예약 정보 초기화하는 함수
 	initReservationInfo() {
 		this.displayInfoId = 0;
 		this.prices = [];
@@ -295,7 +295,7 @@ class ReservationInfo {
 		this.reservationYearMonthDay = "";
 	}
 
-	//예약 정보를 ajax로부터 받아온 객체들을 파라미터로 전달받아 저장하는 함수
+	// 예약 정보를 ajax로부터 받아온 객체들을 파라미터로 전달받아 저장하는 함수
 	registerReservationInfo(displayInfo, productPrices) {
 
 		this.initReservationInfo();
@@ -319,11 +319,11 @@ class ReservationInfo {
 		}
 	}
 
-	//예약 정보가 유효한지 확인하는 함수
+	// 예약 정보가 유효한지 확인하는 함수
 	validateRegisterInfo() {
 		var errorMessages = [];
-		var telRegex = /01[01789]-\d{3,4}-\d{4}/; //전화번호 regex
-		var emailRegex = /^[\w+_]\w+@\w+\.\w+(\.\w+)?$/; //이메일 regex
+		var telRegex = /01[01789]-\d{3,4}-\d{4}/; // 전화번호 regex
+		var emailRegex = /^[\w+_]\w+@\w+\.\w+(\.\w+)?$/; // 이메일 regex
 		if (this.reservationName == "") {
 			errorMessages.push(ReservationInfo.ErrorMessage.NAME_EMPTY);
 		}
@@ -354,17 +354,17 @@ class ReservationInfo {
 // 가격 정보를 담을 클래스
 class Price {
 
-	//돈 단위 글자인 원 html 글자를 반환하는 프로퍼티
+	// 돈 단위 글자인 원 html 글자를 반환하는 프로퍼티
 	static get WonString(){
 		return '<span class="price_type">원</span>'; 
 	}
 
 	constructor(productPrices) {
-		this.productPrices = productPrices;	//사용자가 예매한 모든 표의 가격정보들 객체
+		this.productPrices = productPrices;	// 사용자가 예매한 모든 표의 가격정보들 객체
 	}
 
-	//금액 값을 뒤자리에서부터 숫자 세 개당 , 를 반복해서 찍어주는 함수
-	//ex 100000 ==> 100,000
+	// 금액 값을 뒤자리에서부터 숫자 세 개당 , 를 반복해서 찍어주는 함수
+	// ex 100000 ==> 100,000
 	getPriceNumberString(number) {
 		number = number + "";
 		var count = 0;
@@ -436,7 +436,7 @@ class Price {
 		return priceTypeName;
 	}
 
-	//금액에 할인가를 적용하여 반환하는 함수
+	// 금액에 할인가를 적용하여 반환하는 함수
 	adjustDiscountRate(price, discountRate) {
 		return this.getPriceNumberString(parseInt(price * (100 - discountRate) * 0.01));
 	}

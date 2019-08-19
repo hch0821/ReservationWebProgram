@@ -24,10 +24,10 @@ public class DetailService implements IRateService, IDisplayService, IProductSer
 
 	@Autowired
 	CommentDao commentDao;
-	
+
 	@Autowired
 	DisplayInfoDao displayInfoDao;
-	
+
 	@Autowired
 	ProductDao productDao;
 
@@ -74,7 +74,6 @@ public class DetailService implements IRateService, IDisplayService, IProductSer
 		return productDao.selectProductPrices(productId);
 	}
 
-	
 	@Override
 	public List<Product> getProducts(int categoryId, int start) {
 		return new ArrayList<>();

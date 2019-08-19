@@ -30,7 +30,7 @@ public class ReservationService implements IReservationService {
 	@Autowired
 	DisplayInfoDao displayInfoDao;
 
-	//예약 조회
+	// 예약 조회
 	@Override
 	public List<ReservationInfo> inquireReservations(String reservationEmail) {
 
@@ -44,7 +44,7 @@ public class ReservationService implements IReservationService {
 		return reservationInfos;
 	}
 
-	//예약 하기
+	// 예약 하기
 	@Override
 	public Map<String, Object> makeReservation(ReservationParam reservationParam) {
 
@@ -90,7 +90,7 @@ public class ReservationService implements IReservationService {
 		return map;
 	}
 
-	//예약 취소
+	// 예약 취소
 	@Override
 	public Map<String, Object> cancelReservation(int reservationInfoId) {
 

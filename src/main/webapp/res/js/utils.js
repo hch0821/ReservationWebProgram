@@ -1,6 +1,5 @@
 // 자주 쓰는 함수들을 모아놓은 클래스(싱글톤 객체 방식)
 class Utils {
-	//Utils Singleton instance
 	static getInstance(){
 		if (!this.instance) {
 			this.instance = new Utils();
@@ -18,8 +17,8 @@ class Utils {
 			/\+/g, " "));
 	}
 
-	//AJAX 요청을 하는 함수
-	//method : 'POST', 'GET'...
+	// AJAX 요청을 하는 함수
+	// method : 'POST', 'GET'...
 	requestAjax(method, url, loadListener, object) {
 		var oReq = new XMLHttpRequest();
 		oReq.addEventListener("load", loadListener);
@@ -49,7 +48,7 @@ class Utils {
 		history.go(-1);
 	}
 
-	//click 리스너를 등록하는 함수
+	// click 리스너를 등록하는 함수
 	registerClickListener(object, onclickListener) {
 		if (typeof (object) == "string") {
 			document.querySelector(object).addEventListener("click", onclickListener);
@@ -76,10 +75,9 @@ class Utils {
 		}
 	}
 
-	//html 요소에 클래스이름을 추가하는 함수
-	//요소에 이미 추가하려는 클래스 이름이 있어도 정상 동작한다.
-	//참조 : 리뷰어 '배돌이'님의 피드백
-
+	// html 요소에 클래스이름을 추가하는 함수
+	// 요소에 이미 추가하려는 클래스 이름이 있어도 정상 동작한다.
+	// 참조 : 리뷰어 '배돌이'님의 피드백
 	addClass(object, classString) {
 		var element;
 		if (typeof (object) == "string") {
@@ -98,10 +96,9 @@ class Utils {
 			.join(' ');
 	}
 
-	//html 요소에 있는 클래스 이름을 제거하는 함수
-	//요소에 제거하려는 클래스 이름이 있든 없든 정상 동작한다.
-	//참조 : 리뷰어 '배돌이'님의 피드백
-
+	// html 요소에 있는 클래스 이름을 제거하는 함수
+	// 요소에 제거하려는 클래스 이름이 있든 없든 정상 동작한다.
+	// 참조 : 리뷰어 '배돌이'님의 피드백
 	removeClass(object, classString) {
 		var element;
 		if (typeof (object) == "string") {
