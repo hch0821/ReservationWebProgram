@@ -1,6 +1,7 @@
 // 예약 페이지를 위한 스크립트
 
-class ReservationView {
+class ReservationView 
+{
 	constructor(price, displayInfo, reservationInfo) {
 		this.price = price;
 		this.displayInfo = displayInfo;
@@ -158,10 +159,10 @@ class ReservationView {
 		var utils = Utils.getInstance();
 		var errorDialog = document.querySelector("#errorDialog");
 		var ul = errorDialog.querySelector("ul");
-		var resultHTML = "<ul>";
+		var resultHTML = "";
 		var confirmButton = errorDialog.querySelector(".btn");
 		errorMessages.forEach(function (v) {
-			resultHTML += "<ol>" + v + "</ol>";
+			resultHTML += "<li>" + v + "</li>";
 		});
 
 		ul.innerHTML = resultHTML;
@@ -262,7 +263,7 @@ class ReservationInfo {
 			NAME_EMPTY: "예매자 항목 입력은 필수입니다.",
 			TEL_EMPTY: "연락처 항목 입력은 필수입니다.",
 			EMAIL_EMPTY: "이메일 항목 입력은 필수입니다.",
-			TEL_FORMAT_NOT_MATCHED: "연락처는 다음과 같은 형식이여합니다: '010-0000-0000'",
+			TEL_FORMAT_NOT_MATCHED: "연락처는 다음과 같은 형식이여합니다: <br>'010-0000-0000'",
 			EMAIL_FORMAT_NOT_MATCHED: "이메일은 다음과 같은 형식이여야합니다: 'aaaa@aaaa.com'",
 			TICKET_NOT_CHOSEN: "티켓을 최소 한 장 이상은 구매하셔야합니다."
 		};
