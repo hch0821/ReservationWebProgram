@@ -291,7 +291,7 @@ class ReservationInfo {
 			TEL_EMPTY: "연락처 항목 입력은 필수입니다.",
 			EMAIL_EMPTY: "이메일 항목 입력은 필수입니다.",
 			TEL_FORMAT_NOT_MATCHED: "연락처는 다음과 같은 형식이여합니다: <br>'010-0000-0000'",
-			EMAIL_FORMAT_NOT_MATCHED: "이메일은 다음과 같은 형식이여야합니다: 'aaaa@aaaa.com'",
+			EMAIL_FORMAT_NOT_MATCHED: "이메일은 다음과 같은 형식이여야합니다: <br>'aaaa@aaaa.com'",
 			TICKET_NOT_CHOSEN: "티켓을 최소 한 장 이상은 구매하셔야합니다.",
 			AGREEMENT_NOT_CHECKED: "이용자 약관에 모두 동의하셔야합니다."
 		};
