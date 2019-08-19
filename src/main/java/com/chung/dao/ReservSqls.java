@@ -120,7 +120,8 @@ public class ReservSqls {
 	public final static String SELECT_RESERVATION_INFOS_BY_RESERVATION_EMAIL = 
 	"select cancel_flag as cancelYn, create_date, display_info_id, modify_date, product_id, "+
 	"reservation_date, reservation_email, id as reservationInfoId, reservation_name, reservation_tel as reservationTelephone "+
-	"from reservation_info where reservation_email= :reservationEmail";
+	"from reservation_info where reservation_email= :reservationEmail "+
+	"order by reservation_date";
 
 	/*예약한 상품 총 가격*/
 	public final static String SELECT_TOTAL_PRICE_OF_RESERVATION = 

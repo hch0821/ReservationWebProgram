@@ -42,7 +42,7 @@
 					<ul class="summary_board">
 						<li class="item">
 							<!--[D] 선택 후 .on 추가 link_summary_board -->
-							<a href="javascript:void(0);" class="link_summary_board on"> <i
+							<a href="javascript:void(0);" class="link_summary_board"> <i
 									class="spr_book2 ico_book2"></i> <em class="tit">전체</em> <span
 									class="figure">0</span> </a>
 						</li>
@@ -143,12 +143,13 @@
 	<script type="rv-template" id="list_card_template">
 			
 		<article class="card_item">
-			<a href="javascript:void(0);" class="link_booking_details">
 				<div class="card_body">
 					<div class="left"></div>
 					<div class="middle">
 						<div class="card_detail">
-							<h4 class="tit">{{serviceName}}/{{productName}}</h4>
+							<a href="{{#displayInfoLink displayInfoId}}{{displayInfoLink}}{{/displayInfoLink}}" class="link_booking_details" title="해당 상품으로 이동">
+								<h4 class="tit">{{serviceName}}/{{productName}}</h4>
+							</a>
 							<ul class="detail">
 								<li class="item">
 									<span class="item_tit">일정</span>
@@ -160,11 +161,21 @@
 								</li>
 								<li class="item">
 									<span class="item_tit">홈페이지</span>
-									<em class="item_dsc">{{homepage}}</em>
+									<a style="text-decoration: underline; color:blue;" href="{{homepage}}" title="해당 사이트로 이동" target="_blank">
+										<em class="item_dsc" style="color:blue;">
+											{{homepage}}
+										</em>
+									</a>
+								</li>
+								<li class="item">
+									<span class="item_tit">예약자명</span>
+									<em class="item_dsc">
+										{{reservationName}}
+									</em>
 								</li>
 							</ul>
 							<div class="price_summary">
-								<span class="price_tit">결제 예정금액</span>
+								<span class="price_tit">결제{{#price_tit type}}{{price_tit}}{{/price_tit}}금액</span>
 								<em class="price_amount">
 									<span>{{#totalPrice totalPrice}}{{totalPrice}}{{/totalPrice}}</span>
 									<span class="unit">원</span>
@@ -185,7 +196,7 @@
 					<div class="middle"></div>
 					<div class="right"></div>
 				</div>
-			</a>
+			
 			<a href="javascript:void(0);" class="fn fn-share1 naver-splugin btn_goto_share" title="공유하기"></a>
 		</article>
 	

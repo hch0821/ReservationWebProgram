@@ -76,7 +76,11 @@
                             <div class="agreement_nessasary help_txt"> <span class="spr_book ico_nessasary"></span>
                                 <span>필수입력</span> </div>
 
-                            <dialog id="errorDialog"></dialog>    
+                            <dialog id="errorDialog" style="display:none;">
+                                    <h3>다음과 같은 이유로 예약에 <span style='color:red;'>실패</span>하였습니다.</h3><br/>
+                                    <ul> </ul>
+                                    <button class="btn">확인</button>
+                            </dialog>    
                             <form class="form_horizontal">
                                 <div class="inline_form"> <label class="label" for="name"> <span
                                             class="spr_book ico_nessasary">필수</span> <span>예매자</span> </label>

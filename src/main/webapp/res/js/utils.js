@@ -1,11 +1,10 @@
 class Utils {
 	//Utils Singleton instance
-	static instance;
-	constructor() {
-		if (Utils.instance != undefined) {
-			return Utils.instance;
+	static getInstance(){
+		if (!this.instance) {
+			this.instance = new Utils();
 		}
-		Utils.instance = this;
+		return this.instance;
 	}
 
 	// url에 있는 parameter값을 parameter이름으로 불러오는 함수.

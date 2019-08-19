@@ -28,4 +28,13 @@ window.addEventListener('load', function () {
             document.querySelector(".ng-pristine.ng-valid").submit();
         }
     });
+
+    //TOP 버튼이 눌렸을 때 호출
+    document.querySelector(".lnk_top").addEventListener("click", function(){
+        window.scrollTo({
+			top: 0,
+			left: 0,
+			behavior: 'smooth'
+		});
+    });
 });

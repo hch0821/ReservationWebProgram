@@ -39,6 +39,6 @@ public class ReservationController
 	@GetMapping(path="/logoutrequest")
 	public String logout(HttpSession session) {
 		session.removeAttribute("reservationEmail");
-		return "redirect:/";
+		return "redirect:/bookinglogin";
 	}
 }

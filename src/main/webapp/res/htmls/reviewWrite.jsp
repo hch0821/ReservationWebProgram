@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -6,24 +10,31 @@
 	<meta name="description" content="네이버 예약, 네이버 예약이 연동된 곳 어디서나 바로 예약하고, 네이버 예약 홈(나의예약)에서 모두 관리할 수 있습니다.">
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
 	<title>네이버 예약</title>
-	<link href="../css/style.css" rel="stylesheet">
+	<link rel="shortcut icon" href="/reserv/res/img/favicon.ico">
+	<link href="/reserv/res/css/style.css" rel="stylesheet">
 </head>
 
 <body>
 	<div id="container">
-		<div class="header fade">
+		<div class="header"><!--fade-->
 			<header class="header_tit">
 				<h1 class="logo">
-					<a href="./mainpage.html" class="lnk_logo" title="네이버"> <span class="spr_bi ico_n_logo">네이버</span> </a>
-					<a href="./mainpage.html" class="lnk_logo" title="예약"> <span class="spr_bi ico_bk_logo">예약</span> </a>
+					<a href="/reserv/" class="lnk_logo" title="네이버"> <span class="spr_bi ico_n_logo">네이버</span> </a>
+					<a href="/reserv/" class="lnk_logo" title="예약"> <span class="spr_bi ico_bk_logo">예약</span> </a>
 				</h1>
-				  <a href="#" class="btn_my"> <span title="예약확인">예약확인</span> </a>
+				<c:if test="${sessionScope.reservationEmail != null}">
+                    <a href="/reserv/checkSession" class="btn_my"> <span title="예약확인">${sessionScope.reservationEmail}</span> </a>
+                    <a href="/reserv/logoutrequest" class="btn_my bot"> <span title="로그아웃">로그아웃</span> </a>	
+                </c:if>
+                <c:if test="${sessionScope.reservationEmail == null}">
+                    <a href="/reserv/checkSession" class="btn_my"> <span title="예약확인">예약확인</span> </a>
+                </c:if>
 			</header>
 		</div>
 		<div class="ct">
 			<div class="ct_wrap">
 				<div class="top_title review_header">
-					<a href="./myreservation.html" class="btn_back" title="이전 화면으로 이동"> <i class="fn fn-backward1"></i> </a>
+					<a href="javascript:void(0);" class="btn_back" title="이전 화면으로 이동"> <i class="fn fn-backward1"></i> </a>
 					<h2><span class="title">클림트 인사이드</span></h2>
 				</div>
 				<!-- 리뷰 별점 -->
@@ -52,7 +63,7 @@
 				<!-- 리뷰 입력 -->
 				<div class="review_contents write">
 					<!-- [D] review_write_info 클릭 시 자신을 숨기고 review_textarea 에 focus를 보낸다. -->
-					<a href="#" class="review_write_info">
+					<a href="javascript:void(0);" class="review_write_info">
 						<span class="middot">
 							실 사용자의 리뷰는 상품명의 더 나은 서비스 제공과 다른 사용자들의 선택에 큰 도움이 됩니다.
 						</span><br>
@@ -84,7 +95,7 @@
 						<div class="item_preview_thumbs">
 							<ul class="lst_thumb">
 								<li class="item" style="display: none;">
-									<a href="#" class="anchor">
+									<a href="javascript:void(0);" class="anchor">
 										<span class="spr_book ico_del">삭제</span>
 									</a>
 									<img src="http://naverbooking.phinf.naver.net/20170306_3/1488772023601A4195_JPEG/image.jpg?type=f300_300" width="130" alt="" class="item_thumb">
@@ -108,7 +119,7 @@
 	</div>
 	<footer>
 		<div class="gototop">
-			<a href="#" class="lnk_top"> <span class="lnk_top_text">TOP</span> </a>
+			<a href="javascript:void(0);" class="lnk_top"> <span class="lnk_top_text">TOP</span> </a>
 		</div>
 		<div id="footer" class="footer">
 			<p class="dsc_footer">네이버(주)는 통신판매의 당사자가 아니며, 상품의정보, 거래조건, 이용 및 환불 등과 관련한 의무와 책임은 각 회원에게 있습니다.</p>
