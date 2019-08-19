@@ -122,8 +122,13 @@ class ReservationView
 	// 더하기 또는 빼기 버튼 리스너를 등록하는 함수.
 	initPlusMinusButtonListener() {
 		var utils = Utils.getInstance();
+
+		var productPrices = this.price.productPrices;
+		var displayInfo = this.displayInfo;
+
 		var qtys = document.querySelector(".ticket_body").children;
 		var qtys_length = qtys.length;
+		
 		for (var i = 0; i < qtys_length; i++) {
 			(function (idx) {
 				var minusButton = qtys[idx].querySelector(".btn_plus_minus.spr_book2.ico_minus3")
@@ -145,6 +150,7 @@ class ReservationView
 						utils.addClass(minusButton, "disabled");
 					}
 
+					reservationView.reservationInfo.validateRegisterInfo(displayInfo, productPrices);
 				})
 				utils.registerClickListener(plusButton, function () {
 					ticketCountInput.value++;
@@ -154,6 +160,8 @@ class ReservationView
 
 					reservationView.updateTotalTicketCount();
 					reservationView.updateTotalPricePaid();
+
+					reservationView.reservationInfo.validateRegisterInfo(displayInfo, productPrices);
 				})
 			}.bind(this))(i);
 		}
@@ -193,10 +201,12 @@ class ReservationView
 		}
 	}
 
-	// 예약 페이지의 모든 버튼들의 리스너를 등록하는 함수
-	initButtonListeners() {
+	// 예약 페이지의 모든 컨트롤의 리스너를 등록하는 함수
+	initViewListeners() {
 		var utils = Utils.getInstance();
-
+		var reservationInfo = this.reservationInfo;
+		var productPrices = this.price.productPrices;
+		var displayInfo = this.displayInfo;
 		// 맨 위로 가기 버튼 눌렀을 때
 		utils.registerClickListener(".lnk_top", function () {
 			utils.scrollToTop();
@@ -205,13 +215,9 @@ class ReservationView
 		this.initPlusMinusButtonListener();
 
 		// 예약 버튼을 눌렀을 때
-		utils.registerClickListener(".bk_btn", function () {
-			if (document.querySelector(".bk_btn_wrap").className.includes("disable")) {
-				return;
-			}
-
-			this.reservationInfo.registerReservationInfo(this.displayInfo, this.price.productPrices);
-			var errorMessages = this.reservationInfo.validateRegisterInfo();
+		utils.registerClickListener(".bk_btn", function () 
+		{
+			var errorMessages = this.reservationInfo.validateRegisterInfo(displayInfo, productPrices);
 
 			if (errorMessages.length == 0) {
 				utils.requestAjax("POST", "/reserv/api/reservations", function () {
@@ -225,19 +231,8 @@ class ReservationView
 			}
 			else {
 				this.showValidateFailedDialog(errorMessages);
-			
 			}
 		}.bind(this));
-
-		// 약관 동의 버튼을 눌렀을 때
-		var agreementCheckbox = document.querySelector(".chk_agree");
-		agreementCheckbox.addEventListener('change', function () {
-			if (this.checked) {
-				utils.removeClass(".bk_btn_wrap", "disable"); // 예약하기 버튼 활성화
-			} else {
-				utils.addClass(".bk_btn_wrap", "disable"); // 예약하기 버튼 비활성화
-			}
-		});
 
 		// 약관 동의 상세 보기/접기 버튼 눌렀을 때
 		var agreementButtons = document.querySelectorAll(".btn_agreement");
@@ -261,6 +256,27 @@ class ReservationView
 
 			})(i);
 		}
+
+		var agreementCheckbox = document.querySelector(".chk_agree");
+		agreementCheckbox.addEventListener( 'change', function() {
+			reservationInfo.validateRegisterInfo(displayInfo, productPrices);
+		});
+
+		var emailInput = document.querySelector("#email");
+		var nameInput = document.querySelector("#name");
+		var telInput = document.querySelector("#tel");
+		
+		//입력란에 글자를 입력할 때마다 유효값인지 확인
+		emailInput.addEventListener("input", function(){
+			reservationInfo.validateRegisterInfo(displayInfo, productPrices);
+		});
+		nameInput.addEventListener("input", function(){
+			reservationInfo.validateRegisterInfo(displayInfo, productPrices);
+		});
+		telInput.addEventListener("input", function(){
+			reservationInfo.validateRegisterInfo(displayInfo, productPrices);
+		});
+
 	}
 }
 
@@ -276,7 +292,8 @@ class ReservationInfo {
 			EMAIL_EMPTY: "이메일 항목 입력은 필수입니다.",
 			TEL_FORMAT_NOT_MATCHED: "연락처는 다음과 같은 형식이여합니다: <br>'010-0000-0000'",
 			EMAIL_FORMAT_NOT_MATCHED: "이메일은 다음과 같은 형식이여야합니다: 'aaaa@aaaa.com'",
-			TICKET_NOT_CHOSEN: "티켓을 최소 한 장 이상은 구매하셔야합니다."
+			TICKET_NOT_CHOSEN: "티켓을 최소 한 장 이상은 구매하셔야합니다.",
+			AGREEMENT_NOT_CHECKED: "이용자 약관에 모두 동의하셔야합니다."
 		};
 		return errorMessage;
 	}
@@ -320,7 +337,11 @@ class ReservationInfo {
 	}
 
 	// 예약 정보가 유효한지 확인하는 함수
-	validateRegisterInfo() {
+	validateRegisterInfo(displayInfo, productPrices) {
+
+		var utils = Utils.getInstance();
+		this.registerReservationInfo(displayInfo, productPrices);
+
 		var errorMessages = [];
 		var telRegex = /01[01789]-\d{3,4}-\d{4}/; // 전화번호 regex
 		var emailRegex = /^[\w+_]\w+@\w+\.\w+(\.\w+)?$/; // 이메일 regex
@@ -346,6 +367,19 @@ class ReservationInfo {
 			errorMessages.push(ReservationInfo.ErrorMessage.TICKET_NOT_CHOSEN);
 		}
 
+		var agreementCheckbox = document.querySelector(".chk_agree");
+		if(!agreementCheckbox.checked){
+			errorMessages.push(ReservationInfo.ErrorMessage.AGREEMENT_NOT_CHECKED);
+		}
+
+
+		if(errorMessages.length == 0){
+
+				utils.removeClass(".bk_btn_wrap", "disable"); // 예약하기 버튼 활성화
+		}
+		else {
+			utils.addClass(".bk_btn_wrap", "disable"); // 예약하기 버튼 비활성화
+		}
 
 		return errorMessages;
 	}
@@ -471,7 +505,7 @@ window.addEventListener('load', function () {
 		displayInfoView.updateProductImageArea(productImages[0]);
 		displayInfoView.updateSectionProductDetail();
 		displayInfoView.updateSectionBookingTicket();
-		displayInfoView.initButtonListeners();
+		displayInfoView.initViewListeners();
 		displayInfoView.updateReservationDate();
 	}, null);
 
