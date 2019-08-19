@@ -120,6 +120,7 @@
 	</div>
 	<!--// 취소 팝업 -->
 
+	<!-- 카드 머리 템플릿 -->
 	<!--[D] 예약확정: .confirmed, 취소된 예약&이용완료: .used 추가 card -->
 	<!--[D] 예약 신청중: .ico_clock, 예약확정&이용완료: .ico_check2, 취소된 예약: .ico_cancel 추가 spr_book2 -->
 	<script type="rv-template" id="card_head_template">
@@ -139,9 +140,8 @@
 
 	</script>
 
-    <!--id, type, serviceName, productName, reservationDate, placeName, homepage, totalPrice-->
+	<!-- 카드 템플릿 -->
 	<script type="rv-template" id="list_card_template">
-			
 		<article class="card_item">
 				<div class="card_body">
 					<div class="left"></div>
@@ -161,7 +161,7 @@
 								</li>
 								<li class="item">
 									<span class="item_tit">홈페이지</span>
-									<a style="text-decoration: underline; color:blue;" href="{{homepage}}" title="해당 사이트로 이동" target="_blank">
+									<a style="text-decoration: underline; color:blue;" href="{{#homepageUrl homepage}}{{homepageUrl}}{{/homepageUrl}}" title="해당 사이트로 이동" target="_blank">
 										<em class="item_dsc" style="color:blue;">
 											{{homepage}}
 										</em>

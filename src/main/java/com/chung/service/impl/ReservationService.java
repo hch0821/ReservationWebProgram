@@ -30,6 +30,7 @@ public class ReservationService implements IReservationService {
 	@Autowired
 	DisplayInfoDao displayInfoDao;
 
+	//예약 조회
 	@Override
 	public List<ReservationInfo> inquireReservations(String reservationEmail) {
 
@@ -43,6 +44,7 @@ public class ReservationService implements IReservationService {
 		return reservationInfos;
 	}
 
+	//예약 하기
 	@Override
 	public Map<String, Object> makeReservation(ReservationParam reservationParam) {
 
@@ -61,7 +63,8 @@ public class ReservationService implements IReservationService {
 		List<ReservationPrice> reservationPrices = reservationParam.getPrices();
 
 		ReservationInfoForInsertAction reservationInfoForInsertAction = new ReservationInfoForInsertAction(
-				displayInfoId, productId, reservationEmail, reservationName, reservationTel, null, 0, new Date(), new Date());
+				displayInfoId, productId, reservationEmail, reservationName, reservationTel, null, 0, new Date(),
+				new Date());
 
 		try {
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -87,6 +90,7 @@ public class ReservationService implements IReservationService {
 		return map;
 	}
 
+	//예약 취소
 	@Override
 	public Map<String, Object> cancelReservation(int reservationInfoId) {
 

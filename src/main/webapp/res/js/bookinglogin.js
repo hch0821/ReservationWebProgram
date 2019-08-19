@@ -1,4 +1,9 @@
+//로그인 페이지를 위한 스크립트
+
+//로그인 관련 클래스
 class LoginValidation{
+
+    //로그인 폼이 유효한지 판단하는 함수
     validateEmail(email){
         var errorMessage = "";
         var emailRegex = /^[\w+_]\w+@\w+\.\w+(\.\w+)?$/;

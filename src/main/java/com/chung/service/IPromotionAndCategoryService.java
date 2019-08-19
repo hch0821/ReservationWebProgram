@@ -8,5 +8,6 @@ import com.chung.dto.promotion.Promotion;
 
 public interface IPromotionAndCategoryService {
 	public List<Promotion> getPromotions();
+
 	public List<Category> getCategories();
 }

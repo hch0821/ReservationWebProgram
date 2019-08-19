@@ -1,6 +1,6 @@
 package com.chung.dao;
 
-import static com.chung.dao.ReservSqls.*;
+import static com.chung.dao.ReservationProgramSqls.*;
 
 import java.util.ArrayList;
 import java.util.Collections;

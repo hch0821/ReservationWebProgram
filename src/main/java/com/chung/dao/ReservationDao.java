@@ -1,11 +1,11 @@
 package com.chung.dao;
 
-import static com.chung.dao.ReservSqls.SELECT_RESERVATION_INFOS_BY_RESERVATION_EMAIL;
-import static com.chung.dao.ReservSqls.SELECT_RESERVATION_INFO_BY_RESERVATION_INFO_ID;
-import static com.chung.dao.ReservSqls.SELECT_RESERVATION_INFO_PRICES;
-import static com.chung.dao.ReservSqls.SELECT_TOTAL_PRICE_OF_RESERVATION;
-import static com.chung.dao.ReservSqls.UPDATE_CANCEL_FLAG_OF_RESERVATION_INFO;
-import static com.chung.dao.ReservSqls.UPDATE_MODIFY_DATE_RESERVATION_INFO;
+import static com.chung.dao.ReservationProgramSqls.SELECT_RESERVATION_INFOS_BY_RESERVATION_EMAIL;
+import static com.chung.dao.ReservationProgramSqls.SELECT_RESERVATION_INFO_BY_RESERVATION_INFO_ID;
+import static com.chung.dao.ReservationProgramSqls.SELECT_RESERVATION_INFO_PRICES;
+import static com.chung.dao.ReservationProgramSqls.SELECT_TOTAL_PRICE_OF_RESERVATION;
+import static com.chung.dao.ReservationProgramSqls.UPDATE_CANCEL_FLAG_OF_RESERVATION_INFO;
+import static com.chung.dao.ReservationProgramSqls.UPDATE_MODIFY_DATE_RESERVATION_INFO;
 
 import java.util.Collections;
 import java.util.HashMap;

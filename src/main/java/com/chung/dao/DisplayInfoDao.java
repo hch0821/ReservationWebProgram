@@ -1,7 +1,7 @@
 package com.chung.dao;
 
-import static com.chung.dao.ReservSqls.SELECT_DISPLAY_INFO;
-import static com.chung.dao.ReservSqls.SELECT_DISPLAY_INFO_IMAGE;
+import static com.chung.dao.ReservationProgramSqls.SELECT_DISPLAY_INFO;
+import static com.chung.dao.ReservationProgramSqls.SELECT_DISPLAY_INFO_IMAGE;
 
 import java.util.HashMap;
 import java.util.Map;

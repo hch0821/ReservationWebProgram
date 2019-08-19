@@ -10,7 +10,9 @@ import com.chung.dto.reservation.ReservationParam;
 
 @Service
 public interface IReservationService {
-	public List<ReservationInfo> inquireReservations(String reservationEmail); //예약조회 
-	public Map<String, Object> makeReservation(ReservationParam reservationParam); //예약하기
-	public Map<String, Object> cancelReservation(int reservationInfoId); //예약 취소
+	public List<ReservationInfo> inquireReservations(String reservationEmail); // 예약조회
+
+	public Map<String, Object> makeReservation(ReservationParam reservationParam); // 예약하기
+
+	public Map<String, Object> cancelReservation(int reservationInfoId); // 예약 취소
 }

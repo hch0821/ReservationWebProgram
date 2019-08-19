@@ -2,6 +2,7 @@ package com.chung.dto.reservation;
 
 import java.util.Date;
 
+//예약 정보 insert query 작업을 위한 DTO
 public class ReservationInfoForInsertAction {
 	private int displayInfoId;
 	private int productId;

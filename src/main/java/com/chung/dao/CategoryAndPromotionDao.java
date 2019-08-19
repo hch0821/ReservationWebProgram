@@ -1,7 +1,7 @@
 package com.chung.dao;
 
-import static com.chung.dao.ReservSqls.SELECT_CATEGORY;
-import static com.chung.dao.ReservSqls.SELECT_PROMOTION;
+import static com.chung.dao.ReservationProgramSqls.SELECT_CATEGORY;
+import static com.chung.dao.ReservationProgramSqls.SELECT_PROMOTION;
 
 import java.util.List;
 

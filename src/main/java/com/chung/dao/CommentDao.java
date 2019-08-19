@@ -1,7 +1,7 @@
 package com.chung.dao;
 
-import static com.chung.dao.ReservSqls.SELECT_COMMENTS;
-import static com.chung.dao.ReservSqls.SELECT_COMMENT_IMAGES;
+import static com.chung.dao.ReservationProgramSqls.SELECT_COMMENTS;
+import static com.chung.dao.ReservationProgramSqls.SELECT_COMMENT_IMAGES;
 
 import java.util.HashMap;
 import java.util.List;

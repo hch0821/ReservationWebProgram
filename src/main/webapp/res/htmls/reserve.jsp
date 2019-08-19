@@ -165,6 +165,7 @@
         </div>
     </footer>
 
+    <!-- 티켓 정보 템플릿 -->
     <script type="rv-template" id="ticket_info_template">
         <div class="qty">
             <div class="count_control">

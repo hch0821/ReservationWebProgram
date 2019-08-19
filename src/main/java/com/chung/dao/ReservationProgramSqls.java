@@ -1,6 +1,6 @@
 package com.chung.dao;
 
-public class ReservSqls {
+public class ReservationProgramSqls {
 
 	//==============================================================================================
 	//메인 페이지

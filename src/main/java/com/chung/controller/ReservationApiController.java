@@ -1,6 +1,5 @@
 package com.chung.controller;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,6 +34,7 @@ import com.chung.service.impl.DetailService;
 import com.chung.service.impl.MainService;
 import com.chung.service.impl.ReservationService;
 
+//예약 웹 프로그램 API 컨트롤러
 @RestController
 @RequestMapping(path = "/api")
 public class ReservationApiController {
@@ -48,7 +48,7 @@ public class ReservationApiController {
 	ReservationService reservationService;
 
 //=======================================================================
-//메인 화면을 위한 컨트롤
+//메인 화면을 위한 API 컨트롤
 //=======================================================================	
 	// http://localhost:8080/reserv/api/products?categoryId=3&start=1
 	@GetMapping("/products")
@@ -96,11 +96,11 @@ public class ReservationApiController {
 	}
 
 //=======================================================================
-//메인 화면을 위한 컨트롤 끝
+//메인 화면을 위한 API 컨트롤 끝
 //=======================================================================
 
 //=======================================================================
-//상세 화면을 위한 컨트롤
+//상세 화면을 위한 API 컨트롤
 //=======================================================================
 
 	// http://localhost:8080/reserv/api/products/1
@@ -125,11 +125,11 @@ public class ReservationApiController {
 	}
 
 //=======================================================================
-//상세 화면을 위한 컨트롤 끝
+//상세 화면을 위한 API 컨트롤 끝
 //=======================================================================
 
 //=======================================================================
-//예약 화면을 위한 컨트롤
+//예약 화면을 위한 API 컨트롤
 //=======================================================================	
 
 	// 예약 조회
@@ -214,6 +214,6 @@ public class ReservationApiController {
 	}
 
 //=======================================================================
-//예약 화면을 위한 컨트롤 끝
+//예약 화면을 위한 API 컨트롤 끝
 //=======================================================================		
 }

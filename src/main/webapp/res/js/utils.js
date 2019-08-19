@@ -1,3 +1,4 @@
+// 자주 쓰는 함수들을 모아놓은 클래스(싱글톤 객체 방식)
 class Utils {
 	//Utils Singleton instance
 	static getInstance(){
