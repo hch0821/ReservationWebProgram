@@ -41,7 +41,7 @@ class ReservationConfirmView {
         }
         if (this.typeCounts[ReservationInfo.TypeList.CANCELED] > 0) {
             var template = cardHeadTemplate;
-            template = template.replace("{cardType}", "used cancel");
+            template = template.replace("{cardType}", "cancel used");
             template = template.replace("{bookType}", "ico_cancel");
             template = template.replace("{typeName}", "취소된 예약");
             template = listCards.innerHTML += template;
@@ -93,7 +93,7 @@ class ReservationConfirmView {
                             break;
                         case 2:
                             var cardUsed = document.querySelector(".card.used");
-                            if (cardUsed) {
+                            if (cardUsed && cardUsed.className == "card used") {
                                 utils.setVisibility(cardUsed, true);
                                 reservationConfirmView.setVisibilityofReservationIsEmptyView(false);
                             }
@@ -102,9 +102,9 @@ class ReservationConfirmView {
                             }
                             break;
                         case 3:
-                            var cardCanceld = document.querySelector(".card.used.cancel");
-                            if (cardCanceld) {
-                                utils.setVisibility(cardCanceld, true);
+                            var cardCanceled = document.querySelector(".card.cancel.used");
+                            if (cardCanceled && cardCanceled.className == "card cancel used") {
+                                utils.setVisibility(cardCanceled, true);
                                 reservationConfirmView.setVisibilityofReservationIsEmptyView(false);
                             }
                             else {
