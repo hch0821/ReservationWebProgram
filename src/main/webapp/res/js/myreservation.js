@@ -184,9 +184,16 @@ class ReservationConfirmView {
 
         Handlebars.registerHelper("homepageUrl", function (homepage) {
             var url = "";
-            if(homepage != "" && !homepage.includes("http")){
+            if(homepage == ""){
+                return url
+            }
+            if(!homepage.includes("http")){
                 url = "https://" + homepage;
             }
+            else{
+                url = homepage;
+            }
+            
             return url;
         });
 
