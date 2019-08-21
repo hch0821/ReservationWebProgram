@@ -54,7 +54,6 @@ public class ReservationPageApiController {
 		Date reservationDate = new Date();
 		String reservationDateStr = "";
 		int addedDate = (new Random().nextInt(6)); // 오늘로 부터 0 ~ 5일이 지난 일시로 설정
-		System.out.println(addedDate);
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(reservationDate);
 		cal.add(Calendar.DATE, addedDate);

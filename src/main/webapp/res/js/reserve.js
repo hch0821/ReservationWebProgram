@@ -1,8 +1,7 @@
 // 예약 페이지를 위한 스크립트
 
 //예약 뷰 클래스
-class ReservationView 
-{
+class ReservationView {
 	constructor(price, displayInfo, reservationInfo) {
 		this.price = price; // ajax로 부터 받은 가격 정보를 담은 객체
 		this.displayInfo = displayInfo; // ajax로 부터 받은 전시 정보 객체
@@ -21,7 +20,7 @@ class ReservationView
 	updateSectionProductDetail() {
 		var dscs = document.querySelectorAll(".dsc");
 		var placeDsc = dscs[0];
-		
+
 		var pricesDsc = dscs[2];
 
 		var resultHTML = "";
@@ -49,7 +48,7 @@ class ReservationView
 			var priceStr = "";
 			if (discountRate != 0) {
 				priceStr = "<span style='text-decoration:line-through solid red;'>" +
-				utils.getPriceNumberString(price) +
+					utils.getPriceNumberString(price) +
 					"</span> " +
 					Price.WonString;
 			}
@@ -87,7 +86,7 @@ class ReservationView
 		var utils = Utils.getInstance();
 		var reservationInfo = this.reservationInfo;
 		utils.requestAjax("GET", "/reserv/api/reservations/reservationDate", function () {
-			if(!this.responseText){
+			if (!this.responseText) {
 				alert("죄송합니다. 공연 일자 정보를 얻지 못했습니다.");
 				utils.tothePreviousSite();
 				return;
@@ -138,7 +137,7 @@ class ReservationView
 
 		var qtys = document.querySelector(".ticket_body").children;
 		var qtys_length = qtys.length;
-		
+
 		for (var i = 0; i < qtys_length; i++) {
 			(function (idx) {
 				var minusButton = qtys[idx].querySelector(".btn_plus_minus.spr_book2.ico_minus3")
@@ -178,7 +177,7 @@ class ReservationView
 	}
 
 	// 예약 폼의 input 값들이 올바른 형식이 아닐 때 에러 다이얼로그를 띄워주는 함수
-	showValidateFailedDialog(errorMessages){
+	showValidateFailedDialog(errorMessages) {
 		var utils = Utils.getInstance();
 		var errorDialog = document.querySelector("#errorDialog");
 		var ul = errorDialog.querySelector("ul");
@@ -190,10 +189,10 @@ class ReservationView
 		ul.innerHTML = resultHTML;
 		utils.setVisibility(errorDialog, true);
 
-		try{
+		try {
 			errorDialog.show();
 		}
-		catch(e){
+		catch (e) {
 			utils.addClass(errorDialog, "open");
 		}
 	}
@@ -212,13 +211,12 @@ class ReservationView
 		this.initPlusMinusButtonListener();
 
 		// 예약 버튼을 눌렀을 때
-		utils.registerClickListener(".bk_btn", function () 
-		{
+		utils.registerClickListener(".bk_btn", function () {
 			var errorMessages = this.reservationInfo.validateRegisterInfo(displayInfo, productPrices);
 
 			if (errorMessages.length == 0) {
 				utils.requestAjax("POST", "/reserv/api/reservations", function () {
-					if(!this.responseText){
+					if (!this.responseText) {
 						alert("죄송합니다. 예약하는 도중 에러가 발생하였습니다.");
 						return;
 					}
@@ -234,18 +232,16 @@ class ReservationView
 		// 약관 동의 상세 보기/접기 버튼 눌렀을 때
 		var agreementButtons = document.querySelectorAll(".btn_agreement");
 		var agreementButtons_length = agreementButtons.length;
-		for(var i = 0 ; i < agreementButtons_length; i++)
-		{
-			(function(idx){
+		for (var i = 0; i < agreementButtons_length; i++) {
+			(function (idx) {
 				var agreementButton = agreementButtons[idx];
 				var agreement = agreementButtons[idx].parentElement;
-				utils.registerClickListener(agreementButton, function(){
-					if(agreement.className.includes("open"))
-					{
+				utils.registerClickListener(agreementButton, function () {
+					if (agreement.className.includes("open")) {
 						utils.removeClass(agreement, "open");
 						agreement.querySelector(".btn_text").innerText = "보기";
 					}
-					else{
+					else {
 						utils.addClass(agreement, "open");
 						agreement.querySelector(".btn_text").innerText = "접기";
 					}
@@ -255,33 +251,33 @@ class ReservationView
 		}
 
 		var agreementCheckbox = document.querySelector(".chk_agree");
-		agreementCheckbox.addEventListener( 'change', function() {
+		agreementCheckbox.addEventListener('change', function () {
 			reservationInfo.validateRegisterInfo(displayInfo, productPrices);
 		});
 
 		var emailInput = document.querySelector("#email");
 		var nameInput = document.querySelector("#name");
 		var telInput = document.querySelector("#tel");
-		
+
 		//입력란에 글자를 입력할 때마다 유효값인지 확인
-		emailInput.addEventListener("input", function(){
+		emailInput.addEventListener("input", function () {
 			reservationInfo.validateRegisterInfo(displayInfo, productPrices);
 		});
-		nameInput.addEventListener("input", function(){
+		nameInput.addEventListener("input", function () {
 			reservationInfo.validateRegisterInfo(displayInfo, productPrices);
 		});
-		telInput.addEventListener("input", function(){
+		telInput.addEventListener("input", function () {
 			reservationInfo.validateRegisterInfo(displayInfo, productPrices);
 		});
 
 		//에러 다이얼로그의 확인 버튼을 눌렀을 때
 		var errorDialog = document.querySelector("#errorDialog");
 		var confirmButton = errorDialog.querySelector(".btn");
-		utils.registerClickListener(confirmButton, function(){
-			try{
+		utils.registerClickListener(confirmButton, function () {
+			try {
 				errorDialog.show();
 			}
-			catch(e){
+			catch (e) {
 				utils.removeClass(errorDialog, "open");
 			}
 
@@ -295,8 +291,7 @@ class ReservationView
 class ReservationInfo {
 
 	// 에러 메시지를 반환하는 프로퍼티
-	static get ErrorMessage()
-	{
+	static get ErrorMessage() {
 		const errorMessage = {
 			NAME_EMPTY: "예매자 항목 입력은 필수입니다.",
 			TEL_EMPTY: "연락처 항목 입력은 필수입니다.",
@@ -377,14 +372,14 @@ class ReservationInfo {
 		}
 
 		var agreementCheckbox = document.querySelector(".chk_agree");
-		if(!agreementCheckbox.checked){
+		if (!agreementCheckbox.checked) {
 			errorMessages.push(ReservationInfo.ErrorMessage.AGREEMENT_NOT_CHECKED);
 		}
 
 
-		if(errorMessages.length == 0){
+		if (errorMessages.length == 0) {
 
-				utils.removeClass(".bk_btn_wrap", "disable"); // 예약하기 버튼 활성화
+			utils.removeClass(".bk_btn_wrap", "disable"); // 예약하기 버튼 활성화
 		}
 		else {
 			utils.addClass(".bk_btn_wrap", "disable"); // 예약하기 버튼 비활성화
@@ -398,8 +393,8 @@ class ReservationInfo {
 class Price {
 
 	// 돈 단위 글자인 원 html 글자를 반환하는 프로퍼티
-	static get WonString(){
-		return '<span class="price_type">원</span>'; 
+	static get WonString() {
+		return '<span class="price_type">원</span>';
 	}
 
 	constructor(productPrices) {
@@ -465,7 +460,7 @@ class Price {
 
 	// 금액에 할인가를 적용하여 반환하는 함수
 	adjustDiscountRate(price, discountRate) {
-	
+
 		return Utils.getInstance().getPriceNumberString(parseInt(price * (100 - discountRate) * 0.01));
 	}
 }
@@ -477,7 +472,7 @@ window.addEventListener('load', function () {
 	var displayInfoView;
 	var displayInfoId = utils.getParameterByName("displayInfoId");
 
-	if(!displayInfoId || displayInfoId <= 0){
+	if (!displayInfoId || displayInfoId <= 0) {
 		this.alert("url 형식이 잘못되었습니다.");
 		utils.tothePreviousSite();
 	}
@@ -485,7 +480,7 @@ window.addEventListener('load', function () {
 
 	utils.requestAjax("GET", "/reserv/api/products/" + displayInfoId, function () {
 
-		if(!this.responseText){
+		if (!this.responseText) {
 			alert("죄송합니다. 상품 정보를 얻지 못했습니다.");
 			utils.tothePreviousSite();
 			return;

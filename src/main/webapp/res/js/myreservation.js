@@ -289,7 +289,7 @@ class ReservationConfirmView {
         utils.setVisibility(".popup_booking_wrapper", true);
     }
 
-
+    
     resetReservationInfoIdFromClickedCard() {
         this.reservationInfoIdFromClickedCard = undefined;
     };
@@ -337,7 +337,7 @@ class ReservationConfirmView {
         document.querySelector(".summary_board").children[0].querySelector(".link_summary_board").click();
     }
 
-    
+
 }
 
 // 카드 하나에 해당하는 예약 정보를 담을 객체
@@ -407,7 +407,7 @@ window.addEventListener('load', function () {
             }
             reservationInfos.push(reservationInfo);
         });
-        
+
         reservationConfirmView.reservationInfos = reservationInfos;
         reservationConfirmView.typeCounts = typeCounts;
         reservationConfirmView.updateTabFigureSpan();
