@@ -113,4 +113,76 @@ class Utils {
 			.filter(function (name) { return name !== classString; })
 			.join(' ');
 	}
+
+	//yyyy-MM-dd HH:mm 형식을 yyyy년 MM월 dd일 aa HH시 mm으로 바꾸는 함수
+	formatDatetime(datetime) {
+
+        var resultStr = "";
+        var i; 
+        var datetime = datetime.split(" ");
+        var date = datetime[0];
+        var dates = date.split("-");
+        var dates_length = dates.length;
+        
+        for (i = 0; i < dates_length; i++) {
+            switch (i) {
+                case 0:
+                    resultStr += dates[i] + "년 ";
+                    break;
+                case 1:
+                    resultStr += dates[i] + "월 ";
+                    break;
+                case 2:
+                    resultStr += dates[i] + "일 ";
+                    break;
+            }
+        }
+
+        if(datetime.length < 2 || datetime[1] == "00:00:00.0"){
+            return resultStr;
+        }
+
+        var time = datetime[1]; 
+        var times = time.split(":");
+        var times_length = times.length;
+
+        for (i = 0; i < times_length-1; i++) {
+            switch (i) {
+                case 0:
+                    if(times[i] < 12){
+                        resultStr += "오전 ";
+                    }
+                    else{
+						resultStr += "오후 ";
+						if(times[i] > 12){
+							times[i] -= 12;
+						}
+                    }
+                    resultStr += times[i] + "시 ";
+                    break;
+                case 1:
+                    resultStr += times[i] + "분";
+                    break;
+            }
+        }
+
+        return resultStr;
+	}
+	
+   
+ 	// 금액 값을 뒤자리에서부터 숫자 세 개당 , 를 반복해서 찍어주는 함수
+    // ex 100000 ==> 100,000
+    getPriceNumberString(number) {
+        number = number + "";
+        var count = 0;
+        var numberArray = number.split('');
+        for (var i = numberArray.length - 1; i > 0; i--) {
+            count++;
+            if (count == 3) {
+                numberArray.splice(i, 0, ',');
+                count = 0;
+            }
+        }
+        return numberArray.join('');
+    }
 }

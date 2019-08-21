@@ -97,13 +97,20 @@
                                 </div>
                                 <div class="inline_form"> <label class="label" for="email"> <span
                                             class="spr_book ico_nessasary">필수</span> <span>이메일</span> </label>
-                                    <div class="inline_control"> <input type="email" name="email" id="email"
-                                            class="email" value="" placeholder="crong@codesquad.kr" maxlength="50">
+                                    
+                                    <div class="inline_control"> 
+                                            <c:if test="${sessionScope.reservationEmail == null}">
+                                                <input type="email" name="email" id="email"class="email" placeholder="crong@codesquad.kr" maxlength="50">
+                                            </c:if>
+                                            <c:if test="${sessionScope.reservationEmail != null}">
+                                                <input type="email" name="email" id="email"class="email" placeholder="crong@codesquad.kr" maxlength="50"
+                                                value="${sessionScope.reservationEmail}">
+                                            </c:if>
                                     </div>
                                 </div>
                                 <div class="inline_form last"> <label class="label" for="message">예매내용</label>
                                     <div class="inline_control">
-                                        <p class="inline_txt selected">공연일: <span id="reservation_date"></span><br>
+                                        <p class="inline_txt selected">공연 일시: <span id="reservation_date"></span><br>
                                             예매수: 총 <span id="total_count">0</span>매<br>
                                             총 금액: <span id="total_price_paid">0</span><span class="price_type"> 원</span>
                                         </p>

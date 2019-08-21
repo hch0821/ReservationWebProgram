@@ -2,10 +2,6 @@
 
 //예약 확인 뷰 클래스
 class ReservationConfirmView {
-    constructor(reservationInfos, typeCounts) {
-        this.reservationInfos = reservationInfos; // 사용자가 예약했던 모든 예약 정보를 가지고 있는 객체
-        this.typeCounts = typeCounts;  // 취소/이용완료/이용예정 인 티켓들의 각 갯수를 가지고 있는 배열
-    }
 
     // 취소/이용완료/이용예정인 티켓들의 개수를 상단에 표시해주는 함수
     updateTabFigureSpan() {
@@ -128,7 +124,7 @@ class ReservationConfirmView {
     // 카드에 해당하는 데이터를 가져오고 뷰에 뿌려주는 함수
     initCardData() {
         var listHeadTemplate = document.querySelector("#list_card_template").innerHTML;
-
+        var utils = Utils.getInstance();
         var cardCanceld = document.querySelector(".card.used.cancel");
         var cardUsed = document.querySelector(".card.used");
         var cardConfirmed = document.querySelector(".card.confirmed");
@@ -153,7 +149,7 @@ class ReservationConfirmView {
             return buttonStr;
         })
         Handlebars.registerHelper("totalPrice", function (totalPrice) {
-            return this.getPriceNumberString(totalPrice);
+            return utils.getPriceNumberString(totalPrice);
         }.bind(this));
 
         Handlebars.registerHelper("buttonClass", function (type) {
@@ -184,18 +180,27 @@ class ReservationConfirmView {
 
         Handlebars.registerHelper("homepageUrl", function (homepage) {
             var url = "";
-            if(homepage == ""){
+            if (homepage == "") {
                 return url
             }
-            if(!homepage.includes("http")){
+            if (!homepage.includes("http")) {
                 url = "https://" + homepage;
             }
-            else{
+            else {
                 url = homepage;
             }
-            
+
             return url;
         });
+
+        Handlebars.registerHelper("isCanceledReservation", function (type) {
+            if (type == ReservationInfo.TypeList.CANCELED) {
+                return "";
+            }
+
+            return "style='display:none;'";
+        });
+
 
         var bindTemplate = Handlebars.compile(listHeadTemplate);
         var resultHTML;
@@ -240,7 +245,9 @@ class ReservationConfirmView {
         document.querySelectorAll(".booking_cancel").forEach(function (v) {
             var cancel_button = v.querySelector(".btn");
             var reservationInfoId = cancel_button.value;
+
             utils.registerClickListener(cancel_button, function () {
+
                 var clickedReservationInfo = reservationInfos.filter(function (reservationInfo) {
                     return reservationInfo.id == parseInt(reservationInfoId);
                 })
@@ -250,7 +257,7 @@ class ReservationConfirmView {
                 }
 
                 clickedReservationInfo = clickedReservationInfo[0];
-
+                reservationConfirmView.reservationInfoIdFromClickedCard = reservationInfoId;
                 reservationConfirmView.showCancelationPopup(clickedReservationInfo);
             }.bind(this));
         });
@@ -276,17 +283,46 @@ class ReservationConfirmView {
     // 예약 취소 버튼을 눌렀을 때 확인 팝업을 띄우는 함수
     showCancelationPopup(reservationInfo) {
         var utils = Utils.getInstance();
-        utils.setVisibility(".popup_booking_wrapper", true);
         var popupTitleHead = document.querySelector(".pop_tit");
         popupTitleHead.querySelector("span").innerText = reservationInfo.serviceName + " / " + reservationInfo.productName;
         popupTitleHead.querySelector(".sm").innerText = reservationInfo.reservationDate;
+        utils.setVisibility(".popup_booking_wrapper", true);
+    }
+
+
+    resetReservationInfoIdFromClickedCard() {
+        this.reservationInfoIdFromClickedCard = undefined;
+    };
+
+    // 예약 확인 뷰의 모든 버튼들의 리스너를 등록하는 함수
+    initButtonListener() {
+        var utils = Utils.getInstance();
+        var reservationConfirmView = this;
+        this.initTabButtonListener();
+        this.initCancelAndCommentButton();
+
+        // TOP 버튼 클릭 시
+        utils.registerClickListener(".lnk_top", function () {
+            utils.scrollToTop();
+        });
+
+
         var closeFunc = function () {
             utils.setVisibility(".popup_booking_wrapper", false);
+            reservationConfirmView.resetReservationInfoIdFromClickedCard();
         };
+
         utils.registerClickListener(".popup_btn_close", closeFunc);
         utils.registerClickListener(".btn_gray .btn_bottom", closeFunc);
         utils.registerClickListener(".btn_green .btn_bottom", function () {
-            utils.requestAjax("PUT", "/reserv/api/reservations/" + reservationInfo.id, function () {
+            utils.setVisibility(".popup_booking_wrapper", false);
+            var reservationInfoId = reservationConfirmView.reservationInfoIdFromClickedCard;
+            if (!reservationInfoId) {
+                alert("죄송합니다. 예약 취소 중 에러가 발생했습니다.");
+                return;
+            }
+            utils.requestAjax("PUT", "/reserv/api/reservations/" + reservationInfoId, function () {
+                reservationConfirmView.resetReservationInfoIdFromClickedCard();
                 if (!this.responseText) {
                     alert("죄송합니다. 예약 취소 중 에러가 발생했습니다.");
                     return;
@@ -296,40 +332,12 @@ class ReservationConfirmView {
 
             }, null);
         });
-    }
-
-     // 금액 값을 뒤자리에서부터 숫자 세 개당 , 를 반복해서 찍어주는 함수
-	// ex 100000 ==> 100,000
-    getPriceNumberString(number) {
-        number = number + "";
-        var count = 0;
-        var numberArray = number.split('');
-        for (var i = numberArray.length - 1; i > 0; i--) {
-            count++;
-            if (count == 3) {
-                numberArray.splice(i, 0, ',');
-                count = 0;
-            }
-        }
-        return numberArray.join('');
-    }
-
-
-    // 예약 확인 뷰의 모든 버튼들의 리스너를 등록하는 함수
-    initButtonListener() {
-        var utils = Utils.getInstance();
-        this.initTabButtonListener();
-        this.initCancelAndCommentButton();
-
-        // TOP 버튼 클릭 시
-        utils.registerClickListener(".lnk_top", function () {
-            utils.scrollToTop();
-        });
 
         // 처음 로딩 시 첫번째 탭을 클릭하도록 함
         document.querySelector(".summary_board").children[0].querySelector(".link_summary_board").click();
     }
 
+    
 }
 
 // 카드 하나에 해당하는 예약 정보를 담을 객체
@@ -345,26 +353,15 @@ class ReservationInfo {
         return typelist;
 
     }
-
-    constructor(id, reservationName, type, serviceName, productName, reservationDate, placeName, homepage, totalPrice, displayInfoId) {
-        this.id = id;
-        this.reservationName = reservationName;
-        this.type = type;
-        this.serviceName = serviceName;
-        this.productName = productName;
-        this.reservationDate = reservationDate;
-        this.placeName = placeName;
-        this.homepage = homepage;
-        this.totalPrice = totalPrice;
-        this.displayInfoId = displayInfoId;
-    }
 }
+
 
 
 // 사이트가 처음 로드되었을 때 호출
 window.addEventListener('load', function () {
     var utils = Utils.getInstance();
     var reservationEmail = document.querySelector(".btn_my").innerText;
+    var reservationConfirmView = new ReservationConfirmView();
     if (reservationEmail == "예약확인") {
         this.alert("로그인이 필요합니다.")
         window.location.href = "/reserv/bookinglogin"
@@ -384,13 +381,13 @@ window.addEventListener('load', function () {
             reservationInfo.reservationName = v.reservationName;
             reservationInfo.serviceName = v.displayInfo.categoryName;
             reservationInfo.productName = v.displayInfo.productDescription;
-            reservationInfo.reservationDate = v.reservationDate.split(" ")[0].split("-").join(". ");
+            reservationInfo.reservationDate = utils.formatDatetime(v.reservationDate);
+            reservationInfo.createDate = utils.formatDatetime(v.createDate);
+            reservationInfo.modifyDate = utils.formatDatetime(v.modifyDate);
             reservationInfo.placeName = v.displayInfo.placeName;
             reservationInfo.homepage = v.displayInfo.homepage;
             reservationInfo.totalPrice = v.totalPrice;
             reservationInfo.displayInfoId = v.displayInfoId;
-
-
             if (v.cancelYn) {
                 reservationInfo.type = ReservationInfo.TypeList.CANCELED;
                 typeCounts[reservationInfo.type]++;
@@ -410,7 +407,9 @@ window.addEventListener('load', function () {
             }
             reservationInfos.push(reservationInfo);
         });
-        var reservationConfirmView = new ReservationConfirmView(reservationInfos, typeCounts);
+        
+        reservationConfirmView.reservationInfos = reservationInfos;
+        reservationConfirmView.typeCounts = typeCounts;
         reservationConfirmView.updateTabFigureSpan();
         reservationConfirmView.makeCardHeads();
         reservationConfirmView.initCardData();

@@ -46,9 +46,9 @@ public class ReservationService implements IReservationService {
 
 	// 예약 하기
 	@Override
-	public Map<String, Object> makeReservation(ReservationParam reservationParam) {
+	public Map<String, Object> reserveTicket(ReservationParam reservationParam) {
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		ReservationInfo reservationInfo;
 
@@ -67,37 +67,43 @@ public class ReservationService implements IReservationService {
 				new Date());
 
 		try {
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date reservationDate = simpleDateFormat.parse(reservationDateStr);
 			reservationInfoForInsertAction.setReservationDate(reservationDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			reservationInfoForInsertAction.setReservationDate(new Date());
-		} finally {
-			long reservationInfoId = reservationDao.insertReservationInfo(reservationInfoForInsertAction).longValue();
-			for (ReservationPrice reservationPrice : reservationPrices) {
-				reservationPrice.setReservationInfoId(reservationInfoId);
-				reservationDao.insertReservationInfoPrice(reservationPrice);
+
+			long reservationInfoId = -1;
+			try {
+				reservationInfoId = reservationDao.insertReservationInfo(reservationInfoForInsertAction).longValue();
+				for (ReservationPrice reservationPrice : reservationPrices) {
+					reservationPrice.setReservationInfoId(reservationInfoId);
+					reservationDao.insertReservationInfoPrice(reservationPrice);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
 			}
+
 			int totalPrice = reservationDao.selectTotalPriceofReservation(reservationInfoId);
 			reservationInfo = reservationDao.selectReservationInfo(reservationInfoId);
 			reservationInfo.setDisplayInfo(displayInfo);
 			reservationInfo.setTotalPrice(totalPrice);
+
+			return createReservationResponse(reservationPrices, reservationInfo);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
 		}
 
-		map.put("reservationPrices", reservationPrices);
-		map.put("reservationInfo", reservationInfo);
-		return map;
 	}
 
 	// 예약 취소
 	@Override
 	public Map<String, Object> cancelReservation(int reservationInfoId) {
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		reservationDao.updateCancelFlagOfReservationInfo(reservationInfoId, 1);
-		reservationDao.updateModifyDateOfReservationInfo(reservationInfoId);
+
 		ReservationInfo reservationInfo = reservationDao.selectReservationInfo(reservationInfoId);
 
 		int totalPrice = reservationDao.selectTotalPriceofReservation(reservationInfo.getReservationInfoId());
@@ -108,10 +114,24 @@ public class ReservationService implements IReservationService {
 		reservationInfo.setDisplayInfo(displayInfo);
 		reservationInfo.setTotalPrice(totalPrice);
 
-		map.put("reservationPrices", reservationPrices);
-		map.put("reservationInfo", reservationInfo);
-
-		return map;
+		return createReservationResponse(reservationPrices, reservationInfo);
 	}
 
+	// 예약을 취소하거나 등록하였을 때 클라이언트로 보낼 반응 결과 맵 객체를 만드는 함수 
+	private Map<String, Object> createReservationResponse(List<ReservationPrice> prices,
+			ReservationInfo reservationInfo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("cancelYn", reservationInfo.isCancelYn());
+		map.put("createDate", reservationInfo.getCreateDate());
+		map.put("displayInfoId", reservationInfo.getDisplayInfoId());
+		map.put("modifyDate", reservationInfo.getModifyDate());
+		map.put("prices", prices);
+		map.put("productId", reservationInfo.getProductId());
+		map.put("reservationDate", reservationInfo.getReservationDate());
+		map.put("reservationEmail", reservationInfo.getReservationEmail());
+		map.put("reservationInfoId", reservationInfo.getReservationInfoId());
+		map.put("reservationName", reservationInfo.getReservationName());
+		map.put("reservationTelephone", reservationInfo.getReservationTelephone());
+		return map;
+	}
 }

@@ -5,9 +5,7 @@ import static com.chung.dao.ReservationProgramSqls.SELECT_RESERVATION_INFO_BY_RE
 import static com.chung.dao.ReservationProgramSqls.SELECT_RESERVATION_INFO_PRICES;
 import static com.chung.dao.ReservationProgramSqls.SELECT_TOTAL_PRICE_OF_RESERVATION;
 import static com.chung.dao.ReservationProgramSqls.UPDATE_CANCEL_FLAG_OF_RESERVATION_INFO;
-import static com.chung.dao.ReservationProgramSqls.UPDATE_MODIFY_DATE_RESERVATION_INFO;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,12 +64,6 @@ public class ReservationDao {
 		params.put("reservationInfoId", reservationInfoId);
 		params.put("cancelFlag", cancelFlag);
 		return jdbc.update(UPDATE_CANCEL_FLAG_OF_RESERVATION_INFO, params);
-	}
-
-	public int updateModifyDateOfReservationInfo(int reservationInfoId) {
-		Map<String, Integer> params = new HashMap<String, Integer>();
-		params.put("reservationInfoId", reservationInfoId);
-		return jdbc.update(UPDATE_MODIFY_DATE_RESERVATION_INFO, params);
 	}
 
 	public List<ReservationPrice> selectReservationInfoPrices(int reservationInfoId) {

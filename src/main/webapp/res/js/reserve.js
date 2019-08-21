@@ -21,13 +21,13 @@ class ReservationView
 	updateSectionProductDetail() {
 		var dscs = document.querySelectorAll(".dsc");
 		var placeDsc = dscs[0];
-		var periodDsc = dscs[1];
+		
 		var pricesDsc = dscs[2];
 
 		var resultHTML = "";
 
 		placeDsc.innerText = this.displayInfo.placeStreet;
-		periodDsc.innerText = this.displayInfo.openingHours;
+
 		this.price.productPrices.forEach(function (v) {
 			resultHTML +=
 				this.price.lookupPriceType(v.priceTypeName) + ": " +
@@ -44,17 +44,17 @@ class ReservationView
 		var productPrices = this.price.productPrices;
 		var ticket_body = document.querySelector(".ticket_body");
 		var template = document.querySelector("#ticket_info_template").innerText;
-
+		var utils = Utils.getInstance();
 		Handlebars.registerHelper("price_times_discountRate1", function (price, discountRate) {
 			var priceStr = "";
 			if (discountRate != 0) {
 				priceStr = "<span style='text-decoration:line-through solid red;'>" +
-					this.price.getPriceNumberString(price) +
+				utils.getPriceNumberString(price) +
 					"</span> " +
 					Price.WonString;
 			}
 			else {
-				priceStr = this.price.getPriceNumberString(price, discountRate) + " " + Price.WonString;
+				priceStr = utils.getPriceNumberString(price, discountRate) + " " + Price.WonString;
 			}
 			return priceStr;
 		}.bind(this));
@@ -65,7 +65,7 @@ class ReservationView
 				priceStr = this.price.adjustDiscountRate(price, discountRate) + " " + Price.WonString + "(" + discountRate + "% 할인가)";
 			}
 			else {
-				priceStr = this.price.getPriceNumberString(price) + " " + Price.WonString;
+				priceStr = utils.getPriceNumberString(price) + " " + Price.WonString;
 			}
 			return priceStr;
 		}.bind(this));
@@ -85,13 +85,22 @@ class ReservationView
 	// ajax로 서버로부터 공연 일자를 받아오는 함수 (규칙 : 오늘날짜 포함 1~5일 뒤의 날짜를 받아옴.)
 	updateReservationDate() {
 		var utils = Utils.getInstance();
+		var reservationInfo = this.reservationInfo;
 		utils.requestAjax("GET", "/reserv/api/reservations/reservationDate", function () {
 			if(!this.responseText){
 				alert("죄송합니다. 공연 일자 정보를 얻지 못했습니다.");
+				utils.tothePreviousSite();
 				return;
 			}
 			var reservationDate = JSON.parse(this.responseText).reservationDate;
-			document.querySelector("#reservation_date").innerText = reservationDate;
+			var formattedReservationDate = utils.formatDatetime(reservationDate);
+			var dscs = document.querySelectorAll(".dsc");
+			var periodDsc = dscs[1];
+
+			reservationInfo.reservationYearMonthDay = reservationDate;
+			document.querySelector("#reservation_date").innerText = formattedReservationDate;
+			periodDsc.innerText = formattedReservationDate;
+
 		}, null);
 	}
 
@@ -112,11 +121,12 @@ class ReservationView
 		var ticketCountInputs = document.querySelectorAll(".count_control_input");
 		var ticketCountInputs_length = ticketCountInputs.length;
 		var productPrices = this.price.productPrices;
+		var utils = Utils.getInstance();
 		for (var i = 0; i < ticketCountInputs_length; i++) {
 			totalPricePaid += parseInt(ticketCountInputs[i].value) * parseInt(productPrices[i].price * 0.01 * (100 - productPrices[i].discountRate));
 		}
 
-		document.querySelector("#total_price_paid").innerText = this.price.getPriceNumberString(totalPricePaid);
+		document.querySelector("#total_price_paid").innerText = utils.getPriceNumberString(totalPricePaid);
 	}
 
 	// 더하기 또는 빼기 버튼 리스너를 등록하는 함수.
@@ -173,24 +183,11 @@ class ReservationView
 		var errorDialog = document.querySelector("#errorDialog");
 		var ul = errorDialog.querySelector("ul");
 		var resultHTML = "";
-		var confirmButton = errorDialog.querySelector(".btn");
 		errorMessages.forEach(function (v) {
 			resultHTML += "<li>" + v + "</li>";
 		});
 
 		ul.innerHTML = resultHTML;
-
-		utils.registerClickListener(confirmButton, function(){
-			try{
-				errorDialog.show();
-			}
-			catch(e){
-				utils.removeClass(errorDialog, "open");
-			}
-
-			utils.setVisibility(errorDialog, false);
-		});
-
 		utils.setVisibility(errorDialog, true);
 
 		try{
@@ -277,6 +274,20 @@ class ReservationView
 			reservationInfo.validateRegisterInfo(displayInfo, productPrices);
 		});
 
+		//에러 다이얼로그의 확인 버튼을 눌렀을 때
+		var errorDialog = document.querySelector("#errorDialog");
+		var confirmButton = errorDialog.querySelector(".btn");
+		utils.registerClickListener(confirmButton, function(){
+			try{
+				errorDialog.show();
+			}
+			catch(e){
+				utils.removeClass(errorDialog, "open");
+			}
+
+			utils.setVisibility(errorDialog, false);
+		});
+
 	}
 }
 
@@ -309,7 +320,6 @@ class ReservationInfo {
 		this.reservationEmail = "";
 		this.reservationName = "";
 		this.reservationTelephone = "";
-		this.reservationYearMonthDay = "";
 	}
 
 	// 예약 정보를 ajax로부터 받아온 객체들을 파라미터로 전달받아 저장하는 함수
@@ -325,7 +335,6 @@ class ReservationInfo {
 		this.reservationEmail = document.querySelector("#email").value;
 		this.reservationName = document.querySelector("#name").value;
 		this.reservationTelephone = document.querySelector("#tel").value;
-		this.reservationYearMonthDay = document.querySelector("#reservation_date").innerText;
 		for (var i = 0; i < pricesLength; i++) {
 			var count = parseInt(ticketCountInputs[i].value);
 			if (count == 0) {
@@ -397,22 +406,6 @@ class Price {
 		this.productPrices = productPrices;	// 사용자가 예매한 모든 표의 가격정보들 객체
 	}
 
-	// 금액 값을 뒤자리에서부터 숫자 세 개당 , 를 반복해서 찍어주는 함수
-	// ex 100000 ==> 100,000
-	getPriceNumberString(number) {
-		number = number + "";
-		var count = 0;
-		var numberArray = number.split('');
-		for (var i = numberArray.length - 1; i > 0; i--) {
-			count++;
-			if (count == 3) {
-				numberArray.splice(i, 0, ',');
-				count = 0;
-			}
-		}
-		return numberArray.join('');
-	}
-
 	// priceType에 따라 그에 해당하는 좌석 클래스 이름을 반환하는 함수
 	lookupPriceType(priceType) {
 		var priceTypeName = "";
@@ -472,7 +465,8 @@ class Price {
 
 	// 금액에 할인가를 적용하여 반환하는 함수
 	adjustDiscountRate(price, discountRate) {
-		return this.getPriceNumberString(parseInt(price * (100 - discountRate) * 0.01));
+	
+		return Utils.getInstance().getPriceNumberString(parseInt(price * (100 - discountRate) * 0.01));
 	}
 }
 
@@ -483,7 +477,7 @@ window.addEventListener('load', function () {
 	var displayInfoView;
 	var displayInfoId = utils.getParameterByName("displayInfoId");
 
-	if(!displayInfoId || displayInfoId == 0){
+	if(!displayInfoId || displayInfoId <= 0){
 		this.alert("url 형식이 잘못되었습니다.");
 		utils.tothePreviousSite();
 	}
@@ -493,6 +487,7 @@ window.addEventListener('load', function () {
 
 		if(!this.responseText){
 			alert("죄송합니다. 상품 정보를 얻지 못했습니다.");
+			utils.tothePreviousSite();
 			return;
 		}
 

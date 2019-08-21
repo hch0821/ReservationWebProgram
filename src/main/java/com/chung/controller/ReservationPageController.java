@@ -11,7 +11,7 @@ import com.chung.dto.reservation.LoginParam;
 
 // API를 제외한 기능을 가지고 있는 컨트롤러
 @Controller
-public class ReservationController {
+public class ReservationPageController {
 //======================================================================
 //예약 로그인 화면을 위한 컨트롤
 //=======================================================================	

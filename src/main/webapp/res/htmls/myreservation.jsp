@@ -152,11 +152,11 @@
 							</a>
 							<ul class="detail">
 								<li class="item">
-									<span class="item_tit">일정</span>
+									<span class="item_tit">공연 일시</span>
 									<em class="item_dsc">{{reservationDate}}</em>
 								</li>
 								<li class="item">
-									<span class="item_tit">장소</span>
+									<span class="item_tit">공연 장소</span>
 									<em class="item_dsc">{{placeName}}</em>
 								</li>
 								<li class="item">
@@ -173,6 +173,22 @@
 										{{reservationName}}
 									</em>
 								</li>
+								<li class="item">
+									<span class="item_tit">예약 일시</span>
+									<em class="item_dsc">
+										{{createDate}}
+									</em>
+								</li>
+
+								
+								<li class="item" {{#isCanceledReservation type}}{{isCanceledReservation}}{{/isCanceledReservation}}>
+									<span class="item_tit">예약 취소 일시</span>
+									<em class="item_dsc">
+										{{modifyDate}}
+									</em>
+								</li>
+								
+
 							</ul>
 							<div class="price_summary">
 								<span class="price_tit">결제{{#price_tit type}}{{price_tit}}{{/price_tit}}금액</span>

@@ -121,7 +121,7 @@ public class ReservationProgramSqls {
 	"select cancel_flag as cancelYn, create_date, display_info_id, modify_date, product_id, "+
 	"reservation_date, reservation_email, id as reservationInfoId, reservation_name, reservation_tel as reservationTelephone "+
 	"from reservation_info where reservation_email= :reservationEmail "+
-	"order by reservation_date";
+	"order by reservation_date desc";
 
 	/*예약한 상품 총 가격*/
 	public final static String SELECT_TOTAL_PRICE_OF_RESERVATION = 
@@ -131,10 +131,7 @@ public class ReservationProgramSqls {
 
 	/*=========예약 취소 ========*/
 	public final static String UPDATE_CANCEL_FLAG_OF_RESERVATION_INFO = 
-	"update reservation_info set cancel_flag = :cancelFlag where id = :reservationInfoId";
-	
-	public final static String UPDATE_MODIFY_DATE_RESERVATION_INFO = 
-	"update reservation_info set modify_date = current_timestamp where id = :reservationInfoId";
+	"update reservation_info set cancel_flag = :cancelFlag, modify_date = current_timestamp where id = :reservationInfoId";
 
 	/*=========예약 걸과/ 예약 취소 결과======*/
 	public final static String SELECT_RESERVATION_INFO_BY_RESERVATION_INFO_ID =
