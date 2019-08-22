@@ -1,23 +1,23 @@
 //로그인 페이지를 위한 스크립트
 
 //로그인 관련 클래스
-class LoginValidation{
+function LoginValidation(){}
 
-    // 로그인 폼이 유효한지 판단하는 함수
-    validateEmail(email){
-        var errorMessage = "";
-        var emailRegex = /^[\w+_]\w+@\w+\.\w+(\.\w+)?$/;
+// 로그인 폼이 유효한지 판단하는 함수
+LoginValidation.prototype.validateEmail = function(email){
+    var errorMessage = "";
+    var emailRegex = /^[\w+_]\w+@\w+\.\w+(\.\w+)?$/;
 
-        if(email == "" || email == undefined){
-            errorMessage="이메일을 입력해주세요.";
-        }
-        else if(!email.match(emailRegex)){
-            errorMessage="이메일은 다음과 같은 형식이여야합니다: 'aaaa@aaaa.com'";
-        }
-
-        return errorMessage;
+    if(email == "" || email == undefined){
+        errorMessage="이메일을 입력해주세요.";
     }
+    else if(!email.match(emailRegex)){
+        errorMessage="이메일은 다음과 같은 형식이여야합니다: 'aaaa@aaaa.com'";
+    }
+
+    return errorMessage;
 }
+
 
 
 window.addEventListener('load', function () {

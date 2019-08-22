@@ -165,8 +165,8 @@ body {
     overflow-x: auto;
     margin: 0 auto!important;
     background-color: #e9ecef;
-    word-wrap: break-all;
-    word-break: break-all;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 .top_title .title {
@@ -914,7 +914,7 @@ button {
     position: relative;
     background: #e9ecef;
     font: 0/0 a;
-    word-wrap: break-all;
+    word-wrap: break-word;
     font-family: -apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',Helvetica Nenu,Helvetica,Roboto,Arial,NanumGothicWebR,'맑은고딕',MalgunGothic,'돋움',Dotum,sans-serif
 }
 
@@ -1359,7 +1359,7 @@ button {
     display: block;
     display: -webkit-box;
     overflow: hidden;
-    word-wrap: break-all;
+    word-wrap: break-word;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     text-overflow: ellipsis
@@ -1385,7 +1385,7 @@ button {
     display: block;
     display: -webkit-box;
     overflow: hidden;
-    word-wrap: break-all;
+    word-wrap: break-word;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     text-overflow: ellipsis
@@ -2120,7 +2120,7 @@ button {
 .section_store_details .store_details.close3 {
     height: 73px;
     overflow: hidden;
-    word-wrap: break-all;
+    word-wrap: break-word;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
@@ -3287,11 +3287,19 @@ button {
     margin-right: 2px;
     font-size: 16px;
     line-height: 24px;
-    display: -webkit-box;
-    word-wrap: break-all;
+    /* Internet Explorer 10 */
+    display:-ms-flexbox;
+    /* Firefox */
+    display:-moz-box;
+    /* Safari, Chrome, and Opera */
+    display:-webkit-box;
+    /* W3C */
+    display:box;
+    word-wrap: break-word;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    color: #999
+    color: #999;
+    height:100px;
 }
 
 .event .spr_book_event {
