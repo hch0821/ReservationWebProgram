@@ -17,10 +17,10 @@ import com.chung.dto.product.ProductImage;
 import com.chung.dto.product.ProductPrice;
 import com.chung.service.IDisplayService;
 import com.chung.service.IProductService;
-import com.chung.service.IRateService;
+import com.chung.service.IRateInquirementService;
 
 @Service
-public class DetailService implements IRateService, IDisplayService, IProductService {
+public class DetailService implements IRateInquirementService, IDisplayService, IProductService {
 
 	@Autowired
 	CommentDao commentDao;
@@ -73,6 +73,11 @@ public class DetailService implements IRateService, IDisplayService, IProductSer
 	public List<ProductPrice> getProductPrices(int productId) {
 		return productDao.selectProductPrices(productId);
 	}
+	
+	@Override
+	public String lookupFilepathByReservationUserCommentImageId(int reservationUserCommentImageId) {
+		return commentDao.selectCommentImagenameByCommentImageId(reservationUserCommentImageId);
+	}
 
 	@Override
 	public List<Product> getProducts(int categoryId, int start) {
@@ -84,4 +89,6 @@ public class DetailService implements IRateService, IDisplayService, IProductSer
 		return new ProductImage();
 	}
 
+
+	
 }

@@ -268,7 +268,7 @@ hr {
     overflow: hidden;
     display: inline-block;
     color: transparent;
-    background-image: url('../img/spr_book.png?1602251400');
+    background-image: url('../../image?path=img/spr_book.png?1602251400');
     background-size: 400px 400px;
     vertical-align: top;
     text-indent: 100%;
@@ -432,7 +432,7 @@ hr {
     overflow: hidden;
     display: inline-block;
     color: transparent;
-    background-image: url('../img/spr_book.png?1602181400');
+    background-image: url('../../image?path=img/spr_book.png?1602181400');
     background-size: 400px 400px;
     vertical-align: top;
     float: left;
@@ -467,7 +467,7 @@ hr {
     overflow: hidden;
     display: inline-block;
     color: transparent;
-    background-image: url('../img/spr_book.png?1602181400');
+    background-image: url('../../image?path=img/spr_book.png?1602181400');
     background-size: 400px 400px;
     vertical-align: top;
     float: left;
@@ -686,7 +686,7 @@ hr {
     overflow: hidden;
     display: inline-block;
     color: transparent;
-    background-image: url('../img/spr_book2.png?1602251400');
+    background-image: url('../../image?path=img/spr_book2.png?1602251400');
     background-size: 330px 300px;
     vertical-align: top;
     text-indent: 100%;
@@ -1119,7 +1119,7 @@ hr {
     width: 30px;
     height: 30px;
     color: transparent;
-    background-image: url('../img/spr_icons.png?1511161500');
+    background-image: url('../../image?path=img/spr_icons.png?1511161500');
     background-size: 200px 320px;
     vertical-align: top;
     text-indent: 100%;
@@ -1572,12 +1572,12 @@ input[type="checkbox"].chk_agree + label::before {
     overflow: hidden;
     display: inline-block;
     color: transparent;
-    background-image: url('../img/spr_book2.png?1512221500');
+    background-image: url('../../image?path=img/spr_book2.png?1512221500');
     background-size: 330px 300px;
     vertical-align: top;
 }
 input[type="checkbox"].chk_custom + label::before {
-    background-image: url('../img/spr_book.png?1602181400');
+    background-image: url('../../image?path=img/spr_book.png?1602181400');
     background-size: 400px 400px;
     margin-right: 6px;
     width: 22px !important;
@@ -1595,7 +1595,7 @@ input[type="checkbox"].chk_agree + label::before {
     vertical-align: -8.5px;
 }
 input[type="checkbox"].chk_custom:checked + label::before {
-    background-image: url('../img/spr_book.png?1602181400');
+    background-image: url('../../image?path=img/spr_book.png?1602181400');
     background-size: 400px 400px;
     background-position: -158px -302px;
     background-color: transparent;
@@ -1738,7 +1738,7 @@ select {
     overflow: hidden;
     display: inline-block;
     color: transparent;
-    background-image: url('../img/spr_book.png?1602181400');
+    background-image: url('../../image?path=img/spr_book.png?1602181400');
     background-size: 400px 400px;
     vertical-align: top;
     text-indent: 100%;
@@ -1897,7 +1897,7 @@ select {
     overflow: hidden;
     display: inline-block;
     color: transparent;
-    background-image: url('../img/spr_book.png?1602181400');
+    background-image: url('../../image?path=img/spr_book.png?1602181400');
     background-size: 400px 400px;
     vertical-align: top;
     text-indent: 100%;
@@ -2538,7 +2538,7 @@ select {
     left: 0;
     width: 9px;
     height: 11px;
-    background-image: url('../img/spr_book2.png?1512221500');
+    background-image: url('../../image?path=img/spr_book2.png?1512221500');
     background-size: 330px 300px;
     background-repeat: no-repeat;
     background-position: -299px -26px;
@@ -2835,7 +2835,7 @@ select {
     width: 8px;
     height: 15px;
     background-repeat: no-repeat;
-    background-image: url('../img/spr_book.png?1602181400');
+    background-image: url('../../image?path=img/spr_book.png?1602181400');
     background-size: 400px 400px;
 }
 .calendar .tit_calendar .calendar-btn.calendar-btn-prev-mon {
@@ -3066,7 +3066,7 @@ select {
     width: 8px;
     height: 15px;
     background-repeat: no-repeat;
-    background-image: url('../img/spr_book.png?1602181400');
+    background-image: url('../../image?path=img/spr_book.png?1602181400');
     background-size: 400px 400px;
 }
 .light_calendar .calendar .tit_calendar .calendar-btn.calendar-btn-prev-mon {
@@ -3710,7 +3710,7 @@ select {
     right: 71.5px;
     width: 12px;
     height: 7.5px;
-    background-image: url('../img/spr_book2.png?1602251400');
+    background-image: url('../../image?path=img/spr_book2.png?1602251400');
     background-size: 330px 300px;
     background-position: -296px -62px;
 }
@@ -3735,7 +3735,7 @@ select {
     top: 2px;
     width: 15px;
     height: 15px;
-    background-image: url('../img/spr_book.png?1602251400');
+    background-image: url('../../image?path=img/spr_book.png?1602251400');
     background-size: 400px 400px;
     background-position: -182px -302px;
 }
@@ -4392,7 +4392,7 @@ select {
     overflow: hidden;
     display: inline-block;
     color: transparent;
-    background-image: url('../img/spr_book2.png?1512221500');
+    background-image: url('../../image?path=img/spr_book2.png?1512221500');
     background-size: 330px 300px;
     vertical-align: top;
     width: 11px;
@@ -6306,7 +6306,7 @@ select {
     display: inline-block;
     width: 11px;
     height: 20px;
-    background-image: url('../img/spr_book2.png?1512221500');
+    background-image: url('../../image?path=img/spr_book2.png?1512221500');
     background-size: 330px 300px;
     background-repeat: no-repeat;
     background-position: -138px -55px;
@@ -8290,13 +8290,13 @@ select {
 .section_confirm .confirm_item_top:before {
     bottom: 0;
     left: 0;
-    background-image: url('../img/bg/bg_confirm_check_bottom_left.png');
+    background-image: url('../../image?path=img/bg/bg_confirm_check_bottom_left.png');
     background-position: 0 0;
 }
 .section_confirm .confirm_item_top:after {
     bottom: 0;
     right: 0;
-    background-image: url('../img/bg/bg_confirm_check_bottom_right.png');
+    background-image: url('../../image?path=img/bg/bg_confirm_check_bottom_right.png');
     background-position: 100% 0;
 }
 .section_confirm .confirm_item_top .common_bottom_buttongroup {
@@ -9169,25 +9169,25 @@ select {
     padding-bottom: 0;
 }
 .section_confirm.default .confirm_item_top .item_top_inside_left {
-    background-image: url('../img/bg/bg_confirm_check_left.png');
+    background-image: url('../../image?path=img/bg/bg_confirm_check_left.png');
 }
 .section_confirm.default .confirm_item_top .item_top_inside_left .item_top_inside_right {
-    background-image: url('../img/bg/bg_confirm_check_right.png');
+    background-image: url('../../image?path=img/bg/bg_confirm_check_right.png');
 }
 .section_confirm.default .confirm_item_top .item_top_inside_left .item_top_inside_right .confirm_title {
-    background-image: url('../img/bg/bg_confirm_check_center.png');
+    background-image: url('../../image?path=img/bg/bg_confirm_check_center.png');
 }
 .section_confirm.okay .confirm_item_top .confirm_btn_share {
     display: block;
 }
 .section_confirm.okay .confirm_item_top .item_top_inside_left {
-    background-image: url('../img/bg/bg_confirm_check_green_left.png');
+    background-image: url('../../image?path=img/bg/bg_confirm_check_green_left.png');
 }
 .section_confirm.okay .confirm_item_top .item_top_inside_left .item_top_inside_right {
-    background-image: url('../img/bg/bg_confirm_check_green_right.png');
+    background-image: url('../../image?path=img/bg/bg_confirm_check_green_right.png');
 }
 .section_confirm.okay .confirm_item_top .item_top_inside_left .item_top_inside_right .confirm_title {
-    background-image: url('../img/bg/bg_confirm_check_green_center.png');
+    background-image: url('../../image?path=img/bg/bg_confirm_check_green_center.png');
 }
 .section_confirm.okay .confirm_item_top .item_top_inside_left .item_top_inside_right .confirm_title > span {
     position: relative;
@@ -9203,25 +9203,25 @@ select {
     padding-right: 35px;
 }
 .section_confirm.cancel .confirm_item_top .item_top_inside_left {
-    background-image: url('../img/bg/bg_confirm_check_gray_left.png');
+    background-image: url('../../image?path=img/bg/bg_confirm_check_gray_left.png');
 }
 .section_confirm.cancel .confirm_item_top .item_top_inside_left .item_top_inside_right {
-    background-image: url('../img/bg/bg_confirm_check_gray_right.png');
+    background-image: url('../../image?path=img/bg/bg_confirm_check_gray_right.png');
 }
 .section_confirm.cancel .confirm_item_top .item_top_inside_left .item_top_inside_right .confirm_title {
-    background-image: url('../img/bg/bg_confirm_check_gray_center.png');
+    background-image: url('../../image?path=img/bg/bg_confirm_check_gray_center.png');
 }
 .section_confirm.cancel .confirm_item_top .item_top_inside_left .item_top_inside_right .confirm_title .ico_clock {
     background-position: -297px -131px;
 }
 .section_confirm.used .confirm_item_top .item_top_inside_left {
-    background-image: url('../img/bg/bg_confirm_check_gray_used_left.png');
+    background-image: url('../../image?path=img/bg/bg_confirm_check_gray_used_left.png');
 }
 .section_confirm.used .confirm_item_top .item_top_inside_left .item_top_inside_right {
-    background-image: url('../img/bg/bg_confirm_check_gray_used_right.png');
+    background-image: url('../../image?path=img/bg/bg_confirm_check_gray_used_right.png');
 }
 .section_confirm.used .confirm_item_top .item_top_inside_left .item_top_inside_right .confirm_title {
-    background-image: url('../img/bg/bg_confirm_check_gray_used_center.png');
+    background-image: url('../../image?path=img/bg/bg_confirm_check_gray_used_center.png');
     background-size: 4px 53px;
     height: 38px;
 }
@@ -9497,7 +9497,7 @@ select {
     margin: 18.5px auto 39px;
     width: 200px;
     height: 36.5px;
-    background-image: url('../img/spr_book.png?1602251400');
+    background-image: url('../../image?path=img/spr_book.png?1602251400');
     background-size: 400px 400px;
     background-position: -46px -334px;
 }
@@ -10333,7 +10333,7 @@ select {
     overflow: hidden;
     display: inline-block;
     color: transparent;
-    background-image: url('../img/spr_book.png?1602181400');
+    background-image: url('../../image?path=img/spr_book.png?1602181400');
     background-size: 400px 400px;
     vertical-align: top;
     width: 10px;
@@ -10759,7 +10759,7 @@ select {
     overflow: hidden;
     display: inline-block;
     color: transparent;
-    background-image: url('../img/spr_book2.png?1512221500');
+    background-image: url('../../image?path=img/spr_book2.png?1512221500');
     background-size: 330px 300px;
     vertical-align: top;
     text-indent: 100%;
@@ -11490,7 +11490,7 @@ select {
     overflow: hidden;
     display: inline-block;
     color: transparent;
-    background-image: url('../img/spr_book_event.png?151216');
+    background-image: url('../../image?path=img/spr_book_event.png?151216');
     background-size: 150px 50px;
     -webkit-background-size: 150px 50px;
     vertical-align: top;
@@ -11869,12 +11869,12 @@ select {
     margin-right: 8px;
     width: 25px !important;
     height: 25px !important;
-    background-image: url('../img/spr_book.png?1512221500');
+    background-image: url('../../image?path=img/spr_book.png?1512221500');
     background-size: 400px 400px;
     background-position: -80px -302px;
 }
 .adminbooking_login .login_form .agreement input[type="checkbox"].chk_agree:checked + label::before {
-    background-image: url('../img/spr_book.png?1512221500');
+    background-image: url('../../image?path=img/spr_book.png?1512221500');
     background-size: 400px 400px;
     background-position: -107px -302px;
 }
@@ -12553,7 +12553,7 @@ body.biz10 .section_item_details .item_details {
     display: inline-block;
     overflow: hidden;
     position: relative;
-    background: url(../img/spr_book_talk.png?1602041400) no-repeat;
+    background: url(../../image?path=img/spr_book_talk.png?1602041400) no-repeat;
     background-size: 150px 100px;
     line-height: 999px !important;
     vertical-align: top;

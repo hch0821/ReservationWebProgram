@@ -266,9 +266,10 @@ var Comment = {
 		// 사용자가 올린 이미지 추가
 		Handlebars.registerHelper("thumb_area_image", function (commentImages) {
 			if (commentImages.length < 1) {
-				return "/img/bg_card_bl.png"; // 아무 의미 없는 이미지 경로
-			} else {
-				return commentImages[0].saveFileName;
+				return ""; 
+			} else
+			{
+				return "/reserv/commentimage?id="+commentImages[0].imageId;
 			}
 		});
 
@@ -362,7 +363,7 @@ var Location = {
 		document.querySelector(".store_addr > .addr_old_detail").innerText = displayInfo.placeLot;
 		document.querySelector(".store_addr.addr_detail").innerText = displayInfo.placeName;
 		document
-			.querySelector(".box_store_info.no_topline > .store_location > .store_map.img_thumb").src = "/reserv/res/"
+			.querySelector(".box_store_info.no_topline > .store_location > .store_map.img_thumb").src = "/reserv/image?path="
 			+ displayInfoImage.saveFileName;
 		document.querySelector(".store_name").innerText = displayInfo.productDescription;
 		var telAnchor = document.querySelector(".lst_store_info .store_tel");

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<form id="reviewForm" enctype="multipart/form-data" method="post">
+		attachedImage : <input type="file" name="attachedImage" multiple><br>
+		comment: <input type="text" name="comment"><br>
+		productId: <input type="number" name="productId"><br>
+		score: <input type="number" name="score"><br>
+		<input type="submit">
+	</form>
+
+	<script type="text/javascript" src='/reserv/res/js/utils.js'></script>
+	<script type="text/javascript">
+		window.addEventListener("load", function () {
+			var form = document.querySelector("#reviewForm");
+			var inputs = document.querySelectorAll("input");
+			var attachedImage = inputs[0];
+			var comment = inputs[1];
+			var productId = inputs[2];
+			var score = inputs[3];
+			form.addEventListener("submit", function (evt) {
+				var oReq = new XMLHttpRequest();
+				var formData =  new FormData();
+				formData = new FormData(form);
+
+				oReq.open("POST", "/reserv/api/reservations/78/comments", true);
+				oReq.onload = function (oEvent) {
+					console.log(oReq.responseText);
+					if (oReq.status == 200) {
+						alert("Uploaded!");
+					} else {
+					
+						alert("Error " + oReq.status + " occurred when trying to upload your file");
+					}
+				};
+
+				oReq.send(formData);
+				evt.preventDefault();
+
+
+			}, false);
+		})
+
+	</script>
+</body>
+
+</html>

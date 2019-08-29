@@ -10,7 +10,7 @@ function ReservationView(price, displayInfo, reservationInfo)
 
 // 예약 페이지의 사진 영역을 업데이트하는 함수.
 ReservationView.prototype.updateProductImageArea = function(productImage) {
-	document.querySelector(".visual_img > .item > .img_thumb").src = "/reserv/res/"
+	document.querySelector(".visual_img > .item > .img_thumb").src = "/reserv/image?path="
 		+ productImage.saveFileName;
 
 	document.querySelector(".preview_txt_tit").innerText = this.displayInfo.productDescription;

@@ -15,4 +15,5 @@ public interface IReservationService {
 	public Map<String, Object> reserveTicket(ReservationParam reservationParam); // 예약하기
 
 	public Map<String, Object> cancelReservation(int reservationInfoId); // 예약 취소
+	
 }

@@ -63,14 +63,15 @@ public class MainPageApiController {
 	public RedirectView getProductImageByProductId(@PathVariable(name = "productId") Integer productId,
 			@RequestParam(name = "type", required = true) String type) {
 		ProductImage productImage = mainService.getProductImage(productId, type);
-		return new RedirectView("/reserv/res/" + productImage.getSaveFileName());
+		//return new RedirectView("/reserv/res/" + productImage.getSaveFileName());
+		return new RedirectView("/reserv/image?path=" + productImage.getSaveFileName());
 	}
 
 	// http://localhost:8080/reserv/api/productImages/{productId}/{productImageId}
 	@GetMapping("/productImages/{productId}/{productImageId}")
-	public RedirectView getProductImageByProductId(@PathVariable(name = "productId") Integer productId,
+	public RedirectView getProductImageByProductImageId(@PathVariable(name = "productId") Integer productId,
 			@PathVariable(name = "productImageId") Integer productImageId) {
 		ProductImage productImage = mainService.getProductImage(productId, ProductImage.Type.TYPE_TH);
-		return new RedirectView("/reserv/res/" + productImage.getSaveFileName());
+		return new RedirectView("/reserv/image?path=" + productImage.getSaveFileName());
 	}
 }

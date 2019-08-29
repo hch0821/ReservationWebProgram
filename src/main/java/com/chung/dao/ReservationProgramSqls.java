@@ -75,6 +75,12 @@ public class ReservationProgramSqls {
 	"where reservation_user_comment_image.file_id = file_info.id "+
 	"and reservation_user_comment_id = :commentId";
 
+	/*reservation_user_comment_image 테이블의 id으로 파일 이름을 lookup하는 sql*/
+	public final static String SELECT_COMMENT_IMAGE_NAME_BY_COMMENT_IMAGE_ID =
+	"select save_file_name " + 
+	"from reservation_user_comment_image, file_info "+
+	"where file_id = file_info.id and "+
+	"reservation_user_comment_image.id = :reservationUserCommentImageId"; 
 
 	/*DisplayInfo dto*/
 	public final static String SELECT_DISPLAY_INFO = 

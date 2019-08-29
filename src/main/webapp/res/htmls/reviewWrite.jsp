@@ -10,7 +10,7 @@
 	<meta name="description" content="네이버 예약, 네이버 예약이 연동된 곳 어디서나 바로 예약하고, 네이버 예약 홈(나의예약)에서 모두 관리할 수 있습니다.">
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
 	<title>네이버 예약</title>
-	<link rel="shortcut icon" href="/reserv/res/img/favicon.ico">
+	<link rel="shortcut icon" href="/reserv/image?path=img/favicon.ico">
 	<link href="/reserv/res/css/style.css" rel="stylesheet">
 </head>
 
@@ -83,7 +83,7 @@
 							<i class="fn fn-image1" aria-hidden="true"></i>
 							<span class="text_add_photo">사진 추가</span>
 						</label>
-						<input type="file" class="hidden_input" id="reviewImageFileOpenInput" accept="image/*" multiple>
+						<input type="file" class="hidden_input" id="reviewImageFileOpenInput" accept="image/*" multiple name="attachedImage">
 						<div class="guide_review">
 							<span>0</span>/400
 							<span>(최소5자이상)</span>

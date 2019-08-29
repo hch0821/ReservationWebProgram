@@ -298,7 +298,7 @@ ReservationConfirmView.prototype.initCancelAndCommentButton = function() {
             }
             clickedReservationInfo = clickedReservationInfo[0];
 
-            window.location.href = "/reserv/reviewWrite?reservationInfoId=" + clickedReservationInfo.id;
+            window.location.href = "/reserv/reviewWrite?reservationEmail=" + clickedReservationInfo.reservationEmail;
         });
     }.bind(this));
 }
@@ -404,6 +404,8 @@ window.addEventListener('load', function () {
             reservationInfo.reservationName = v.reservationName;
             reservationInfo.serviceName = v.displayInfo.categoryName;
             reservationInfo.productName = v.displayInfo.productDescription;
+            reservationInfo.productId = v.productId;
+            reservationInfo.reservationEmail = v.reservationEmail;
             reservationInfo.reservationDate = utils.formatDatetime(v.reservationDate);
             reservationInfo.createDate = utils.formatDatetime(v.createDate);
             reservationInfo.modifyDate = utils.formatDatetime(v.modifyDate);
