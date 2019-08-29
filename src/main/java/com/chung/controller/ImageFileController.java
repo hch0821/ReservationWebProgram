@@ -33,7 +33,6 @@ public class ImageFileController {
 		String contentType = URLConnection.guessContentTypeFromName(file.getAbsolutePath());
 
 		long fileLength = file.length();
-		System.out.println("filename : " + path);
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getName() + "\";");
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.setHeader("Content-Type", contentType);

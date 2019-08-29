@@ -46,7 +46,7 @@ public class DetailService implements IRateInquirementService, IDisplayService, 
 
 	@Override
 	public List<Comment> getComments(int displayInfoId) {
-		List<Comment> comments = commentDao.selectComments(displayInfoId);
+		List<Comment> comments = commentDao.selectCommentsDisplayInfoId(displayInfoId);
 		for (Comment c : comments) {
 			c.setCommentImages(commentDao.selectCommentImages(c.getCommentId()));
 		}

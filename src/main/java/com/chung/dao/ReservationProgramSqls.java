@@ -153,4 +153,28 @@ public class ReservationProgramSqls {
 	//==============================================================================================
 	//예약 페이지 끝
 	//==============================================================================================
+	
+	//==============================================================================================
+	// 리뷰 쓰기 페이지
+	//==============================================================================================
+	public final static String SELECT_COMMENT_BY_RESERVATION_INFO_ID =
+	"select comment, c.id as commentId, c.create_date, c.modify_date, c.product_id, reservation_date, "+ 
+	"reservation_email, c.reservation_info_id, reservation_name, reservation_tel as reservationTelephone, score "+
+	"from reservation_info, reservation_user_comment as c "+
+	"where reservation_info.id = c.reservation_info_id and "+
+	"reservation_info.id = :reservationInfoId";
+	
+	public final static String UPDATE_DELETE_FLAG_OF_FILE_INFO = 
+	"update file_info set delete_flag = :deleteFlag, modify_date = current_timestamp "+
+	"where id = (select file_id from reservation_user_comment_image where id= :reservationUserCommentImageId)";	
+	
+	public final static String UPDATE_SCORE_OF_RESERVATION_USER_COMMENT = 
+	"update reservation_user_comment set score = :score, modify_date = current_timestamp where id = :reservationUserCommentId";	
+	
+	public final static String UPDATE_COMMENT_OF_RESERVATION_USER_COMMENT = 
+	"update reservation_user_comment set comment = :comment, modify_date = current_timestamp where id = :reservationUserCommentId";	
+	//==============================================================================================
+	// 리뷰 쓰기 페이지 끝
+	//==============================================================================================
+	
 }

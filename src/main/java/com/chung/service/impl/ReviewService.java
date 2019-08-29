@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.chung.dao.CommentDao;
 import com.chung.dao.FileDao;
+import com.chung.dto.comment.Comment;
 import com.chung.dto.comment.CommentForInsertAction;
 import com.chung.dto.comment.CommentImageForInsertAction;
 import com.chung.dto.fileinfo.FileInfo;
@@ -21,20 +23,21 @@ import com.chung.service.IImageFileService;
 import com.chung.service.IRateRegisterService;
 
 @Service
-public class ReviewService implements IRateRegisterService, IImageFileService{
-	
+public class ReviewService implements IRateRegisterService, IImageFileService {
+
 	@Autowired
 	CommentDao commentDao;
-	
+
 	@Autowired
 	FileDao fileDao;
 
-	public ReviewService(){
+	public ReviewService() {
 		File rootDirectory = new File(ROOT_DIRECTORY);
-		if(!rootDirectory.exists()) {
+		if (!rootDirectory.exists()) {
 			rootDirectory.mkdirs();
 		}
 	}
+
 	@Override
 	public FileInfo uploadCommentImageFile(MultipartFile sourceFile, String subDirectoryPath, boolean hasDateFolder) {
 		FileInfo fileInfo = new FileInfo();
@@ -48,11 +51,11 @@ public class ReviewService implements IRateRegisterService, IImageFileService{
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat(".yyyyMMdd.HH.mm.ss.SSSS");
 		String todayDatetimeStr = sdf.format(date);
-		
+
 		String[] fileNameAndExtension = getFilenameAndExtension(sourceFile.getOriginalFilename());
-		String destFileName = fileNameAndExtension[0] + todayDatetimeStr + fileNameAndExtension[1];
+		String destFileName = todayDatetimeStr + fileNameAndExtension[1];
 		String todayDateStr = "";
-		if(hasDateFolder) {
+		if (hasDateFolder) {
 			sdf = new SimpleDateFormat("yyyy-MM-dd");
 			todayDateStr = sdf.format(date);
 			destDirectory = new File(destDirectory, todayDateStr);
@@ -61,36 +64,35 @@ public class ReviewService implements IRateRegisterService, IImageFileService{
 			}
 		}
 		File destFile = new File(destDirectory, destFileName);
-		
-		if(!readFile(sourceFile, destFile)) {
+
+		if (!readFile(sourceFile, destFile)) {
 			return null;
 		}
-		
+
 		String uploadFilePath = destFile.getAbsolutePath();
 		fileInfo.setContentType(URLConnection.guessContentTypeFromName(uploadFilePath));
-		if(hasDateFolder) {
+		if (hasDateFolder) {
 			uploadFilePath = subDirectoryPath + "/" + todayDateStr + "/" + destFile.getName();
-		}
-		else {
+		} else {
 			uploadFilePath = subDirectoryPath + "/" + destFile.getName();
 		}
-		
+
 		fileInfo.setCreateDate(date);
 		fileInfo.setModifyDate(date);
-		
+
 		fileInfo.setDeleteFlag(false);
 		fileInfo.setFileName(destFileName);
 		fileInfo.setSaveFileName(uploadFilePath);
-		
-		int fileId = (int)fileDao.insertFileInfo(fileInfo);
+
+		int fileId = (int) fileDao.insertFileInfo(fileInfo);
 		fileInfo.setId(fileId);
-		
+
 		return fileInfo;
 	}
-	
-	
+
 	@Override
 	public long registerComment(int productId, int reservationInfoId, double score, String comment) {
+
 		Date date = new Date();
 		CommentForInsertAction commentForInsertAction = new CommentForInsertAction();
 		commentForInsertAction.setProductId(productId);
@@ -101,6 +103,7 @@ public class ReviewService implements IRateRegisterService, IImageFileService{
 		commentForInsertAction.setModifyDate(date);
 		return commentDao.insertReservationUserComment(commentForInsertAction);
 	}
+
 	@Override
 	public long registerCommentImage(int reservationInfoId, int reservationUserCommentId, int fileId) {
 		CommentImageForInsertAction commentImageForInsertAction = new CommentImageForInsertAction();
@@ -110,13 +113,10 @@ public class ReviewService implements IRateRegisterService, IImageFileService{
 		return commentDao.insertReservationUserCommentImage(commentImageForInsertAction);
 	}
 
-	
-
 	private boolean readFile(MultipartFile sourceFile, File destFile) {
 		FileOutputStream fos = null;
 		InputStream is = null;
-		try 
-		{
+		try {
 			fos = new FileOutputStream(destFile);
 			is = sourceFile.getInputStream();
 			int readCount = 0;
@@ -127,22 +127,18 @@ public class ReviewService implements IRateRegisterService, IImageFileService{
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return false;
-		}
-		finally {
-			try 
-			{
-				if(is !=null)
-				{
+		} finally {
+			try {
+				if (is != null) {
 					is.close();
 				}
-				if(fos != null)
-				{
+				if (fos != null) {
 					fos.close();
 				}
 			} catch (IOException ie) {
 				ie.printStackTrace();
 			}
-			
+
 		}
 		return true;
 	}
@@ -159,5 +155,33 @@ public class ReviewService implements IRateRegisterService, IImageFileService{
 
 		return nameAndExtension;
 	}
-	
+
+	@Override
+	public List<Comment> getCommentsByReservationInfoId(int reservationInfoId) {
+		List<Comment> comments = commentDao.selectCommentsByReservationInfoId(reservationInfoId);
+		if (comments == null || comments.size() == 0)
+			return null;
+
+		for (Comment c : comments) {
+			c.setCommentImages(commentDao.selectCommentImages(c.getCommentId()));
+		}
+		return comments;
+	}
+
+	@Override
+	public boolean setDeleteFlagOfImageFile(int deleteFlag, int reservationUserCommentImageId) {
+
+		return false;
+	}
+
+	@Override
+	public boolean updateScore(int score, int reservationUserCommentId) {
+		return false;
+	}
+
+	@Override
+	public boolean updateComment(String comment, int reservationUserCommentId) {
+		return false;
+	}
+
 }
