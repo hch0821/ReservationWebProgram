@@ -264,7 +264,7 @@ var Comment = {
 	getRealCommentLength: function(commentImages){
 		var count = 0;
 		for(var i = 0; i < commentImages.length; i++){
-			if(commentImages[i].deleteFlag){
+			if(!commentImages[i].deleteFlag){
 				count++;
 			}
 		}

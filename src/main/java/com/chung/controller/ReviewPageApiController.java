@@ -77,7 +77,7 @@ public class ReviewPageApiController {
 				for (CommentImage originalCommentImage : originalCommentImages) {
 					if (!originalCommentImage.isDeleteFlag()
 							&& !originalCommentImage.getFileName().equals(attachedImage.getOriginalFilename())) {
-						// update originalCommentImage - delete flag == 1
+						// update originalCommentImage -> delete flag = 1
 						if (!reviewService.updateDeleteFlagOfImageFile(1, originalCommentImage.getImageId())) {
 							throw new RuntimeException("Cannot update delete flag of comment image.");
 						}
@@ -91,8 +91,22 @@ public class ReviewPageApiController {
 				}
 			}
 		}
+		
+		List<Comment> resultComments = reviewService.getCommentsByReservationInfoId(reservationInfoId);
 		Map<String, Object> map = new HashMap<>();
-		map.put("success", true);
+		if(resultComments == null || resultComments.size() == 0) {
+			throw new RuntimeException("Cannot find comments.");
+		}
+		Comment resultComment = resultComments.get(0);
+		
+		map.put("comment", resultComment.getComment());
+		map.put("commentId", resultComment.getCommentId());
+		map.put("commentImage", resultComment.getCommentImages());
+		map.put("createDate", resultComment.getCreateDate());
+		map.put("modifyDate", resultComment.getModifyDate());
+		map.put("productId", resultComment.getProductId());
+		map.put("reservationInfoId", resultComment.getReservationInfoId());
+		map.put("score", resultComment.getScore());
 		return map;
 	}
 }
