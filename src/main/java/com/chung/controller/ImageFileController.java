@@ -5,19 +5,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLConnection;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.chung.dto.fileinfo.FileInfo;
 import com.chung.service.IImageFileService;
-import com.chung.service.impl.ReviewService;
 
 @Controller
 public class ImageFileController {

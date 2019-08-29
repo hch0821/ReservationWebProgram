@@ -19,18 +19,20 @@ import static com.chung.dao.ReservationProgramSqls.UPDATE_DELETE_FLAG_OF_FILE_IN
 public class FileDao {
 	private NamedParameterJdbcTemplate jdbc;
 	private SimpleJdbcInsert insertFileInfoAction;
+
 	public FileDao(DataSource dataSource) {
 		insertFileInfoAction = new SimpleJdbcInsert(dataSource).withTableName("file_info")
 				.usingGeneratedKeyColumns("id");
 		jdbc = new NamedParameterJdbcTemplate(dataSource);
 	}
+
 	public long insertFileInfo(FileInfo fileInfo) {
 		SqlParameterSource params = new BeanPropertySqlParameterSource(fileInfo);
 		return insertFileInfoAction.executeAndReturnKey(params).longValue();
 	}
-	
+
 	public int updateDeleteFlagOfFileInfo(int deleteFlag, int reservationUserCommentImageId) {
-		
+
 		Map<String, Integer> params = new HashMap<String, Integer>();
 		params.put("deleteFlag", deleteFlag);
 		params.put("reservationUserCommentImageId", reservationUserCommentImageId);

@@ -143,7 +143,7 @@ public class ReviewService implements IRateRegisterService, IImageFileService {
 		return true;
 	}
 
-	public String[] getFilenameAndExtension(String fileName) {
+	private String[] getFilenameAndExtension(String fileName) {
 		String[] nameAndExtension = { "", "" };
 		int idx = fileName.lastIndexOf('.');
 		if (idx != -1) {

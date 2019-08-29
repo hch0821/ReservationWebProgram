@@ -1,6 +1,5 @@
 package com.chung.dto.comment;
 
-import java.util.Arrays;
 import java.util.List;
 
 //description:	상품평
@@ -56,7 +55,6 @@ public class Comment {
 	public void setCommentId(int commentId) {
 		this.commentId = commentId;
 	}
-
 
 	public List<CommentImage> getCommentImages() {
 		return commentImages;
@@ -147,6 +145,4 @@ public class Comment {
 				+ ", reservationTelephone=" + reservationTelephone + ", score=" + score + "]";
 	}
 
-	
 }
-
