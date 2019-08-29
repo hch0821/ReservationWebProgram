@@ -41,8 +41,6 @@ public class ReviewService implements IRateRegisterService, IImageFileService {
 	@Override
 	public FileInfo uploadCommentImageFile(MultipartFile sourceFile, String subDirectoryPath, boolean hasDateFolder) {
 		FileInfo fileInfo = new FileInfo();
-		System.out.println("업로드 파일 이름: " + sourceFile.getOriginalFilename());
-		System.out.println("파일 크기: " + sourceFile.getSize());
 		File destDirectory = new File(ROOT_DIRECTORY, subDirectoryPath);
 		if (!destDirectory.exists() && !destDirectory.mkdirs()) {
 			return null;

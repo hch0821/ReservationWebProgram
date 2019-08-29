@@ -2,24 +2,24 @@
 <configuration scan="true" scanPeriod="30 seconds">
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <Pattern>%d{HH:mm} %-5level %logger{36} - %msg%n</Pattern>
+            <Pattern>%d{HH:mm:ss} %-5level %logger{36} - %msg%n</Pattern>
         </encoder>
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/tmp/access.log</file>
+        <file>D:/ReservationWebProgram/log/report.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/tmp/access-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>D:/ReservationWebProgram/log/report-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
 
         <encoder>
-            <Pattern>%d{HH:mm} %-5level %logger{36} - %msg%n</Pattern>
+            <Pattern>%d{HH:mm:ss} %-5level %logger{36} - %msg%n</Pattern>
         </encoder>
     </appender>
 
     <logger name="org.springframework" level="info"/>
-    <logger name="kr.or.connect" level="debug"/>
+    <logger name="com.chung" level="debug"/>
 
     <root level="debug">
         <appender-ref ref="CONSOLE"/>
