@@ -260,33 +260,49 @@ var Comment = {
 		joinCount.innerText = comments.length + "건";
 	},
 
+
+	getRealCommentLength: function(commentImages){
+		var count = 0;
+		for(var i = 0; i < commentImages.length; i++){
+			if(commentImages[i].deleteFlag){
+				count++;
+			}
+		}
+		return count;
+	},
+
 	// comments 객체로부터 템플릿 html을 이용하여 댓글 목록을 형성하는 함수
 	updateCommentList: function (comments, showLess) {
 
 		// 사용자가 올린 이미지 추가
 		Handlebars.registerHelper("thumb_area_image", function (commentImages) {
-			if (commentImages.length < 1) {
+			if (this.getRealCommentLength(commentImages) < 1) {
 				return ""; 
-			} else
-			{
-				return "/reserv/commentimage?id="+commentImages[0].imageId;
+			} 
+			var remainedImage = commentImages.filter(function(commentImage){
+				return !commentImage.deleteFlag;
+			});
+			if(!remainedImage){
+				return "";
 			}
-		});
+			return "/reserv/commentimage?id="+remainedImage[0].imageId;
+			
+		}.bind(this));
 
 		// 이미지 개수를 썸네일 오른쪽 하단에 추가
 		Handlebars.registerHelper("thumb_area_image_count", function (
 			commentImages) {
-			return commentImages.length;
-		});
+			return this.getRealCommentLength(commentImages);
+		}.bind(this));
 
 		// 올린 이미지가 없을 경우 이미지 개수를 표시하지 않음
 		Handlebars.registerHelper("thumb_area_style", function (commentImages) {
-			if (commentImages.length < 1) {
+			if (this.getRealCommentLength(commentImages) < 1) {
 				return "display:none;";
 			} else {
 				return "";
 			}
-		});
+		}.bind(this));
 
 		// 평점을 소수점 한자리까지 표시
 		Handlebars.registerHelper("thumb_area_score", function (score) {
@@ -319,12 +335,12 @@ var Comment = {
 		// 사용자가 이미지를 올렸을 경우와 올리지 않았을 경우를 구분하여 className을 변경.
 		Handlebars.registerHelper("thumb_area_image_exist", function (
 			commentImages) {
-			if (commentImages.length < 1) {
+			if (this.getRealCommentLength(commentImages) < 1) {
 				return "review_area no_img";
 			} else {
 				return "review_area";
 			}
-		});
+		}.bind(this));
 
 		var template = document.querySelector("#comment_template").innerText;
 		var ul = document.querySelector(".list_short_review");

@@ -10,5 +10,5 @@ public interface IImageFileService {
 	public final static String ROOT_DIRECTORY = "D:/ReservationWebProgram";
 	public final static String COMMENT_IMAGE_SUB_DIRECTORY = "commentImages";
 	public FileInfo uploadCommentImageFile(MultipartFile imagefile, String subDirectoryPath, boolean hasDateFolder);
-	public boolean setDeleteFlagOfImageFile(int deleteFlag, int reservationUserCommentImageId);
+	public boolean updateDeleteFlagOfImageFile(int deleteFlag, int reservationUserCommentImageId);
 }

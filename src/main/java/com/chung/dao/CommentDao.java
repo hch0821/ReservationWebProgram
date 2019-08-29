@@ -79,8 +79,8 @@ public class CommentDao {
 		return insertReservationUserCommentAction.executeAndReturnKey(params).longValue();
 	}
 	
-	public int updateScoreOfReservationUserComment(int score, int reservationUserCommentId) {
-		Map<String, Integer> params = new HashMap<>();
+	public int updateScoreOfReservationUserComment(double score, int reservationUserCommentId) {
+		Map<String, Object> params = new HashMap<>();
 		params.put("score", score);
 		params.put("reservationUserCommentId", reservationUserCommentId);
 		return jdbc.update(UPDATE_SCORE_OF_RESERVATION_USER_COMMENT, params);

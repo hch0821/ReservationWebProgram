@@ -49,7 +49,7 @@ public class ReviewService implements IRateRegisterService, IImageFileService {
 		}
 
 		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat(".yyyyMMdd.HH.mm.ss.SSSS");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd.HH.mm.ss.SSSS");
 		String todayDatetimeStr = sdf.format(date);
 
 		String[] fileNameAndExtension = getFilenameAndExtension(sourceFile.getOriginalFilename());
@@ -169,19 +169,18 @@ public class ReviewService implements IRateRegisterService, IImageFileService {
 	}
 
 	@Override
-	public boolean setDeleteFlagOfImageFile(int deleteFlag, int reservationUserCommentImageId) {
-
-		return false;
+	public boolean updateDeleteFlagOfImageFile(int deleteFlag, int reservationUserCommentImageId) {
+		return fileDao.updateDeleteFlagOfFileInfo(deleteFlag, reservationUserCommentImageId) == 1;
 	}
 
 	@Override
-	public boolean updateScore(int score, int reservationUserCommentId) {
-		return false;
+	public boolean updateScore(double score, int reservationUserCommentId) {
+		return commentDao.updateScoreOfReservationUserComment(score, reservationUserCommentId) == 1;
 	}
 
 	@Override
 	public boolean updateComment(String comment, int reservationUserCommentId) {
-		return false;
+		return commentDao.updateCommentOfReservationUserComment(comment, reservationUserCommentId) == 1;
 	}
 
 }

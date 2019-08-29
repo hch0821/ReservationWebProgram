@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.chung.dao.FileDao;
 import com.chung.dto.comment.Comment;
 import com.chung.dto.comment.CommentImage;
 import com.chung.dto.fileinfo.FileInfo;
@@ -33,11 +34,10 @@ public class ReviewPageApiController {
 			@RequestParam(value = "productId", required = true) int productId,
 			@RequestParam(value = "score", required = true) double score) {
 
-		List<Comment> comments= reviewService.getCommentsByReservationInfoId(reservationInfoId);
+		List<Comment> comments = reviewService.getCommentsByReservationInfoId(reservationInfoId);
 
-		//신규 댓글 작성
-		if (comments == null) 
-		{
+		// 신규 댓글 작성
+		if (comments == null) {
 			int reservationUserCommentId = (int) reviewService.registerComment(productId, reservationInfoId, score,
 					commentStr);
 			for (MultipartFile attachedImage : attachedImages) {
@@ -46,49 +46,47 @@ public class ReviewPageApiController {
 				}
 				FileInfo uploadedFileInfo = reviewService.uploadCommentImageFile(attachedImage,
 						IImageFileService.COMMENT_IMAGE_SUB_DIRECTORY, true);
-				long commentImageId = reviewService.registerCommentImage(reservationInfoId, reservationUserCommentId,
+				reviewService.registerCommentImage(reservationInfoId, reservationUserCommentId,
 						uploadedFileInfo.getId());
-				System.out.println(uploadedFileInfo);
-				System.out.println("commentImageId : " + commentImageId);
+
 			}
 
 		}
-		
-		//댓글 수정
+
+		// 댓글 수정
 		else {
-			Comment originalComment= comments.get(0);
+			Comment originalComment = comments.get(0);
 			int reservationUserCommentId = originalComment.getCommentId();
-			
-			if(!originalComment.getComment().equals(commentStr)) {
-				//update comment query
-				originalComment.getCommentId();
+
+			// update comment
+			if (!originalComment.getComment().equals(commentStr)
+					&& !reviewService.updateComment(commentStr, reservationUserCommentId)) {
+				throw new RuntimeException("Cannot update comment.");
 			}
-			if(originalComment.getScore() != score) {
-				//update score query
-				originalComment.getCommentId();
+
+			// update score
+			if (originalComment.getScore() != score && !reviewService.updateScore(score, reservationUserCommentId)) {
+				throw new RuntimeException("Cannot update score");
 			}
-			
+
 			List<CommentImage> originalCommentImages = originalComment.getCommentImages();
-		
-			
-			for(MultipartFile attachedImage : attachedImages) {
-				if(attachedImage.getSize() == 0)
-				{
+			for (MultipartFile attachedImage : attachedImages) {
+				if (attachedImage.getSize() == 0) {
 					continue;
 				}
-				for(CommentImage originalCommentImage : originalCommentImages) {
-					if(!originalCommentImage.isDeleteFlag() &&
-						!originalCommentImage.getFileName().equals(attachedImage.getOriginalFilename())) {
+				for (CommentImage originalCommentImage : originalCommentImages) {
+					if (!originalCommentImage.isDeleteFlag()
+							&& !originalCommentImage.getFileName().equals(attachedImage.getOriginalFilename())) {
 						// update originalCommentImage - delete flag == 1
-						
-						originalCommentImage.getImageId();
-						//insert attachedImage
+						if (!reviewService.updateDeleteFlagOfImageFile(1, originalCommentImage.getImageId())) {
+							throw new RuntimeException("Cannot update delete flag of comment image.");
+						}
+
+						// insert new attachedImage
 						FileInfo uploadedFileInfo = reviewService.uploadCommentImageFile(attachedImage,
 								IImageFileService.COMMENT_IMAGE_SUB_DIRECTORY, true);
-						long commentImageId = reviewService.registerCommentImage(reservationInfoId, reservationUserCommentId,
-								uploadedFileInfo.getId());
-						System.out.println(uploadedFileInfo);
-						System.out.println("commentImageId : " + commentImageId);
+						reviewService.registerCommentImage(reservationInfoId,
+								reservationUserCommentId, uploadedFileInfo.getId());
 					}
 				}
 			}
