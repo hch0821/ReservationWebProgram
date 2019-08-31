@@ -1,9 +1,10 @@
 //리뷰 쓰기 페이지를 위한 스크립트
 
 var utils = undefined;
+
 //리뷰 쓰기 뷰 클래스
-function ReviewWriteView(formData) {
-    this.formData = formData;
+function ReviewWriteView(formDataContainer) {
+    this.formDataContainer = formDataContainer;
 }
 
 //별 버튼을 누를 때 동작하는 리스너를 등록하는 함수
@@ -55,13 +56,13 @@ ReviewWriteView.prototype.registerTextAreaListener = function (commentObj) {
 }
 
 // 리뷰 사진 데이터, 썸네일을 모두 지우는 함수
-ReviewWriteView.prototype.resetReviewImageFileOpenInput = function (formData) {
+ReviewWriteView.prototype.resetReviewImageFileOpenInput = function (formDataContainer) {
     var reviewImageFileOpenInput = document.querySelector("#reviewImageFileOpenInput");
     var imageThumbnail = document.querySelector(".item_preview_thumbs .item_thumb")
     reviewImageFileOpenInput.value = "";
     utils.setVisibility(".item_preview_thumbs .item", false);
     imageThumbnail.src = "";
-    formData.set("attachedImage", []);
+    formDataContainer.attachedImage = null;
 }
 
 //리뷰 사진 input, 사진 삭제 버튼 관련 리스너를 등록하는 함수
@@ -74,13 +75,13 @@ ReviewWriteView.prototype.registerReviewPhotoWriteListener = function () {
     reviewImageFileOpenInput.addEventListener("change", function (evt) {
         var image = evt.target.files[0];
         if (!image) {
-            reviewWriteView.resetReviewImageFileOpenInput(reviewWriteView.formData);
+            reviewWriteView.resetReviewImageFileOpenInput(reviewWriteView.formDataContainer);
             return;
         }
 
         if (!validation.validImageType(image)) {
             alert("이미지 파일형식은 JPG 또는 PNG이여야합니다.");
-            reviewWriteView.resetReviewImageFileOpenInput(reviewWriteView.formData);
+            reviewWriteView.resetReviewImageFileOpenInput(reviewWriteView.formDataContainer);
             return;
         }
 
@@ -88,33 +89,21 @@ ReviewWriteView.prototype.registerReviewPhotoWriteListener = function () {
             alert("이미지 크기가 최대 크기인 10MB를 초과했습니다.");
             reviewImageFileOpenInput.value = "";
             utils.setVisibility(".item_preview_thumbs .item", false);
-            reviewWriteView.resetReviewImageFileOpenInput(reviewWriteView.formData);
+            reviewWriteView.resetReviewImageFileOpenInput(reviewWriteView.formDataContainer);
             return;
         }
 
         utils.setVisibility(".item_preview_thumbs .item", true);
         imageThumbnail.src = window.URL.createObjectURL(image);
+        reviewWriteView.formDataContainer.isOriginImageExists = false;
     });
 
     utils.registerClickListener(deleteImageButton, function () {
-        reviewWriteView.resetReviewImageFileOpenInput(reviewWriteView.formData);
+        reviewWriteView.resetReviewImageFileOpenInput(reviewWriteView.formDataContainer);
+        reviewWriteView.formDataContainer.isOriginImageExists = false;
     });
 }
 
-//댓글 이미지 파일의 다운로드 url을 ajax로 요청하고, 결과 데이터를 File 객체로 받는 작업
-//참고 링크 : https://stackoverflow.com/a/41752161
-ReviewWriteView.prototype.getImageFileFromServer = function (fileUrl, fileName, callback) {
-    var oReq = new XMLHttpRequest();
-    oReq.open('GET', fileUrl, true);
-    oReq.responseType = 'blob';
-    oReq.onload = function () {
-        if (this.status == 200) {
-            var imageFile = new File([this.response], fileName);
-            callback(imageFile);
-        }
-    };
-    oReq.send();
-}
 
 //이미 쓴 리뷰가 있다면 불러오는 함수
 ReviewWriteView.prototype.loadPreviousReview = function (displayInfoId, reservationInfoId) {
@@ -162,12 +151,8 @@ ReviewWriteView.prototype.loadPreviousReview = function (displayInfoId, reservat
             commentImage = commentImage[0];
             utils.setVisibility(".item_preview_thumbs .item", true);
             const fileUrl = "/reserv/commentimage?id=" + commentImage.imageId;
-
-            reviewWriteView.getImageFileFromServer(fileUrl, commentImage.fileName, function (imageFile) {
-                reviewWriteView.formData.set("attachedImage", imageFile);
-            })
-
             imageThumbnail.src = fileUrl;
+            reviewWriteView.formDataContainer.isOriginImageExists = true;
         }
         registerButtonText.innerText = "리뷰 수정";
     }, null);
@@ -177,31 +162,32 @@ ReviewWriteView.prototype.loadPreviousReview = function (displayInfoId, reservat
 //리뷰 등록 버튼 클릭 리스너를 등록하는 함수
 ReviewWriteView.prototype.registerAddReviewButton = function (productId, reservationInfoId) {
     var reviewWriteView = this;
-
     var scoreText = document.querySelector(".star_rank");
     var reviewCommentTextArea = document.querySelector(".review_textarea");
     var reviewImageFileOpenInput = document.querySelector("#reviewImageFileOpenInput");
     var validation = Validation.getInstance();
-    var formData = reviewWriteView.formData;
 
     utils.registerClickListener(".bk_btn", function () {
+        var formDataContainer = reviewWriteView.formDataContainer;
+        formDataContainer.resetExceptAttachedImage();
+
         var registerOrModifyStr = document.querySelector(".box_bk_btn .btn_txt").innerText.split(" ")[1];
 
-        if (!formData.get("attachedImage")) {
+        if (!formDataContainer.attachedImage) {
             var files = reviewImageFileOpenInput.files;
             if (files && files.length > 0) {
-                formData.set("attachedImage", files[0]);
+                formDataContainer.attachedImage = files[0];
             }
             else {
-                formData.set("attachedImage", null);
+                formDataContainer.attachedImage = null;
             }
         }
 
-        formData.set("comment", reviewCommentTextArea.value.trim());
-        formData.set("productId", productId);
-        formData.set("score", scoreText.innerText);
-
-        var errorMessages = validation.validateForm(formData, reservationInfoId)
+        formDataContainer.comment = reviewCommentTextArea.value.trim();
+        formDataContainer.productId = productId;
+        formDataContainer.score = scoreText.innerText;
+        formDataContainer.applyFormData();
+        var errorMessages = validation.validateForm(formDataContainer, reservationInfoId)
         if (errorMessages.length > 0) {
             alert("죄송합니다. 다음과 같은 이유로 리뷰 " + registerOrModifyStr + "에 실패하였습니다.\n" + errorMessages.join("\n"));
             return;
@@ -216,10 +202,11 @@ ReviewWriteView.prototype.registerAddReviewButton = function (productId, reserva
                 window.location.href = "/reserv/checkSession";
             } else {
                 alert("알 수 없는 이유로 리뷰 " + registerOrModifyStr + "에 실패하였습니다.");
+                history.go(0);
             }
         };
 
-        oReq.send(reviewWriteView.formData);
+        oReq.send(formDataContainer.formData);
 
     });
 }
@@ -245,6 +232,7 @@ Validation.getInstance = function () {
     return this.instance;
 }
 
+
 //이미지 형식이 png, jpg인지 확인하는 함수
 Validation.prototype.validImageType = function (image) {
     const imageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -258,7 +246,7 @@ Validation.prototype.checkImageSize = function (image) {
 }
 
 //이미지 파일의 유효성을 제외한 폼의 유효성을 검사하는 함수
-Validation.prototype.validateForm = function (formData, reservationInfoId) {
+Validation.prototype.validateForm = function (formDataContainer, reservationInfoId) {
 
     var ERROR_MESSAGE =
     {
@@ -268,9 +256,9 @@ Validation.prototype.validateForm = function (formData, reservationInfoId) {
         RESERVATION_INFO_NOT_VALID: "예약 정보가 올바르지 않습니다."
     };
     var errorMessages = [];
-    var comment = formData.get("comment");
-    var productId = formData.get("productId");
-    var score = formData.get("score");
+    var comment = formDataContainer.comment;
+    var productId = formDataContainer.productId;
+    var score = formDataContainer.score;
     var textLimitRegex = /^[\w|\W]{5,400}$/;  //글자수 : 5~ 400글자 제한
     var positiveNumberRegex = /^\d+$/; //양의 정수인지 확인
     var scoreRegex = /^[1-5]$/; //점수 : 1~5점 제한 (별점에 소수자리를 구현하지 않았으므로 정수만 받도록 함)
@@ -279,20 +267,52 @@ Validation.prototype.validateForm = function (formData, reservationInfoId) {
         errorMessages.push(ERROR_MESSAGE.COMMENT_NOT_VALID);
     }
 
-    if (!score || !score.match(scoreRegex)) {
+    if (!score || !(score + "").match(scoreRegex)) {
         errorMessages.push(ERROR_MESSAGE.SCORE_NOT_VALID);
     }
 
-    if (!productId || !productId.match(positiveNumberRegex)) {
+    if (!productId || !(productId + "").match(positiveNumberRegex)) {
         errorMessages.push(ERROR_MESSAGE.PRODUCTINFO_NOT_VALID);
     }
 
-    if (!reservationInfoId || !reservationInfoId.match(positiveNumberRegex)) {
+    if (!reservationInfoId || !(reservationInfoId + "").match(positiveNumberRegex)) {
         errorMessages.push(ERROR_MESSAGE.RESERVATION_INFO_NOT_VALID);
     }
     return errorMessages;
 }
 
+// IE 호환을 위한 FormData 컨테이너 클래스
+// IE엔 FormData의 append 메소드만 지원하고, Chrome에서만 지원하는 get, set 메소드를 사용할 수 없기에 이 클래스를 생성함.
+// ===멤버변수===
+// comment : 댓글 문자열
+// productId : 상품 id
+// score    : 상품 평점
+// attachedImage : 첨부 이미지
+// isOriginImageExists : 기존(수정하기 전)과 같은 이미지를 삭제하지 않았고, 다른 이미지를 첨부하지 않은 경우 true, 
+//                       그 반대의 경우엔 false
+// ===============
+function FormDataContainer(formData) {
+}
+FormDataContainer.getInstance = function () {
+    if (!this.instance) {
+        this.instance = new FormDataContainer();
+        this.instance.formData = new FormData();
+    }
+    return this.instance;
+}
+
+FormDataContainer.prototype.resetExceptAttachedImage = function () {
+    this.comment = undefined;
+    this.productId = undefined;
+    this.score = undefined;
+}
+FormDataContainer.prototype.applyFormData = function () {
+    this.formData.append("comment", this.comment);
+    this.formData.append("productId", this.productId);
+    this.formData.append("score", this.score);
+    this.formData.append("attachedImage", this.attachedImage);
+    this.formData.append("isOriginImageExists", this.isOriginImageExists);
+}
 
 // 사이트가 처음 로드되었을 때 호출
 window.addEventListener('load', function () {
@@ -305,7 +325,7 @@ window.addEventListener('load', function () {
         return;
     }
 
-    var reviewWriteView = new ReviewWriteView(new FormData());
+    var reviewWriteView = new ReviewWriteView(FormDataContainer.getInstance());
 
     var reservationInfoId = utils.getParameterByName("reservationInfoId");
     var displayInfoId = utils.getParameterByName("displayInfoId");

@@ -32,7 +32,9 @@ public class ReviewPageApiController {
 			@RequestParam(value = "attachedImage", required = false) List<MultipartFile> attachedImage,
 			@RequestParam(value = "comment", required = true) String commentStr,
 			@RequestParam(value = "productId", required = true) int productId,
-			@RequestParam(value = "score", required = true) int score) {
+			@RequestParam(value = "score", required = true) int score,
+			@RequestParam(value = "isOriginImageExists", required = true) boolean isOriginImageExists
+			) {
 
 		List<Comment> comments = reviewService.getCommentsByReservationInfoId(reservationInfoId);
 
@@ -44,7 +46,7 @@ public class ReviewPageApiController {
 		// 리뷰 수정
 		else {
 			Comment originalComment = comments.get(0);
-			modifyOriginalReview(originalComment, commentStr, score, attachedImage);
+			modifyOriginalReview(originalComment, commentStr, score, attachedImage, isOriginImageExists);
 		}
 
 		return getResultReviewMap(reservationInfoId);
@@ -66,7 +68,7 @@ public class ReviewPageApiController {
 
 	// 리뷰 수정
 	private void modifyOriginalReview(Comment originalComment, String newCommentStr, int newScore,
-			List<MultipartFile> newAttachedImages) {
+			List<MultipartFile> newAttachedImages, boolean isOriginImageExists) {
 		int reservationUserCommentId = originalComment.getCommentId();
 		int reservationInfoId = originalComment.getReservationInfoId();
 		
@@ -81,8 +83,14 @@ public class ReviewPageApiController {
 			throw new RuntimeException("Cannot update score");
 		}
 
-		List<CommentImage> originalCommentImages = originalComment.getCommentImages();
+		//이전 이미지가 그대로 보존되어있을 경우
+		if(isOriginImageExists) {
+			return;
+		}
 		
+		//아래 코드부터는 이전 이미지가 사라지고 다른 이미지로 대체되거나 아예 첨부파일이 없는 경우의 작업.
+		
+		List<CommentImage> originalCommentImages = originalComment.getCommentImages();
 		//아무 이미지가 올라오지 않았을 경우 
 		//deleteFlag가 false인 commentImage를 찾아서 deleteFlag를 true로 바꾸고 해당 파일을 삭제함.
 		if(newAttachedImages.size() ==0 || (newAttachedImages.size() == 1 && newAttachedImages.get(0).getSize() == 0)) {
