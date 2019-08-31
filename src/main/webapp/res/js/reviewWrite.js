@@ -45,7 +45,7 @@ ReviewWriteView.prototype.registerTextAreaListener = function (commentObj) {
     });
 
     reviewCommentTextArea.addEventListener("focusout", function () {
-        if (reviewCommentBlockerAnchor.innerText.trim() == reviewCommentTextArea.value.trim()) {
+        if (reviewCommentBlockerAnchor.innerText=="" || reviewCommentBlockerAnchor.innerText.trim() == reviewCommentTextArea.value.trim()) {
             utils.setVisibility(reviewCommentBlockerAnchor, true);
         }
     });
@@ -80,16 +80,18 @@ ReviewWriteView.prototype.registerReviewPhotoWriteListener = function () {
         }
 
         if (!validation.validImageType(image)) {
-            alert("이미지 파일형식은 JPG 또는 PNG이여야합니다.");
-            reviewWriteView.resetReviewImageFileOpenInput(reviewWriteView.formDataContainer);
+            utils.showErrorMessage("이미지 파일형식은 JPG 또는 PNG이여야합니다.", function(){
+                reviewWriteView.resetReviewImageFileOpenInput(reviewWriteView.formDataContainer);
+            });
             return;
         }
 
         if (!validation.checkImageSize(image)) {
-            alert("이미지 크기가 최대 크기인 10MB를 초과했습니다.");
-            reviewImageFileOpenInput.value = "";
-            utils.setVisibility(".item_preview_thumbs .item", false);
-            reviewWriteView.resetReviewImageFileOpenInput(reviewWriteView.formDataContainer);
+            utils.showErrorMessage("이미지 크기가 최대 크기인 10MB를 초과했습니다.", function(){
+                reviewImageFileOpenInput.value = "";
+                utils.setVisibility(".item_preview_thumbs .item", false);
+                reviewWriteView.resetReviewImageFileOpenInput(reviewWriteView.formDataContainer);
+            });
             return;
         }
 
@@ -126,6 +128,7 @@ ReviewWriteView.prototype.loadPreviousReview = function (displayInfoId, reservat
 
         titleSpan.innerText = jsonObj.displayInfo.productDescription;
         var comments = jsonObj.comments;
+        reviewWriteView.formDataContainer.isOriginImageExists = false;
         if (!comments) {
             registerButtonText.innerText = "리뷰 등록";
             return;
@@ -139,7 +142,9 @@ ReviewWriteView.prototype.loadPreviousReview = function (displayInfoId, reservat
         }
         var commentObj = comments[0];
         var commentImage = undefined;
-        starInputs[commentObj.score - 1].click();
+        if(commentObj.score > 1){
+            starInputs[commentObj.score - 1].click();
+        }
         reviewCommentBlockerAnchor.innerText = commentObj.comment;
         reviewCommentTextArea.value = commentObj.comment;
         document.querySelector(".cur_text_length").innerText = reviewCommentTextArea.value.length;
@@ -189,7 +194,7 @@ ReviewWriteView.prototype.registerAddReviewButton = function (productId, reserva
         formDataContainer.applyFormData();
         var errorMessages = validation.validateForm(formDataContainer, reservationInfoId)
         if (errorMessages.length > 0) {
-            alert("죄송합니다. 다음과 같은 이유로 리뷰 " + registerOrModifyStr + "에 실패하였습니다.\n" + errorMessages.join("\n"));
+            utils.showErrorMessage("죄송합니다. 다음과 같은 이유로 리뷰 " + registerOrModifyStr + "에 실패하였습니다.\n\n" + errorMessages.join("\n"), null);
             return;
         }
 
@@ -198,11 +203,13 @@ ReviewWriteView.prototype.registerAddReviewButton = function (productId, reserva
         oReq.open("POST", "/reserv/api/reservations/" + reservationInfoId + "/comments", true);
         oReq.onload = function () {
             if (oReq.status == 200) {
-                alert("리뷰가 성공적으로 " + registerOrModifyStr + "되었습니다.");
-                window.location.href = "/reserv/checkSession";
+                utils.showErrorMessage("리뷰가 성공적으로 " + registerOrModifyStr + "되었습니다.", function(){
+                    window.location.href = "/reserv/checkSession";
+                });
             } else {
-                alert("알 수 없는 이유로 리뷰 " + registerOrModifyStr + "에 실패하였습니다.");
-                history.go(0);
+                utils.showErrorMessage("알 수 없는 이유로 리뷰 " + registerOrModifyStr + "에 실패하였습니다.", function(){
+                    history.go(0);
+                });
             }
         };
 
@@ -291,12 +298,11 @@ Validation.prototype.validateForm = function (formDataContainer, reservationInfo
 // isOriginImageExists : 기존(수정하기 전)과 같은 이미지를 삭제하지 않았고, 다른 이미지를 첨부하지 않은 경우 true, 
 //                       그 반대의 경우엔 false
 // ===============
-function FormDataContainer(formData) {
+function FormDataContainer() {
 }
 FormDataContainer.getInstance = function () {
     if (!this.instance) {
         this.instance = new FormDataContainer();
-        this.instance.formData = new FormData();
     }
     return this.instance;
 }
@@ -307,6 +313,7 @@ FormDataContainer.prototype.resetExceptAttachedImage = function () {
     this.score = undefined;
 }
 FormDataContainer.prototype.applyFormData = function () {
+    this.formData = new FormData();
     this.formData.append("comment", this.comment);
     this.formData.append("productId", this.productId);
     this.formData.append("score", this.score);
@@ -320,8 +327,9 @@ window.addEventListener('load', function () {
 
     var emailText = document.querySelector(".btn_my").innerText;
     if (emailText.trim() == "예약확인") {
-        this.alert("로그인이 필요합니다.")
-        window.location.href = "/reserv/bookinglogin"
+        utils.showErrorMessage("로그인이 필요합니다.", function(){
+            window.location.href = "/reserv/bookinglogin";
+        });
         return;
     }
 
