@@ -11,6 +11,8 @@ function getDisplayInfoResponse(displayInfoId) {
 		var averageScore = jsonObj.averageScore;
 		Comment.updateAverageScore(averageScore, comments);
 		Comment.updateCommentList(comments, false);
+
+		document.querySelector(".title").innerText = jsonObj.displayInfo.productDescription;
 	})
 	oReq.open("GET", "/reserv/api/products/" + displayInfoId);
 	oReq.send();

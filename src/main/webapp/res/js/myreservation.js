@@ -162,7 +162,7 @@ ReservationConfirmView.prototype.initCardData = function() {
         var buttonStr = "";
         switch (type) {
             case ReservationInfo.TYPE_LIST.USED:
-                buttonStr = "리뷰 남기기";
+                buttonStr = "리뷰 등록/수정";
                 break;
             case ReservationInfo.TYPE_LIST.WILL_BE_USED:
                 buttonStr = "취소";
@@ -298,7 +298,8 @@ ReservationConfirmView.prototype.initCancelAndCommentButton = function() {
             }
             clickedReservationInfo = clickedReservationInfo[0];
 
-            window.location.href = "/reserv/reviewWrite?reservationEmail=" + clickedReservationInfo.reservationEmail;
+            window.location.href = "/reserv/reviewWrite?reservationInfoId=" + clickedReservationInfo.id + 
+            "&displayInfoId="+clickedReservationInfo.displayInfoId;
         });
     }.bind(this));
 }

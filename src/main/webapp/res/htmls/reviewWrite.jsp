@@ -16,7 +16,7 @@
 
 <body>
 	<div id="container">
-		<div class="header"><!--fade-->
+		<div class="header fade">
 			<header class="header_tit">
 				<h1 class="logo">
 					<a href="/reserv/" class="lnk_logo" title="네이버"> <span class="spr_bi ico_n_logo">네이버</span> </a>
@@ -35,10 +35,15 @@
 			<div class="ct_wrap">
 				<div class="top_title review_header">
 					<a href="javascript:void(0);" class="btn_back" title="이전 화면으로 이동"> <i class="fn fn-backward1"></i> </a>
-					<h2><span class="title">클림트 인사이드</span></h2>
+					<div>
+						<h4><span class="title" style="text-align: center;"></span></h4>
+					</div>
+
 				</div>
+				
 				<!-- 리뷰 별점 -->
 				<div class="write_act">
+					
 					<p class="title_star">별점과 이용경험을 남겨주세요.</p>
 					<div class="review_rating rating_point">
 						<div class="rating">
@@ -47,7 +52,7 @@
 							<span class="span"></span>
 							<input type="checkbox" name="rating3" value="2" class="rating_rdo" title="2점">
 							<span class="span"></span>
-							<input type="checkbox" name="rating4" value="3" class="rating_rdo" title="3점" >
+							<input type="checkbox" name="rating4" value="3" class="rating_rdo" title="3점">
 							<span class="span"></span>
 							<input type="checkbox" name="rating5" value="4" class="rating_rdo" title="4점">
 							<span class="span"></span>
@@ -72,7 +77,7 @@
 						</span>
 						<span class="left_space">(단, 리뷰 포인트는 ID 당 1일 최대 5건까지 지급됩니다.)</span>
 					</a>
-					<textarea cols="30" rows="10" class="review_textarea"></textarea>
+					<textarea cols="30" rows="10" class="review_textarea" maxlength="400"></textarea>
 				</div>
 				<!-- //리뷰 입력 -->
 
@@ -83,9 +88,9 @@
 							<i class="fn fn-image1" aria-hidden="true"></i>
 							<span class="text_add_photo">사진 추가</span>
 						</label>
-						<input type="file" class="hidden_input" id="reviewImageFileOpenInput" accept="image/*" multiple name="attachedImage">
+						<input type="file" class="hidden_input" id="reviewImageFileOpenInput" accept="image/png, image/jpeg" name="attachedImage">
 						<div class="guide_review">
-							<span>0</span>/400
+							<span class="cur_text_length">0</span>/400
 							<span>(최소5자이상)</span>
 						</div>
 					</div>
@@ -98,7 +103,7 @@
 									<a href="javascript:void(0);" class="anchor">
 										<span class="spr_book ico_del">삭제</span>
 									</a>
-									<img src="http://naverbooking.phinf.naver.net/20170306_3/1488772023601A4195_JPEG/image.jpg?type=f300_300" width="130" alt="" class="item_thumb">
+									<img src="" width="130" alt="" class="item_thumb">
 									<span class="img_border"></span>
 								</li>
 							</ul>
@@ -126,5 +131,7 @@
 			<span class="copyright">© NAVER Corp.</span>
 		</div>
 	</footer>
+	<script type="text/javascript" src='/reserv/res/js/utils.js'></script>
+	<script type="text/javascript" src="/reserv/res/js/reviewWrite.js"></script>
 </body>
 </html>

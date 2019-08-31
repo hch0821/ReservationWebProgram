@@ -23,7 +23,7 @@ Utils.prototype.getParameterByName = function(name)
 		/\+/g, " "));
 }
 
-// AJAX 요청을 하는 함수
+// JSON 형식으로 AJAX 요청을 하는 함수
 // method : 'POST', 'GET'...
 Utils.prototype.requestAjax = function(method, url, loadListener, object) {
 	var oReq = new XMLHttpRequest();
@@ -52,6 +52,11 @@ Utils.prototype.scrollToTop = function(){
 // 이전 사이트로 이동하는 함수
 Utils.prototype.tothePreviousSite = function() {
 	history.go(-1);
+}
+
+// 이전 사이트의 주소를 반환하는 함수
+Utils.prototype.getPreviousSiteUrl = function(){
+	return document.referrer;
 }
 
 // click 리스너를 등록하는 함수
@@ -190,4 +195,13 @@ Utils.prototype.getPriceNumberString = function(number) {
 		}
 	}
 	return numberArray.join('');
+}
+
+//에러 메시지를 띄우는 함수
+Utils.prototype.showErrorMessage = function(msg, callback)
+{
+	alert(msg);
+	if(callback){
+		callback();
+	}
 }

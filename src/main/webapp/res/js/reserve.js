@@ -352,7 +352,7 @@ ReservationInfo.prototype.validateRegisterInfo = function(displayInfo, productPr
 	this.registerReservationInfo(displayInfo, productPrices);
 
 	var errorMessages = [];
-	var telRegex = /01[01789]-\d{3,4}-\d{4}/; // 전화번호 regex
+	var telRegex = /^01[01789]-\d{3,4}-\d{4}$/; // 전화번호 regex
 	var emailRegex = /^[\w+_]\w+@\w+\.\w+(\.\w+)?$/; // 이메일 regex
 	if (this.reservationName == "") {
 		errorMessages.push(ReservationInfo.ERROR_MESSAGE.NAME_EMPTY);

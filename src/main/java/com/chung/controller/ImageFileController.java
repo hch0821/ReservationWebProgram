@@ -12,14 +12,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.chung.service.IImageFileService;
-
+//외부 경로에 있는 이미지 파일을 스트림으로 읽어들여 클라이언트에게 뿌려주는 컨트롤러
+// /img/, /img_map/, /commentImages/에 있는 이미지 파일들 해당.
 @Controller
 public class ImageFileController {
+
+	public final static String ROOT_DIRECTORY = "D:/ReservationWebProgram";
+
 	// /reserv/image?path=PATH
 	@GetMapping(path = "/image")
 	public void getImage(HttpServletResponse response, @RequestParam(name = "path", required = true) String path) {
-		File file = new File(IImageFileService.ROOT_DIRECTORY, path);
+		File file = new File(ROOT_DIRECTORY, path);
 		if (!file.exists()) {
 			response.setStatus(404);
 			return;
@@ -38,8 +41,7 @@ public class ImageFileController {
 		writeFile(response, file);
 	}
 
-	private void writeFile(HttpServletResponse response, File file) 
-	{
+	private void writeFile(HttpServletResponse response, File file) {
 		FileInputStream fis = null;
 		OutputStream out = null;
 		try {

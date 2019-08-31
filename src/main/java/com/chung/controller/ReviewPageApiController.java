@@ -15,9 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.chung.dto.comment.Comment;
 import com.chung.dto.comment.CommentImage;
 import com.chung.dto.fileinfo.FileInfo;
-import com.chung.service.IImageFileService;
 import com.chung.service.impl.ReviewService;
 
+//리뷰 쓰기 페이지를 위한 컨트롤러
 @RestController
 @RequestMapping(path = "/api")
 public class ReviewPageApiController {
@@ -25,83 +25,116 @@ public class ReviewPageApiController {
 	@Autowired
 	ReviewService reviewService;
 
+	//리뷰 등록 또는 수정
 	@PostMapping(value = "/reservations/{reservationInfoId}/comments")
-	public Map<String, Object> getCommentResponse(
+	public Map<String, Object> getReviewResponse(
 			@PathVariable(required = true, name = "reservationInfoId") int reservationInfoId,
-			@RequestParam(value = "attachedImage", required = false) List<MultipartFile> attachedImages,
+			@RequestParam(value = "attachedImage", required = false) List<MultipartFile> attachedImage,
 			@RequestParam(value = "comment", required = true) String commentStr,
 			@RequestParam(value = "productId", required = true) int productId,
-			@RequestParam(value = "score", required = true) double score) {
+			@RequestParam(value = "score", required = true) int score) {
 
 		List<Comment> comments = reviewService.getCommentsByReservationInfoId(reservationInfoId);
 
-		// 신규 댓글 작성
+		// 신규 리뷰 작성
 		if (comments == null) {
-			addNewComment(productId, reservationInfoId, score, commentStr, attachedImages);
+			addNewReview(productId, reservationInfoId, score, commentStr, attachedImage);
 		}
 
-		// 댓글 수정
+		// 리뷰 수정
 		else {
 			Comment originalComment = comments.get(0);
-			modifyOriginalComment(originalComment, commentStr, score, attachedImages);
+			modifyOriginalReview(originalComment, commentStr, score, attachedImage);
 		}
 
-		return getResultCommentMap(reservationInfoId);
+		return getResultReviewMap(reservationInfoId);
 	}
 
-	private void addNewComment(int productId, int reservationInfoId, double score, String commentStr,
+	// 신규 리뷰 작성
+	private void addNewReview(int productId, int reservationInfoId, int score, String commentStr,
 			List<MultipartFile> attachedImages) {
-		int reservationUserCommentId = (int) reviewService.registerComment(productId, reservationInfoId, score,
+		int reservationUserCommentId = (int) reviewService.registerCommentAndScore(productId, reservationInfoId, score,
 				commentStr);
 		for (MultipartFile attachedImage : attachedImages) {
 			if (attachedImage.getSize() == 0) {
 				continue;
 			}
-			FileInfo uploadedFileInfo = reviewService.uploadCommentImageFile(attachedImage,
-					IImageFileService.COMMENT_IMAGE_SUB_DIRECTORY, true);
+			FileInfo uploadedFileInfo = reviewService.uploadCommentImageFile(attachedImage, true);
 			reviewService.registerCommentImage(reservationInfoId, reservationUserCommentId, uploadedFileInfo.getId());
 		}
 	}
 
-	private void modifyOriginalComment(Comment originalComment, String newCommentStr, double newScore,
+	// 리뷰 수정
+	private void modifyOriginalReview(Comment originalComment, String newCommentStr, int newScore,
 			List<MultipartFile> newAttachedImages) {
 		int reservationUserCommentId = originalComment.getCommentId();
 		int reservationInfoId = originalComment.getReservationInfoId();
-		// update comment
+		
+		// 댓글 수정
 		if (!originalComment.getComment().equals(newCommentStr)
 				&& !reviewService.updateComment(newCommentStr, reservationUserCommentId)) {
 			throw new RuntimeException("Cannot update comment.");
 		}
 
-		// update score
+		// 점수 수정
 		if (originalComment.getScore() != newScore && !reviewService.updateScore(newScore, reservationUserCommentId)) {
 			throw new RuntimeException("Cannot update score");
 		}
 
 		List<CommentImage> originalCommentImages = originalComment.getCommentImages();
+		
+		//아무 이미지가 올라오지 않았을 경우 
+		//deleteFlag가 false인 commentImage를 찾아서 deleteFlag를 true로 바꾸고 해당 파일을 삭제함.
+		if(newAttachedImages.size() ==0 || (newAttachedImages.size() == 1 && newAttachedImages.get(0).getSize() == 0)) {
+			for (CommentImage originalCommentImage : originalCommentImages) {
+				if (!originalCommentImage.isDeleteFlag()) {
+					deleteCommentImage(originalCommentImage);
+				}
+			}
+			return;
+		}
+		
+		//이미지가 한 개라도 올라왔다면
 		for (MultipartFile attachedImage : newAttachedImages) {
 			if (attachedImage.getSize() == 0) {
 				continue;
 			}
+			
+			//기존에 있던 이미지와 동일한 이미지가 아니라면 해당 이미지의 deleteFlag를 true로 바꾸고 해당 파일을 삭제함.
 			for (CommentImage originalCommentImage : originalCommentImages) {
 				if (!originalCommentImage.isDeleteFlag()
 						&& !originalCommentImage.getFileName().equals(attachedImage.getOriginalFilename())) {
-					// update originalCommentImage -> delete flag = 1
-					if (!reviewService.updateDeleteFlagOfImageFile(1, originalCommentImage.getImageId())) {
-						throw new RuntimeException("Cannot update delete flag of comment image.");
-					}
-
-					// insert new attachedImage
-					FileInfo uploadedFileInfo = reviewService.uploadCommentImageFile(attachedImage,
-							IImageFileService.COMMENT_IMAGE_SUB_DIRECTORY, true);
-					reviewService.registerCommentImage(reservationInfoId, reservationUserCommentId,
-							uploadedFileInfo.getId());
+					deleteCommentImage(originalCommentImage);
 				}
 			}
+			
+			// 기존에 있던 이미지와 동일한 이미지가 아니라면 
+			for (CommentImage originalCommentImage : originalCommentImages) {
+				if (!originalCommentImage.isDeleteFlag() && originalCommentImage.getFileName().equals(attachedImage.getOriginalFilename())) {
+					return; //동일한 이미지(이미 존재하는 이미지)이면 return
+				}
+			}
+			
+			//파일을 업로드하고 새로 db에 이미지를 등록함 .
+			FileInfo uploadedFileInfo = reviewService.uploadCommentImageFile(attachedImage, true);
+			reviewService.registerCommentImage(reservationInfoId, reservationUserCommentId, uploadedFileInfo.getId());
+			
 		}
 	}
 
-	private Map<String, Object> getResultCommentMap(int reservationInfoId) {
+	//이미지의 deleteFlag를 true로 만들고 실제 파일까지 삭제하는 함수
+	private void deleteCommentImage(CommentImage commentImage) {
+		// update originalCommentImage -> delete flag = 1
+		if (!reviewService.updateDeleteFlagOfCommentImageFile(1, commentImage.getImageId())) {
+			throw new RuntimeException("Cannot update delete flag of comment image.");
+		}
+		//delete commentImage file
+		if(!reviewService.deleteCommentImageFile(commentImage)) {
+			throw new RuntimeException("Cannot delete the commentImage");
+		}
+	}
+	
+	private Map<String, Object> getResultReviewMap(int reservationInfoId) {
 		List<Comment> resultComments = reviewService.getCommentsByReservationInfoId(reservationInfoId);
 		Map<String, Object> map = new HashMap<>();
 		if (resultComments == null || resultComments.size() == 0) {

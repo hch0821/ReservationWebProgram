@@ -1,5 +1,7 @@
 package com.chung.service.impl;
 
+//리뷰 쓰기 서비스
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,13 +19,13 @@ import com.chung.dao.CommentDao;
 import com.chung.dao.FileDao;
 import com.chung.dto.comment.Comment;
 import com.chung.dto.comment.CommentForInsertAction;
+import com.chung.dto.comment.CommentImage;
 import com.chung.dto.comment.CommentImageForInsertAction;
 import com.chung.dto.fileinfo.FileInfo;
-import com.chung.service.IImageFileService;
 import com.chung.service.IRateRegisterService;
 
 @Service
-public class ReviewService implements IRateRegisterService, IImageFileService {
+public class ReviewService implements IRateRegisterService {
 
 	@Autowired
 	CommentDao commentDao;
@@ -38,10 +40,20 @@ public class ReviewService implements IRateRegisterService, IImageFileService {
 		}
 	}
 
+	// 댓글 이미지 파일을 삭제하는 함수
 	@Override
-	public FileInfo uploadCommentImageFile(MultipartFile sourceFile, String subDirectoryPath, boolean hasDateFolder) {
+	public boolean deleteCommentImageFile(CommentImage commentImage) {
+		File file = new File(ROOT_DIRECTORY, commentImage.getSaveFileName());
+		if (!file.exists())
+			return false;
+		return file.delete();
+	}
+
+	// 댓글 이미지 파일을 업로드하고 DB에 해당 파일 정보를 등록하는 함수
+	@Override
+	public FileInfo uploadCommentImageFile(MultipartFile sourceFile, boolean hasDateFolder) {
 		FileInfo fileInfo = new FileInfo();
-		File destDirectory = new File(ROOT_DIRECTORY, subDirectoryPath);
+		File destDirectory = new File(ROOT_DIRECTORY, COMMENT_IMAGE_SUB_DIRECTORY);
 		if (!destDirectory.exists() && !destDirectory.mkdirs()) {
 			return null;
 		}
@@ -70,9 +82,9 @@ public class ReviewService implements IRateRegisterService, IImageFileService {
 		String uploadFilePath = destFile.getAbsolutePath();
 		fileInfo.setContentType(URLConnection.guessContentTypeFromName(uploadFilePath));
 		if (hasDateFolder) {
-			uploadFilePath = subDirectoryPath + "/" + todayDateStr + "/" + destFile.getName();
+			uploadFilePath = COMMENT_IMAGE_SUB_DIRECTORY + "/" + todayDateStr + "/" + destFile.getName();
 		} else {
-			uploadFilePath = subDirectoryPath + "/" + destFile.getName();
+			uploadFilePath = COMMENT_IMAGE_SUB_DIRECTORY + "/" + destFile.getName();
 		}
 
 		fileInfo.setCreateDate(date);
@@ -88,8 +100,9 @@ public class ReviewService implements IRateRegisterService, IImageFileService {
 		return fileInfo;
 	}
 
+	// 댓글과 점수를 DB에 등록하는 함수
 	@Override
-	public long registerComment(int productId, int reservationInfoId, double score, String comment) {
+	public long registerCommentAndScore(int productId, int reservationInfoId, int score, String comment) {
 
 		Date date = new Date();
 		CommentForInsertAction commentForInsertAction = new CommentForInsertAction();
@@ -102,6 +115,7 @@ public class ReviewService implements IRateRegisterService, IImageFileService {
 		return commentDao.insertReservationUserComment(commentForInsertAction);
 	}
 
+	// 댓글 이미지를 DB에 등록하는 함수
 	@Override
 	public long registerCommentImage(int reservationInfoId, int reservationUserCommentId, int fileId) {
 		CommentImageForInsertAction commentImageForInsertAction = new CommentImageForInsertAction();
@@ -111,6 +125,7 @@ public class ReviewService implements IRateRegisterService, IImageFileService {
 		return commentDao.insertReservationUserCommentImage(commentImageForInsertAction);
 	}
 
+	// 실제로 파일을 저장하는 함수
 	private boolean readFile(MultipartFile sourceFile, File destFile) {
 		FileOutputStream fos = null;
 		InputStream is = null;
@@ -141,6 +156,7 @@ public class ReviewService implements IRateRegisterService, IImageFileService {
 		return true;
 	}
 
+	// 파일명과 확장명을 분리해서 반환하는 함수
 	private String[] getFilenameAndExtension(String fileName) {
 		String[] nameAndExtension = { "", "" };
 		int idx = fileName.lastIndexOf('.');
@@ -154,6 +170,7 @@ public class ReviewService implements IRateRegisterService, IImageFileService {
 		return nameAndExtension;
 	}
 
+	// 예약 id를 가지고 댓글을 조회하는 함수
 	@Override
 	public List<Comment> getCommentsByReservationInfoId(int reservationInfoId) {
 		List<Comment> comments = commentDao.selectCommentsByReservationInfoId(reservationInfoId);
@@ -166,19 +183,22 @@ public class ReviewService implements IRateRegisterService, IImageFileService {
 		return comments;
 	}
 
+	// DB에서 점수 정보를 갱신하는 함수
 	@Override
-	public boolean updateDeleteFlagOfImageFile(int deleteFlag, int reservationUserCommentImageId) {
-		return fileDao.updateDeleteFlagOfFileInfo(deleteFlag, reservationUserCommentImageId) == 1;
-	}
-
-	@Override
-	public boolean updateScore(double score, int reservationUserCommentId) {
+	public boolean updateScore(int score, int reservationUserCommentId) {
 		return commentDao.updateScoreOfReservationUserComment(score, reservationUserCommentId) == 1;
 	}
 
+	// DB에서 댓글 정보를 갱신하는 함수
 	@Override
 	public boolean updateComment(String comment, int reservationUserCommentId) {
 		return commentDao.updateCommentOfReservationUserComment(comment, reservationUserCommentId) == 1;
+	}
+
+	// DB에서 댓글 이미지의 deleteFlag를 갱신하는 함수
+	@Override
+	public boolean updateDeleteFlagOfCommentImageFile(int deleteFlag, int reservationUserCommentImageId) {
+		return fileDao.updateDeleteFlagOfFileInfo(deleteFlag, reservationUserCommentImageId) == 1;
 	}
 
 }

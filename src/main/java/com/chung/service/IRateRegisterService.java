@@ -2,16 +2,30 @@ package com.chung.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.chung.dto.comment.Comment;
+import com.chung.dto.comment.CommentImage;
+import com.chung.dto.fileinfo.FileInfo;
 
+//상품 평가 등록 서비스
 public interface IRateRegisterService {
-	public long registerComment(int productId, int reservationInfoId, double score, String comment);
+	public final static String ROOT_DIRECTORY = "D:/ReservationWebProgram";
+	public final static String COMMENT_IMAGE_SUB_DIRECTORY = "commentImages";
 
-	public long registerCommentImage(int reservationInfoId, int reservationUserCommentId, int fileId);
+	public long registerCommentAndScore(int productId, int reservationInfoId, int score, String comment); // 댓글, 점수 등록
 
-	public List<Comment> getCommentsByReservationInfoId(int reservationInfoId);
+	public long registerCommentImage(int reservationInfoId, int reservationUserCommentId, int fileId); // 댓글 이미지 등록
 
-	public boolean updateScore(double score, int reservationUserCommentId);
+	public List<Comment> getCommentsByReservationInfoId(int reservationInfoId); // 예약 id로 댓글 찾기
 
-	public boolean updateComment(String comment, int reservationUserCommentId);
+	public boolean updateScore(int score, int reservationUserCommentId); // 점수 수정
+
+	public boolean updateComment(String comment, int reservationUserCommentId); // 댓글 수정
+
+	public FileInfo uploadCommentImageFile(MultipartFile imagefile, boolean hasDateFolder); // 댓글 이미지 수정
+
+	public boolean updateDeleteFlagOfCommentImageFile(int deleteFlag, int reservationUserCommentImageId); // 댓글 이미지의  delete flag 수정
+
+	boolean deleteCommentImageFile(CommentImage commentImage); // 댓글 이미지 파일 삭제
 }
