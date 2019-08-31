@@ -45,7 +45,11 @@ ReviewWriteView.prototype.registerTextAreaListener = function (commentObj) {
     });
 
     reviewCommentTextArea.addEventListener("focusout", function () {
-        if (reviewCommentBlockerAnchor.innerText=="" || reviewCommentBlockerAnchor.innerText.trim() == reviewCommentTextArea.value.trim()) {
+
+        var textAreaText = reviewCommentTextArea.value.trim();
+        var anchorText = reviewCommentBlockerAnchor.innerText.trim();
+
+        if (textAreaText=="" || anchorText == textAreaText) {
             utils.setVisibility(reviewCommentBlockerAnchor, true);
         }
     });
