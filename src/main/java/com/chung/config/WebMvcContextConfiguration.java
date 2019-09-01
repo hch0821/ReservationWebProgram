@@ -59,7 +59,6 @@ public class WebMvcContextConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-		System.out.println("아규먼트 리졸버 등록됨.");
 		argumentResolvers.add(new HeaderMapArgumentResolver());
 	}
 	

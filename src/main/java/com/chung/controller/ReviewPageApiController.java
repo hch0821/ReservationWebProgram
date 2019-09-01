@@ -30,7 +30,7 @@ public class ReviewPageApiController {
 	public Map<String, Object> getReviewResponse(
 			@PathVariable(required = true, name = "reservationInfoId") int reservationInfoId,
 			@RequestParam(value = "attachedImage", required = false) List<MultipartFile> attachedImage,
-			@RequestParam(value = "comment", required = true) String commentStr,
+			@RequestParam(value = "comment", required = true) String comment,
 			@RequestParam(value = "productId", required = true) int productId,
 			@RequestParam(value = "score", required = true) int score,
 			@RequestParam(value = "isOriginImageExists", required = true) boolean isOriginImageExists
@@ -40,13 +40,13 @@ public class ReviewPageApiController {
 
 		// 신규 리뷰 작성
 		if (comments == null) {
-			addNewReview(productId, reservationInfoId, score, commentStr, attachedImage);
+			addNewReview(productId, reservationInfoId, score, comment, attachedImage);
 		}
 
 		// 리뷰 수정
 		else {
 			Comment originalComment = comments.get(0);
-			modifyOriginalReview(originalComment, commentStr, score, attachedImage, isOriginImageExists);
+			modifyOriginalReview(originalComment, comment, score, attachedImage, isOriginImageExists);
 		}
 
 		return getResultReviewMap(reservationInfoId);
@@ -73,14 +73,13 @@ public class ReviewPageApiController {
 		int reservationInfoId = originalComment.getReservationInfoId();
 		
 		// 댓글 수정
-		if (!originalComment.getComment().equals(newCommentStr)
-				&& !reviewService.updateComment(newCommentStr, reservationUserCommentId)) {
-			throw new RuntimeException("Cannot update comment.");
+		if (!originalComment.getComment().equals(newCommentStr)) {
+			reviewService.updateComment(newCommentStr, reservationUserCommentId);
 		}
 
 		// 점수 수정
-		if (originalComment.getScore() != newScore && !reviewService.updateScore(newScore, reservationUserCommentId)) {
-			throw new RuntimeException("Cannot update score");
+		if (originalComment.getScore() != newScore) {
+			reviewService.updateScore(newScore, reservationUserCommentId); 
 		}
 
 		//이전 이미지가 그대로 보존되어있을 경우
@@ -133,13 +132,11 @@ public class ReviewPageApiController {
 	//이미지의 deleteFlag를 true로 만들고 실제 파일까지 삭제하는 함수
 	private void deleteCommentImage(CommentImage commentImage) {
 		// update originalCommentImage -> delete flag = 1
-		if (!reviewService.updateDeleteFlagOfCommentImageFile(1, commentImage.getImageId())) {
-			throw new RuntimeException("Cannot update delete flag of comment image.");
-		}
+		reviewService.updateDeleteFlagOfCommentImageFile(1, commentImage.getImageId());
+			
 		//delete commentImage file
-		if(!reviewService.deleteCommentImageFile(commentImage)) {
-			throw new RuntimeException("Cannot delete the commentImage");
-		}
+		reviewService.deleteCommentImageFile(commentImage);
+	
 	}
 	
 	private Map<String, Object> getResultReviewMap(int reservationInfoId) {

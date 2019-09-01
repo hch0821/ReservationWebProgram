@@ -42,11 +42,10 @@ public class ImageFileController {
 	}
 
 	private void writeFile(HttpServletResponse response, File file) {
-		FileInputStream fis = null;
-		OutputStream out = null;
-		try {
-			fis = new FileInputStream(file);
-			out = response.getOutputStream();
+	
+		try (	FileInputStream fis = new FileInputStream(file);
+				OutputStream out = response.getOutputStream();
+			){
 			int readCount = 0;
 			byte[] buffer = new byte[1024];
 			while ((readCount = fis.read(buffer)) != -1) {
@@ -55,18 +54,8 @@ public class ImageFileController {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			response.setStatus(404);
-		} finally {
-			try {
-				if (out != null) {
-					out.close();
-				}
-				if (fis != null) {
-					fis.close();
-				}
-			} catch (IOException ie) {
-				ie.printStackTrace();
-			}
-
 		}
+
+		
 	}
 }

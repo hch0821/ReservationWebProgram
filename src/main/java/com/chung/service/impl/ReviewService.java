@@ -127,31 +127,20 @@ public class ReviewService implements IRateRegisterService {
 
 	// 실제로 파일을 저장하는 함수
 	private boolean readFile(MultipartFile sourceFile, File destFile) {
-		FileOutputStream fos = null;
-		InputStream is = null;
-		try {
-			fos = new FileOutputStream(destFile);
-			is = sourceFile.getInputStream();
+	
+		try(
+				FileOutputStream fos = new FileOutputStream(destFile);
+				InputStream is = sourceFile.getInputStream();
+			) {
 			int readCount = 0;
 			byte[] buffer = new byte[1024];
 			while ((readCount = is.read(buffer)) != -1) {
 				fos.write(buffer, 0, readCount);
 			}
-		} catch (Exception ex) {
+		} catch (Exception ex) 
+		{
 			ex.printStackTrace();
 			return false;
-		} finally {
-			try {
-				if (is != null) {
-					is.close();
-				}
-				if (fos != null) {
-					fos.close();
-				}
-			} catch (IOException ie) {
-				ie.printStackTrace();
-			}
-
 		}
 		return true;
 	}
@@ -185,20 +174,20 @@ public class ReviewService implements IRateRegisterService {
 
 	// DB에서 점수 정보를 갱신하는 함수
 	@Override
-	public boolean updateScore(int score, int reservationUserCommentId) {
-		return commentDao.updateScoreOfReservationUserComment(score, reservationUserCommentId) == 1;
+	public void updateScore(int score, int reservationUserCommentId) {
+		commentDao.updateScoreOfReservationUserComment(score, reservationUserCommentId);
 	}
 
 	// DB에서 댓글 정보를 갱신하는 함수
 	@Override
-	public boolean updateComment(String comment, int reservationUserCommentId) {
-		return commentDao.updateCommentOfReservationUserComment(comment, reservationUserCommentId) == 1;
+	public void updateComment(String comment, int reservationUserCommentId) {
+		commentDao.updateCommentOfReservationUserComment(comment, reservationUserCommentId);
 	}
 
 	// DB에서 댓글 이미지의 deleteFlag를 갱신하는 함수
 	@Override
-	public boolean updateDeleteFlagOfCommentImageFile(int deleteFlag, int reservationUserCommentImageId) {
-		return fileDao.updateDeleteFlagOfFileInfo(deleteFlag, reservationUserCommentImageId) == 1;
+	public void updateDeleteFlagOfCommentImageFile(int deleteFlag, int reservationUserCommentImageId) {
+		fileDao.updateDeleteFlagOfFileInfo(deleteFlag, reservationUserCommentImageId);
 	}
 
 }

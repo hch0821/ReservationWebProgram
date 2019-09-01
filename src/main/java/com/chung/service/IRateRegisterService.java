@@ -19,13 +19,13 @@ public interface IRateRegisterService {
 
 	public List<Comment> getCommentsByReservationInfoId(int reservationInfoId); // 예약 id로 댓글 찾기
 
-	public boolean updateScore(int score, int reservationUserCommentId); // 점수 수정
+	public void updateScore(int score, int reservationUserCommentId); // 점수 수정
 
-	public boolean updateComment(String comment, int reservationUserCommentId); // 댓글 수정
+	public void updateComment(String comment, int reservationUserCommentId); // 댓글 수정
 
 	public FileInfo uploadCommentImageFile(MultipartFile imagefile, boolean hasDateFolder); // 댓글 이미지 수정
 
-	public boolean updateDeleteFlagOfCommentImageFile(int deleteFlag, int reservationUserCommentImageId); // 댓글 이미지의  delete flag 수정
+	public void updateDeleteFlagOfCommentImageFile(int deleteFlag, int reservationUserCommentImageId); // 댓글 이미지의  delete flag 수정
 
 	boolean deleteCommentImageFile(CommentImage commentImage); // 댓글 이미지 파일 삭제
 }
