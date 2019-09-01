@@ -7,29 +7,37 @@ function ReviewWriteView(formDataContainer) {
     this.formDataContainer = formDataContainer;
 }
 
+// 별을 점수만큼 색칠하는 함수
+ReviewWriteView.prototype.updateScore = function(score)
+{
+    var starInputs = document.querySelector(".rating").querySelectorAll("input");
+    var starInputsLength = starInputs.length;
+    var scoreText = document.querySelector(".star_rank");
+    var idx;
+
+    for (idx = 0; idx < starInputsLength; idx++) {
+        utils.removeClass(starInputs[idx], "checked");
+        starInputs[idx].checked = false;
+    }
+
+    for (idx = 0; idx < score; idx++) {
+        utils.addClass(starInputs[idx], "checked");
+        starInputs[idx].checked = true;
+    }
+
+    scoreText.innerText = score;
+
+    utils.removeClass(".star_rank", "gray_star");
+}
+
 //별 버튼을 누를 때 동작하는 리스너를 등록하는 함수
 ReviewWriteView.prototype.registerRatingStarsClickListener = function () {
 
     var starInputs = document.querySelector(".rating").querySelectorAll("input");
-    var starInputsLength = starInputs.length;
-    var scoreText = document.querySelector(".star_rank");
+    var reviewWriteView = this;
     Array.prototype.forEach.call(starInputs, function (starInput) {
-        utils.registerClickListener(starInput, function () {
-            var idx;
-
-            for (idx = 0; idx < starInputsLength; idx++) {
-                utils.removeClass(starInputs[idx], "checked");
-                starInputs[idx].checked = false;
-            }
-
-            for (idx = 0; idx < starInput.value; idx++) {
-                utils.addClass(starInputs[idx], "checked");
-                starInputs[idx].checked = true;
-            }
-
-            scoreText.innerText = starInput.value;
-
-            utils.removeClass(".star_rank", "gray_star");
+        utils.registerClickListener(starInput, function(){
+            reviewWriteView.updateScore(starInput.value);
         });
     });
 }
@@ -116,7 +124,6 @@ ReviewWriteView.prototype.loadPreviousReview = function (displayInfoId, reservat
     var reviewWriteView = this;
     var titleSpan = document.querySelector(".title");
     var registerButtonText = document.querySelector(".box_bk_btn .btn_txt");
-    var starInputs = document.querySelector(".rating").querySelectorAll("input");
     var reviewCommentBlockerAnchor = document.querySelector(".review_write_info");
     var reviewCommentTextArea = document.querySelector(".review_textarea");
     var imageThumbnail = document.querySelector(".item_preview_thumbs .item_thumb")
@@ -146,9 +153,7 @@ ReviewWriteView.prototype.loadPreviousReview = function (displayInfoId, reservat
         }
         var commentObj = comments[0];
         var commentImage = undefined;
-        if(commentObj.score > 1){
-            starInputs[commentObj.score - 1].click();
-        }
+        reviewWriteView.updateScore(commentObj.score)
         reviewCommentBlockerAnchor.innerText = commentObj.comment;
         reviewCommentTextArea.value = commentObj.comment;
         document.querySelector(".cur_text_length").innerText = reviewCommentTextArea.value.length;
@@ -311,11 +316,14 @@ FormDataContainer.getInstance = function () {
     return this.instance;
 }
 
+// 댓글 이미지 정보를 제외하고 모든 멤버변수를 undefine으로 만드는 함수
 FormDataContainer.prototype.resetExceptAttachedImage = function () {
     this.comment = undefined;
     this.productId = undefined;
     this.score = undefined;
 }
+
+// formData를 새로 만들고, 멤버변수들을 formData에 실제로 저장하는 함수
 FormDataContainer.prototype.applyFormData = function () {
     this.formData = new FormData();
     this.formData.append("comment", this.comment);
