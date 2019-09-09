@@ -1,8 +1,9 @@
 package com.chung.controller;
 
+import static com.chung.config.WebMvcContextConfiguration.ROOTPATH;
+
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLConnection;
 
@@ -17,12 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ImageFileController {
 
-	public final static String ROOT_DIRECTORY = "D:/ReservationWebProgram";
-
+	
 	// /reserv/image?path=PATH
 	@GetMapping(path = "/image")
 	public void getImage(HttpServletResponse response, @RequestParam(name = "path", required = true) String path) {
-		File file = new File(ROOT_DIRECTORY, path);
+		File file = new File(ROOTPATH, path);
 		if (!file.exists()) {
 			response.setStatus(404);
 			return;

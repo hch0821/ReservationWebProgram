@@ -10,9 +10,6 @@ import com.chung.dto.fileinfo.FileInfo;
 
 //상품 평가 등록 서비스
 public interface IRateRegisterService {
-	public final static String ROOT_DIRECTORY = "D:/ReservationWebProgram";
-	public final static String COMMENT_IMAGE_SUB_DIRECTORY = "commentImages";
-
 	public long registerCommentAndScore(int productId, int reservationInfoId, int score, String comment); // 댓글, 점수 등록
 
 	public long registerCommentImage(int reservationInfoId, int reservationUserCommentId, int fileId); // 댓글 이미지 등록

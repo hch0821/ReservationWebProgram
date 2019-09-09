@@ -4,7 +4,6 @@ package com.chung.service.impl;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
@@ -23,7 +22,8 @@ import com.chung.dto.comment.CommentImage;
 import com.chung.dto.comment.CommentImageForInsertAction;
 import com.chung.dto.fileinfo.FileInfo;
 import com.chung.service.IRateRegisterService;
-
+import static com.chung.config.WebMvcContextConfiguration.ROOTPATH;
+import static com.chung.config.WebMvcContextConfiguration.COMMENT_IMAGE_PATH;
 @Service
 public class ReviewService implements IRateRegisterService {
 
@@ -32,18 +32,11 @@ public class ReviewService implements IRateRegisterService {
 
 	@Autowired
 	FileDao fileDao;
-
-	public ReviewService() {
-		File rootDirectory = new File(ROOT_DIRECTORY);
-		if (!rootDirectory.exists()) {
-			rootDirectory.mkdirs();
-		}
-	}
-
+	
 	// 댓글 이미지 파일을 삭제하는 함수
 	@Override
 	public boolean deleteCommentImageFile(CommentImage commentImage) {
-		File file = new File(ROOT_DIRECTORY, commentImage.getSaveFileName());
+		File file = new File(ROOTPATH, commentImage.getSaveFileName());
 		if (!file.exists())
 			return false;
 		return file.delete();
@@ -53,7 +46,7 @@ public class ReviewService implements IRateRegisterService {
 	@Override
 	public FileInfo uploadCommentImageFile(MultipartFile sourceFile, boolean hasDateFolder) {
 		FileInfo fileInfo = new FileInfo();
-		File destDirectory = new File(ROOT_DIRECTORY, COMMENT_IMAGE_SUB_DIRECTORY);
+		File destDirectory = new File(ROOTPATH, COMMENT_IMAGE_PATH);
 		if (!destDirectory.exists() && !destDirectory.mkdirs()) {
 			return null;
 		}
@@ -82,9 +75,9 @@ public class ReviewService implements IRateRegisterService {
 		String uploadFilePath = destFile.getAbsolutePath();
 		fileInfo.setContentType(URLConnection.guessContentTypeFromName(uploadFilePath));
 		if (hasDateFolder) {
-			uploadFilePath = COMMENT_IMAGE_SUB_DIRECTORY + "/" + todayDateStr + "/" + destFile.getName();
+			uploadFilePath = COMMENT_IMAGE_PATH + "/" + todayDateStr + "/" + destFile.getName();
 		} else {
-			uploadFilePath = COMMENT_IMAGE_SUB_DIRECTORY + "/" + destFile.getName();
+			uploadFilePath = COMMENT_IMAGE_PATH + "/" + destFile.getName();
 		}
 
 		fileInfo.setCreateDate(date);
