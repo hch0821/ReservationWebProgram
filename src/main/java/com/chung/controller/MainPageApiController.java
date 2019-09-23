@@ -28,7 +28,6 @@ public class MainPageApiController {
 	@Autowired
 	MainService mainService;
 
-
 	// http://localhost:8080/reserv/api/products?categoryId=3&start=1
 	@GetMapping("/products")
 	public Map<String, Object> productResponse(@RequestParam(name = "categoryId", required = true) int categoryId,
