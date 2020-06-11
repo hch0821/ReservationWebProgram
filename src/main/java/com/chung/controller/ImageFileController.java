@@ -1,7 +1,5 @@
 package com.chung.controller;
 
-import static com.chung.config.WebMvcContextConfiguration.ROOTPATH;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
@@ -9,6 +7,7 @@ import java.net.URLConnection;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,11 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ImageFileController {
 
-	
-	// /reserv/image?path=PATH
+	@Value("${root.path}")
+	private String rootPath;
+
 	@GetMapping(path = "/image")
 	public void getImage(HttpServletResponse response, @RequestParam(name = "path", required = true) String path) {
-		File file = new File(ROOTPATH, path);
+		File file = new File(rootPath, path);
 		if (!file.exists()) {
 			response.setStatus(404);
 			return;
@@ -42,10 +42,8 @@ public class ImageFileController {
 	}
 
 	private void writeFile(HttpServletResponse response, File file) {
-	
-		try (	FileInputStream fis = new FileInputStream(file);
-				OutputStream out = response.getOutputStream();
-			){
+
+		try (FileInputStream fis = new FileInputStream(file); OutputStream out = response.getOutputStream();) {
 			int readCount = 0;
 			byte[] buffer = new byte[1024];
 			while ((readCount = fis.read(buffer)) != -1) {
@@ -56,6 +54,5 @@ public class ImageFileController {
 			response.setStatus(404);
 		}
 
-		
 	}
 }

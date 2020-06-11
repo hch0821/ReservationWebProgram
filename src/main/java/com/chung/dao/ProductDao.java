@@ -28,9 +28,10 @@ public class ProductDao {
 	private RowMapper<ProductPrice> productPriceMapper = BeanPropertyRowMapper.newInstance(ProductPrice.class);
 	private RowMapper<ProductImage> productImageMapper = BeanPropertyRowMapper.newInstance(ProductImage.class);
 
-	private ProductDao(DataSource dataSource) {
+	public ProductDao(DataSource dataSource) {
 		jdbc = new NamedParameterJdbcTemplate(dataSource);
 	}
+
 	public List<Product> selectProducts(Integer categoryId, Integer start) {
 		Map<String, Integer> params = new HashMap<String, Integer>();
 		params.put("categoryId", categoryId);
@@ -39,13 +40,14 @@ public class ProductDao {
 
 		return jdbc.query(SELECT_PRODUCT, params, productMapper);
 	}
+
 	public List<Product> selectAllProduct(Integer start) {
 		Map<String, Integer> params = new HashMap<String, Integer>();
 		params.put("start", start);
 		params.put("limit", IProductService.NUM_ITEM);
 		return jdbc.query(SELECT_ALL_PRODUCT, params, productMapper);
 	}
-	
+
 	public List<Integer> selectProductCount() {
 		SqlRowSet rowset = jdbc.queryForRowSet(SELECT_PRODUCT_COUNT, Collections.emptyMap());
 		List<Integer> counts = new ArrayList<Integer>();
@@ -54,20 +56,20 @@ public class ProductDao {
 		}
 		return counts;
 	}
-	
+
 	public ProductImage selectProductImage(Integer productId, String type) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("productId", productId);
 		params.put("type", type);
 		return jdbc.queryForObject(SELECT_PRODUCT_IMAGE, params, productImageMapper);
 	}
-	
+
 	public List<ProductImage> selectProductImages(Integer productId) {
 		Map<String, Integer> params = new HashMap<String, Integer>();
 		params.put("productId", productId);
 		return jdbc.query(SELECT_PRODUCT_IMAGES, params, productImageMapper);
 	}
-	
+
 	public List<ProductPrice> selectProductPrices(Integer productId) {
 		Map<String, Integer> params = new HashMap<String, Integer>();
 		params.put("productId", productId);

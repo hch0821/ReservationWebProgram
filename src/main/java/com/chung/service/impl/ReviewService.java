@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,8 +23,7 @@ import com.chung.dto.comment.CommentImage;
 import com.chung.dto.comment.CommentImageForInsertAction;
 import com.chung.dto.fileinfo.FileInfo;
 import com.chung.service.IRateRegisterService;
-import static com.chung.config.WebMvcContextConfiguration.ROOTPATH;
-import static com.chung.config.WebMvcContextConfiguration.COMMENT_IMAGE_PATH;
+
 @Service
 public class ReviewService implements IRateRegisterService {
 
@@ -32,11 +32,17 @@ public class ReviewService implements IRateRegisterService {
 
 	@Autowired
 	FileDao fileDao;
-	
+
+	@Value("${root.path}")
+	private String rootPath;
+
+	@Value("${comment.image.path}")
+	private String commentImagePath;
+
 	// 댓글 이미지 파일을 삭제하는 함수
 	@Override
 	public boolean deleteCommentImageFile(CommentImage commentImage) {
-		File file = new File(ROOTPATH, commentImage.getSaveFileName());
+		File file = new File(rootPath, commentImage.getSaveFileName());
 		if (!file.exists())
 			return false;
 		return file.delete();
@@ -46,9 +52,11 @@ public class ReviewService implements IRateRegisterService {
 	@Override
 	public FileInfo uploadCommentImageFile(MultipartFile sourceFile, boolean hasDateFolder) {
 		FileInfo fileInfo = new FileInfo();
-		File destDirectory = new File(ROOTPATH, COMMENT_IMAGE_PATH);
-		if (!destDirectory.exists() && !destDirectory.mkdirs()) {
-			return null;
+		File destDirectory = new File(rootPath, commentImagePath);
+		if (!destDirectory.exists()) {
+			boolean mkSuccess = destDirectory.mkdirs();
+			if (!mkSuccess)
+				throw new RuntimeException("Cannot Make Upload Directory!");
 		}
 
 		Date date = new Date();
@@ -75,9 +83,9 @@ public class ReviewService implements IRateRegisterService {
 		String uploadFilePath = destFile.getAbsolutePath();
 		fileInfo.setContentType(URLConnection.guessContentTypeFromName(uploadFilePath));
 		if (hasDateFolder) {
-			uploadFilePath = COMMENT_IMAGE_PATH + "/" + todayDateStr + "/" + destFile.getName();
+			uploadFilePath = commentImagePath + "/" + todayDateStr + "/" + destFile.getName();
 		} else {
-			uploadFilePath = COMMENT_IMAGE_PATH + "/" + destFile.getName();
+			uploadFilePath = commentImagePath + "/" + destFile.getName();
 		}
 
 		fileInfo.setCreateDate(date);
@@ -120,18 +128,14 @@ public class ReviewService implements IRateRegisterService {
 
 	// 실제로 파일을 저장하는 함수
 	private boolean readFile(MultipartFile sourceFile, File destFile) {
-	
-		try(
-				FileOutputStream fos = new FileOutputStream(destFile);
-				InputStream is = sourceFile.getInputStream();
-			) {
+
+		try (FileOutputStream fos = new FileOutputStream(destFile); InputStream is = sourceFile.getInputStream();) {
 			int readCount = 0;
 			byte[] buffer = new byte[1024];
 			while ((readCount = is.read(buffer)) != -1) {
 				fos.write(buffer, 0, readCount);
 			}
-		} catch (Exception ex) 
-		{
+		} catch (Exception ex) {
 			ex.printStackTrace();
 			return false;
 		}

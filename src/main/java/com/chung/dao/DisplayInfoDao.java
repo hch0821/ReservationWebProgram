@@ -22,11 +22,11 @@ public class DisplayInfoDao {
 	private RowMapper<DisplayInfo> displayInfoMapper = BeanPropertyRowMapper.newInstance(DisplayInfo.class);
 	private RowMapper<DisplayInfoImage> displayInfoImageMapper = BeanPropertyRowMapper
 			.newInstance(DisplayInfoImage.class);
-	
-	private DisplayInfoDao(DataSource dataSource) {
+
+	public DisplayInfoDao(DataSource dataSource) {
 		jdbc = new NamedParameterJdbcTemplate(dataSource);
 	}
-	
+
 	public DisplayInfo selectDisplayInfo(Integer displayInfoId) {
 		Map<String, Integer> params = new HashMap<String, Integer>();
 		params.put("displayInfoId", displayInfoId);

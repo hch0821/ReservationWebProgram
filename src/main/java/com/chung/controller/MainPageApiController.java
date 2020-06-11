@@ -28,7 +28,6 @@ public class MainPageApiController {
 	@Autowired
 	MainService mainService;
 
-	// http://localhost:8080/reserv/api/products?categoryId=3&start=1
 	@GetMapping("/products")
 	public Map<String, Object> productResponse(@RequestParam(name = "categoryId", required = true) int categoryId,
 			@RequestParam(name = "start", required = false, defaultValue = "0") int start) {
@@ -39,7 +38,6 @@ public class MainPageApiController {
 		return map;
 	}
 
-	// http://localhost:8080/reserv/api/categories
 	@GetMapping("/categories")
 	public Map<String, Object> categoryResponse() {
 		List<Category> categories = mainService.getCategories();
@@ -48,7 +46,6 @@ public class MainPageApiController {
 		return map;
 	}
 
-	// http://localhost:8080/reserv/api/promotions
 	@GetMapping("/promotions")
 	public Map<String, Object> promotionResponse() {
 		List<Promotion> promotions = mainService.getPromotions();
@@ -57,20 +54,17 @@ public class MainPageApiController {
 		return map;
 	}
 
-	// http://localhost:8080/reserv/api/productImages/{productId}?type=th"
 	@GetMapping("/productImages/{productId}")
 	public RedirectView getProductImageByProductId(@PathVariable(name = "productId") Integer productId,
 			@RequestParam(name = "type", required = true) String type) {
 		ProductImage productImage = mainService.getProductImage(productId, type);
-		//return new RedirectView("/reserv/res/" + productImage.getSaveFileName());
-		return new RedirectView("/reserv/image?path=" + productImage.getSaveFileName());
+		return new RedirectView("/image?path=" + productImage.getSaveFileName());
 	}
 
-	// http://localhost:8080/reserv/api/productImages/{productId}/{productImageId}
 	@GetMapping("/productImages/{productId}/{productImageId}")
 	public RedirectView getProductImageByProductImageId(@PathVariable(name = "productId") Integer productId,
 			@PathVariable(name = "productImageId") Integer productImageId) {
 		ProductImage productImage = mainService.getProductImage(productId, ProductImage.Type.TYPE_TH);
-		return new RedirectView("/reserv/image?path=" + productImage.getSaveFileName());
+		return new RedirectView("/image?path=" + productImage.getSaveFileName());
 	}
 }

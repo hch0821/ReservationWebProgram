@@ -33,7 +33,7 @@ public class ReservationPageApiController {
 	ReservationService reservationService;
 
 	// 예약 조회
-	// http://localhost:8080/reserv/api/reservations?reservationEmail=xxxx@naver.com
+
 	@GetMapping("/reservations")
 	public Map<String, Object> inquireReservationInfoResponse(
 			@RequestParam(name = "reservationEmail", required = true) String reservationEmail) {
@@ -46,7 +46,7 @@ public class ReservationPageApiController {
 	}
 
 	// 공연일시를 오늘을 포함하여 1~5일 뒤의 날짜로 설정
-	// http://localhost:8080/reserv/api/reservations/reservationDate
+
 	@GetMapping("/reservations/reservationDate")
 	public Map<String, Object> getReservationDate() {
 		Map<String, Object> map = new HashMap<>();
@@ -57,14 +57,14 @@ public class ReservationPageApiController {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(reservationDate);
 		cal.add(Calendar.DATE, addedDate);
-		
-		if(addedDate == 0) { // 랜덤으로 잡힌 공연일시가 오늘일 때 
-			
-			cal.add(Calendar.HOUR_OF_DAY, new Random().nextInt(5)+1); // 오늘 시간보다 더 이전 시간으로 잡히는 것을 방지
-		}else {
-			cal.set(Calendar.HOUR_OF_DAY, new Random().nextInt(10) + 9); //오전 9시 ~ 오후 6시로 시간 설정
+
+		if (addedDate == 0) { // 랜덤으로 잡힌 공연일시가 오늘일 때
+
+			cal.add(Calendar.HOUR_OF_DAY, new Random().nextInt(5) + 1); // 오늘 시간보다 더 이전 시간으로 잡히는 것을 방지
+		} else {
+			cal.set(Calendar.HOUR_OF_DAY, new Random().nextInt(10) + 9); // 오전 9시 ~ 오후 6시로 시간 설정
 		}
-		cal.set(Calendar.MINUTE, new Random().nextInt(2) * 30); //분은 00분 또는 30분으로 설정
+		cal.set(Calendar.MINUTE, new Random().nextInt(2) * 30); // 분은 00분 또는 30분으로 설정
 		reservationDate = new Date(cal.getTimeInMillis());
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -77,7 +77,6 @@ public class ReservationPageApiController {
 	}
 
 	// 예약 하기
-	// http://localhost:8080/reserv/api/reservations
 	@PostMapping("/reservations")
 	public Map<String, Object> reserveTicketResponse(@RequestBody ReservationParam reservationParam) {
 
@@ -85,7 +84,6 @@ public class ReservationPageApiController {
 	}
 
 	// 예약 취소
-	// http://localhost:8080/reserv/api/reservations/{reservationInfoId}
 	@PutMapping("/reservations/{reservationInfoId}")
 	public Map<String, Object> cancelReservationResponse(
 			@PathVariable(name = "reservationInfoId") Integer reservationInfoId) {

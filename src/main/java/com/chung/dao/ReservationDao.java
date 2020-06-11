@@ -33,7 +33,7 @@ public class ReservationDao {
 	private SimpleJdbcInsert insertReservationInfoAction;
 	private SimpleJdbcInsert insertReservationInfoPriceAction;
 
-	private ReservationDao(DataSource dataSource) {
+	public ReservationDao(DataSource dataSource) {
 		jdbc = new NamedParameterJdbcTemplate(dataSource);
 		insertReservationInfoAction = new SimpleJdbcInsert(dataSource).withTableName("reservation_info")
 				.usingGeneratedKeyColumns("id");

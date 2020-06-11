@@ -28,7 +28,6 @@ public class DetailPageApiController {
 	@Autowired
 	DetailService detailService;
 
-	// http://localhost:8080/reserv/api/products/1
 	@GetMapping("/products/{displayInfoId}")
 	public Map<String, Object> displayInfoResponse(@PathVariable(name = "displayInfoId") Integer displayInfoId) {
 		Map<String, Object> map = new HashMap<>();

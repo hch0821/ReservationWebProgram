@@ -1,6 +1,5 @@
 package com.chung.argumentresolver;
 
-
 import java.util.Iterator;
 
 import org.springframework.core.MethodParameter;
@@ -9,11 +8,10 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-public class HeaderMapArgumentResolver implements HandlerMethodArgumentResolver{
+public class HeaderMapArgumentResolver implements HandlerMethodArgumentResolver {
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
-		// TODO Auto-generated method stub
 		return parameter.getParameterType() == HeaderInfo.class;
 	}
 
@@ -21,15 +19,15 @@ public class HeaderMapArgumentResolver implements HandlerMethodArgumentResolver{
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		HeaderInfo headerInfo = new HeaderInfo();
-		
+
 		Iterator<String> headerNames = webRequest.getHeaderNames();
-		while(headerNames.hasNext()) {
+		while (headerNames.hasNext()) {
 			String headerName = headerNames.next();
 			String headerValue = webRequest.getHeader(headerName);
 			System.out.println(headerName + " , " + headerValue);
 			headerInfo.put(headerName, headerValue);
 		}
-		
+
 		return headerInfo;
 	}
 

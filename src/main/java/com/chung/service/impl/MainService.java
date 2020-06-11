@@ -35,7 +35,7 @@ public class MainService implements IProductService, IPromotionAndCategoryServic
 		}
 		for (Product product : list) {
 			product.setProductImageUrl(
-					"/reserv/api/productImages/" + product.getProductId() + "?type=" + ProductImage.Type.TYPE_TH);
+					"/api/productImages/" + product.getProductId() + "?type=" + ProductImage.Type.TYPE_TH);
 		}
 		return list;
 
@@ -66,8 +66,7 @@ public class MainService implements IProductService, IPromotionAndCategoryServic
 	public List<Promotion> getPromotions() {
 		List<Promotion> promotions = categoryAndPromotionDao.selectPromotion();
 		for (Promotion pro : promotions) {
-			pro.setProductImageUrl(
-					"/reserv/api/productImages/" + pro.getProductId() + "?type=" + ProductImage.Type.TYPE_TH);
+			pro.setProductImageUrl("/api/productImages/" + pro.getProductId() + "?type=" + ProductImage.Type.TYPE_TH);
 		}
 
 		return promotions;

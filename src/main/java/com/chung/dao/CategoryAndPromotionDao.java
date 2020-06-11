@@ -20,9 +20,11 @@ public class CategoryAndPromotionDao {
 	private NamedParameterJdbcTemplate jdbc;
 	private RowMapper<Category> categoryMapper = BeanPropertyRowMapper.newInstance(Category.class);
 	private RowMapper<Promotion> promotionMapper = BeanPropertyRowMapper.newInstance(Promotion.class);
-	private CategoryAndPromotionDao(DataSource dataSource) {
+
+	public CategoryAndPromotionDao(DataSource dataSource) {
 		jdbc = new NamedParameterJdbcTemplate(dataSource);
 	}
+
 	public List<Category> selectCategory() {
 		return jdbc.query(SELECT_CATEGORY, categoryMapper);
 	}

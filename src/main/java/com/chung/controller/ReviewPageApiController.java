@@ -25,7 +25,7 @@ public class ReviewPageApiController {
 	@Autowired
 	ReviewService reviewService;
 
-	//리뷰 등록 또는 수정
+	// 리뷰 등록 또는 수정
 	@PostMapping(value = "/reservations/{reservationInfoId}/comments")
 	public Map<String, Object> getReviewResponse(
 			@PathVariable(required = true, name = "reservationInfoId") int reservationInfoId,
@@ -33,8 +33,7 @@ public class ReviewPageApiController {
 			@RequestParam(value = "comment", required = true) String comment,
 			@RequestParam(value = "productId", required = true) int productId,
 			@RequestParam(value = "score", required = true) int score,
-			@RequestParam(value = "isOriginImageExists", required = true) boolean isOriginImageExists
-			) {
+			@RequestParam(value = "isOriginImageExists", required = true) boolean isOriginImageExists) {
 
 		List<Comment> comments = reviewService.getCommentsByReservationInfoId(reservationInfoId);
 
@@ -71,7 +70,7 @@ public class ReviewPageApiController {
 			List<MultipartFile> newAttachedImages, boolean isOriginImageExists) {
 		int reservationUserCommentId = originalComment.getCommentId();
 		int reservationInfoId = originalComment.getReservationInfoId();
-		
+
 		// 댓글 수정
 		if (!originalComment.getComment().equals(newCommentStr)) {
 			reviewService.updateComment(newCommentStr, reservationUserCommentId);
@@ -79,20 +78,21 @@ public class ReviewPageApiController {
 
 		// 점수 수정
 		if (originalComment.getScore() != newScore) {
-			reviewService.updateScore(newScore, reservationUserCommentId); 
+			reviewService.updateScore(newScore, reservationUserCommentId);
 		}
 
-		//이전 이미지가 그대로 보존되어있을 경우
-		if(isOriginImageExists) {
+		// 이전 이미지가 그대로 보존되어있을 경우
+		if (isOriginImageExists) {
 			return;
 		}
-		
-		//아래 코드부터는 이전 이미지가 사라지고 다른 이미지로 대체되거나 아예 첨부파일이 없는 경우의 작업.
-		
+
+		// 아래 코드부터는 이전 이미지가 사라지고 다른 이미지로 대체되거나 아예 첨부파일이 없는 경우의 작업.
+
 		List<CommentImage> originalCommentImages = originalComment.getCommentImages();
-		//아무 이미지가 올라오지 않았을 경우 
-		//deleteFlag가 false인 commentImage를 찾아서 deleteFlag를 true로 바꾸고 해당 파일을 삭제함.
-		if(newAttachedImages.size() ==0 || (newAttachedImages.size() == 1 && newAttachedImages.get(0).getSize() == 0)) {
+		// 아무 이미지가 올라오지 않았을 경우
+		// deleteFlag가 false인 commentImage를 찾아서 deleteFlag를 true로 바꾸고 해당 파일을 삭제함.
+		if (newAttachedImages.size() == 0
+				|| (newAttachedImages.size() == 1 && newAttachedImages.get(0).getSize() == 0)) {
 			for (CommentImage originalCommentImage : originalCommentImages) {
 				if (!originalCommentImage.isDeleteFlag()) {
 					deleteCommentImage(originalCommentImage);
@@ -100,45 +100,46 @@ public class ReviewPageApiController {
 			}
 			return;
 		}
-		
-		//이미지가 한 개라도 올라왔다면
+
+		// 이미지가 한 개라도 올라왔다면
 		for (MultipartFile attachedImage : newAttachedImages) {
 			if (attachedImage.getSize() == 0) {
 				continue;
 			}
-			
-			//기존에 있던 이미지와 동일한 이미지가 아니라면 해당 이미지의 deleteFlag를 true로 바꾸고 해당 파일을 삭제함.
+
+			// 기존에 있던 이미지와 동일한 이미지가 아니라면 해당 이미지의 deleteFlag를 true로 바꾸고 해당 파일을 삭제함.
 			for (CommentImage originalCommentImage : originalCommentImages) {
 				if (!originalCommentImage.isDeleteFlag()
 						&& !originalCommentImage.getFileName().equals(attachedImage.getOriginalFilename())) {
 					deleteCommentImage(originalCommentImage);
 				}
 			}
-			
-			// 기존에 있던 이미지와 동일한 이미지가 아니라면 
+
+			// 기존에 있던 이미지와 동일한 이미지가 아니라면
 			for (CommentImage originalCommentImage : originalCommentImages) {
-				if (!originalCommentImage.isDeleteFlag() && originalCommentImage.getFileName().equals(attachedImage.getOriginalFilename())) {
-					return; //동일한 이미지(이미 존재하는 이미지)이면 return
+				if (!originalCommentImage.isDeleteFlag()
+						&& originalCommentImage.getFileName().equals(attachedImage.getOriginalFilename())) {
+					return; // 동일한 이미지(이미 존재하는 이미지)이면 return
 				}
 			}
-			
-			//파일을 업로드하고 새로 db에 이미지를 등록함 .
+
+			// 파일을 업로드하고 새로 db에 이미지를 등록함 .
 			FileInfo uploadedFileInfo = reviewService.uploadCommentImageFile(attachedImage, true);
 			reviewService.registerCommentImage(reservationInfoId, reservationUserCommentId, uploadedFileInfo.getId());
-			
+
 		}
 	}
 
-	//이미지의 deleteFlag를 true로 만들고 실제 파일까지 삭제하는 함수
+	// 이미지의 deleteFlag를 true로 만들고 실제 파일까지 삭제하는 함수
 	private void deleteCommentImage(CommentImage commentImage) {
 		// update originalCommentImage -> delete flag = 1
 		reviewService.updateDeleteFlagOfCommentImageFile(1, commentImage.getImageId());
-			
-		//delete commentImage file
+
+		// delete commentImage file
 		reviewService.deleteCommentImageFile(commentImage);
-	
+
 	}
-	
+
 	private Map<String, Object> getResultReviewMap(int reservationInfoId) {
 		List<Comment> resultComments = reviewService.getCommentsByReservationInfoId(reservationInfoId);
 		Map<String, Object> map = new HashMap<>();

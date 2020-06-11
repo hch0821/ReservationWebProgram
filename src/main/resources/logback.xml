@@ -9,7 +9,7 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>D:/ReservationWebProgram/log/report.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>D:/ReservationWebProgram/log/report-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>C:/log/report-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
 
@@ -18,11 +18,11 @@
         </encoder>
     </appender>
 
-    <logger name="org.springframework" level="info"/>
-    <logger name="com.chung" level="debug"/>
+    <logger name="org.springframework" level="info" />
+    <logger name="com.chung" level="debug" />
 
     <root level="debug">
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
     </root>
 </configuration>

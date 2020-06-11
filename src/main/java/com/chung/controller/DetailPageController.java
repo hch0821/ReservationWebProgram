@@ -11,9 +11,9 @@ import com.chung.service.impl.DetailService;
 public class DetailPageController {
 	@Autowired
 	DetailService detailService;
-	
-	@GetMapping(path= "/commentimage")
-	public String getCommentImage(@RequestParam(required=true, name="id") int id) {
+
+	@GetMapping(path = "/commentimage")
+	public String getCommentImage(@RequestParam(required = true, name = "id") int id) {
 		return "redirect:image?path=" + detailService.lookupFilepathByReservationUserCommentImageId(id);
 	}
 }

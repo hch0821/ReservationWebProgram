@@ -45,9 +45,6 @@ public class ReservationService implements IReservationService {
 	// 예약 하기
 	@Override
 	public Map<String, Object> reserveTicket(ReservationParam reservationParam) {
-
-		Map<String, Object> map = new HashMap<>();
-
 		ReservationInfo reservationInfo;
 
 		int displayInfoId = reservationParam.getDisplayInfoId();
@@ -98,8 +95,6 @@ public class ReservationService implements IReservationService {
 	@Override
 	public Map<String, Object> cancelReservation(int reservationInfoId) {
 
-		Map<String, Object> map = new HashMap<>();
-
 		reservationDao.updateCancelFlagOfReservationInfo(reservationInfoId, 1);
 
 		ReservationInfo reservationInfo = reservationDao.selectReservationInfo(reservationInfoId);
@@ -115,7 +110,7 @@ public class ReservationService implements IReservationService {
 		return createReservationResponse(reservationPrices, reservationInfo);
 	}
 
-	// 예약을 취소하거나 등록하였을 때 클라이언트로 보낼 반응 결과 맵 객체를 만드는 함수 
+	// 예약을 취소하거나 등록하였을 때 클라이언트로 보낼 반응 결과 맵 객체를 만드는 함수
 	private Map<String, Object> createReservationResponse(List<ReservationPrice> prices,
 			ReservationInfo reservationInfo) {
 		Map<String, Object> map = new HashMap<>();

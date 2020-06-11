@@ -35,7 +35,7 @@ public class CommentDao {
 	private SimpleJdbcInsert insertReservationUserCommentImageAction;
 	private SimpleJdbcInsert insertReservationUserCommentAction;
 
-	private CommentDao(DataSource dataSource) {
+	public CommentDao(DataSource dataSource) {
 		jdbc = new NamedParameterJdbcTemplate(dataSource);
 
 		insertReservationUserCommentImageAction = new SimpleJdbcInsert(dataSource)
@@ -94,5 +94,4 @@ public class CommentDao {
 		params.put("reservationUserCommentId", reservationUserCommentId);
 		return jdbc.update(UPDATE_COMMENT_OF_RESERVATION_USER_COMMENT, params);
 	}
-
 }
