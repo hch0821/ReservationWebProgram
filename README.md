@@ -30,7 +30,7 @@ Spring Boot, Spring MVC, Spring JDBC, Pure Javascript, Thymeleaf를 사용한 �
 ## Clone 후 실행 방법
 ### Visual Studio Code 사용 기준
 1. [여기](https://sambalim.tistory.com/67) 참고하여 IDE 초기 설정 가능
-2. MySql Sever 설치
+2. MySql Server 설치
 3. [application.properties](./src/main/resources/application.properties) > spring.datasource.username, spring.datasource.password에 상응하는 MySql User 추가
 4. MySql Character Set을 UTF-8로 설정. -> [linux 설정법](https://www.lesstif.com/dbms/mysql-rhel-centos-ubuntu-20775198.html) | [Windows 설정법](https://sina-bro.tistory.com/4)
 5. 기본 DB 스키마, 데이터를 넣기 위해, [/sqls](./sqls) 폴더 안에있는 sql 파일을 실행할 필요가 있음.
