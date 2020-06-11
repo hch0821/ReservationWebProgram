@@ -1,6 +1,6 @@
 # ReservationWebProgram
 
-Spring Framework, Spring MVC Pattern을 사용한 티켓 예약 서비스 프로그램
+Spring Boot, Spring MVC, Spring JDBC, Pure Javascript, Thymeleaf를 사용한 티켓 예약 서비스 프로그램
 
 ## API 스펙
 [링크](http://49.236.147.192:9090/swagger-ui.html)
